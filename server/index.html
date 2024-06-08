@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSV to JSON Converter</title>
+</head>
+<body>
+  <input type="file" id="csvFileInput" accept=".csv">
+  <button onclick="handleFileUpload()">Upload CSV</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/csvtojson/2.0.10/csvtojson.min.js"></script>
+  <script>
+    async function handleFileUpload() {
+      const fileInput = document.getElementById('csvFileInput');
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert('Please select a file.');
+        return;
+      }
+
+      const jsonArray = await convertCsvToJson(file);
+      console.log(jsonArray);
+
+      // Send the JSON data to the server
+      const response = await fetch('http://localhost:3000/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonArray)
+      });
+
+      const data = await response.json();
+      console.log(data);
+    }
+
+    function convertCsvToJson(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          const csvString = event.target.result;
+          csvtojson()
+            .fromString(csvString)
+            .then((jsonArray) => {
+              resolve(jsonArray);
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        };
+
+        reader.onerror = (error) => {
+          reject(error);
+        };
+
+        reader.readAsText(file);
+      });
+    }
+  </script>
+</body>
+</html>

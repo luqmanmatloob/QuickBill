@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Management</title>
+    <!-- Add Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #invoiceData, #invoiceData * {
+                visibility: visible;
+            }
+            #invoiceData {
+                position: absolute;
+                left: 0;
+                top: 0;
+            }
+            .print-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white p-6">
+    <div class="max-w-3xl mx-auto">
+        <h1 class="text-3xl font-semibold mb-6">Invoice Management</h1>
+        <h2 class="text-2xl font-semibold mb-4">Upload CSV File</h2>
+        <form id="uploadForm" class="mb-6" action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="csvFile" accept=".csv" required class="mb-2">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Upload</button>
+        </form>
+
+        <hr class="my-8">
+
+        <h2 class="text-2xl font-semibold mb-6">Lookup Invoice</h2>
+        <form id="invoiceLookupForm" class="mb-6">
+            <label for="invoiceNumber" class="block mb-2">Enter Invoice Number:</label>
+            <input type="text" id="invoiceNumber" name="invoiceNumber" required class="mb-2 border border-gray-300 rounded-md px-4 py-2">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Lookup</button>
+        </form>
+
+        <div id="invoiceData" class="mb-8">
+            <!-- Invoice data will be displayed here -->
+        </div>
+        <button onclick="window.print()" class="print-button bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md">Print Invoice</button>
+    </div>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const fileInput = document.querySelector('input[type="file"]');
+            const file = fileInput.files[0];
+
+            const formData = new FormData();
+            formData.append('csvFile', file);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to upload file');
+                }
+
+                document.getElementById('uploadForm').reset();
+
+                alert('File uploaded successfully');
+            } catch (error) {
+                console.error(error);
+                alert('An error occurred while uploading the file');
+            }
+        });
+
+        document.getElementById('invoiceLookupForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const invoiceNumber = document.getElementById('invoiceNumber').value;
+
+            try {
+                const response = await fetch(`/invoice/${invoiceNumber}`);
+                const invoiceData = await response.json();
+
+                document.getElementById('invoiceData').innerHTML = `
+                    <h2 class="text-2xl font-semibold mb-4">Invoice Data</h2>
+                    <div class="border border-gray-300 p-4">
+                        <p class="mb-2"><strong>Invoice Number:</strong> ${invoiceData.invoiceNumber}</p>
+                        <p class="mb-2"><strong>Date Ordered:</strong> ${invoiceData.dateOrdered}</p>
+                        <p class="mb-2"><strong>Date Due:</strong> ${invoiceData.dateDue}</p>
+                        <p class="mb-2"><strong>Total:</strong> ${invoiceData.total}</p>
+                        <h3 class="text-xl font-semibold mb-2">Items:</h3>
+                        <ul>
+                            ${invoiceData.items.map(item => `<li class="mb-1">${item.productName} - Quantity: ${item.quantity}, Unit Price: ${item.unitPrice}, Total Price: ${item.totalPrice}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            } catch (error) {
+                console.error(error);
+                alert('An error occurred while processing the request');
+            }
+        });
+    </script>
+</body>
+</html>
