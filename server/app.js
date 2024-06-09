@@ -4,10 +4,18 @@ const fileUpload = require('express-fileupload');
 const csv = require('csv-parser');
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
+
+const invoiceQuoteRouter = require('./routes/invoiceQuoteroute.js');
+
+
 const { Item, InvoiceOrQuote } = require('./models/models'); // Adjust the path if models.js is in a different directory
 
 const app = express();
 const PORT = 3001;
+
+app.use(cors());
+
 
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/invoiceDB', {
@@ -19,6 +27,78 @@ mongoose.connect('mongodb://localhost:27017/invoiceDB', {
 // Middleware
 app.use(express.static('public')); // Serve static files from the public folder
 app.use(fileUpload()); // Middleware for handling file uploads
+
+
+
+
+
+
+
+
+
+app.use("/api/invoiceQuote", invoiceQuoteRouter,)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.get('/invoice/:invoiceNumber', async (req, res) => {
+    const invoiceNumber = req.params.invoiceNumber;
+  
+    try {
+        // Retrieve the invoice data from the database based on the invoice number
+        const invoice = await InvoiceOrQuote.findOne({ orderNumber: invoiceNumber });
+  
+        if (!invoice) {
+            return res.status(404).send('Invoice not found');
+        }
+  
+        // Format the invoice data into the desired format
+        const formattedInvoice = {
+            invoiceNumber: invoice.orderNumber,
+            dateOrdered: invoice.dateOrdered,
+            dateDue: invoice.dateDue,
+            total: invoice.orderTotal,
+            items: invoice.items.map(item => ({
+                productName: item.productName,
+                quantity: item.lineQty,
+                unitPrice: item.unitPrice,
+                totalPrice: item.lineTotal
+            }))
+        };
+  
+        // Send the formatted invoice data as a response
+        res.json(formattedInvoice);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+  });
+  
+  
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Ensure uploads directory exists
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -37,6 +117,9 @@ const parseNumber = (value, defaultValue = 0) => {
     const parsed = parseFloat(value);
     return isNaN(parsed) ? defaultValue : parsed;
 };
+
+
+
 
 // Route to handle file upload
 app.post('/upload', async (req, res) => {
@@ -124,37 +207,8 @@ app.post('/upload', async (req, res) => {
 
 
 
-app.get('/invoice/:invoiceNumber', async (req, res) => {
-  const invoiceNumber = req.params.invoiceNumber;
 
-  try {
-      // Retrieve the invoice data from the database based on the invoice number
-      const invoice = await InvoiceOrQuote.findOne({ orderNumber: invoiceNumber });
 
-      if (!invoice) {
-          return res.status(404).send('Invoice not found');
-      }
-
-      // Format the invoice data into the desired format
-      const formattedInvoice = {
-          invoiceNumber: invoice.orderNumber,
-          dateOrdered: invoice.dateOrdered,
-          dateDue: invoice.dateDue,
-          total: invoice.orderTotal,
-          items: invoice.items.map(item => ({
-              productName: item.productName,
-              quantity: item.lineQty,
-              unitPrice: item.unitPrice,
-              totalPrice: item.lineTotal
-          }))
-      };
-
-      // Send the formatted invoice data as a response
-      res.json(formattedInvoice);
-  } catch (err) {
-      res.status(500).send(err);
-  }
-});
 
 
 app.listen(PORT, () => {

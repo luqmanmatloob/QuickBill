@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import dotenv from  'dotenv'
 
 
 const InvoiceManagement = () => {
@@ -9,8 +8,8 @@ const InvoiceManagement = () => {
 
     const BASE_URL = process.env.REACT_APP_BASE_URL;
     
-    console.log(process.env.REACT_APP_BASE_URL)
-    console.log(BASE_URL)
+    // console.log(process.env.REACT_APP_BASE_URL)
+    // console.log(BASE_URL)
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
