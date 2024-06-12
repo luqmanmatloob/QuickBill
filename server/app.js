@@ -7,6 +7,7 @@ const path = require('path');
 const cors = require('cors');
 
 const invoiceQuoteRouter = require('./routes/invoiceQuoteroute.js');
+const settingRoute = require('./routes/settingRoute.js');
 
 
 const { Item, InvoiceOrQuote } = require('./models/models'); // Adjust the path if models.js is in a different directory
@@ -30,24 +31,8 @@ app.use(fileUpload()); // Middleware for handling file uploads
 
 
 
-
-
-
-
-
-
 app.use("/api/invoiceQuote", invoiceQuoteRouter,)
-
-
-
-
-
-
-
-
-
-
-
+app.use("/api/settings", settingRoute,)
 
 
 

@@ -1,9 +1,12 @@
 import React from 'react'
-
+import SettingForm from '../components/SettingForm'
 const Settings = () => {
   return (
     <div>
-      settings
+
+      <SettingForm />
+      
+      
     </div>
   )
 }

@@ -8,6 +8,10 @@
   "author": "",
   "license": "ISC",
   "description": "",
-  "devDependencies": {
+  "dependencies": {
+    "@headlessui/react": "^2.0.4",
+    "html-to-image": "^1.11.11",
+    "jspdf": "^2.5.1",
+    "uid": "^2.0.2"
   }
 }

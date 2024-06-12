@@ -21,20 +21,21 @@ const Header = () => {
             <li>
               <NavLink to="/setting" className="text-white hover:text-gray-300" activeClassName="font-bold">
                 Setting
-              </NavLink>  
-              </li>
+              </NavLink>
+            </li>
             <li>
               <NavLink to="/" className="text-white hover:text-gray-300" activeClassName="font-bold">
-                 bulk print
-              </NavLink>  
-              </li>
+                bulk print
+              </NavLink>
+            </li>
             <li>
               <NavLink to="/" className="text-white hover:text-gray-300" activeClassName="font-bold">
-                 Bukl download zip
+                Bukl download zip
               </NavLink>
             </li>  <li>
               <NavLink to="/" className="text-white hover:text-gray-300" activeClassName="font-bold">
-mail              </NavLink>
+                mail
+              </NavLink>
             </li>
           </ul>
         </nav>
