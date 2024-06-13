@@ -4,6 +4,7 @@
 // Create a new note
 
 exports.createInvoiceQuoteroute = async (req, res) => {
+  console.log(req.body)
     res.status(200).send("Invoice or quote created successfully");
   };
   

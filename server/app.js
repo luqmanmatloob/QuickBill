@@ -8,6 +8,8 @@ const cors = require('cors');
 
 const invoiceQuoteRouter = require('./routes/invoiceQuoteroute.js');
 const settingRoute = require('./routes/settingRoute.js');
+const bodyParser = require('body-parser');
+
 
 
 const { Item, InvoiceOrQuote } = require('./models/models'); // Adjust the path if models.js is in a different directory
@@ -16,6 +18,8 @@ const app = express();
 const PORT = 3001;
 
 app.use(cors());
+app.use(bodyParser.json());
+
 
 
 // Connect to MongoDB
@@ -31,7 +35,7 @@ app.use(fileUpload()); // Middleware for handling file uploads
 
 
 
-app.use("/api/invoiceQuote", invoiceQuoteRouter,)
+app.use("/api/createinvoicequote", invoiceQuoteRouter,)
 app.use("/api/settings", settingRoute,)
 
 
