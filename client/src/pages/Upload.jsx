@@ -1,9 +1,10 @@
 import React from 'react'
-
+import InvoiceManagement from '../components/InvoiceManagement'
 const Upload = () => {
   return (
     <div>
-      upload.jsx
+      <InvoiceManagement/>
+
     </div>
   )
 }

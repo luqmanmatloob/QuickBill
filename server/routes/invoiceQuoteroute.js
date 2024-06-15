@@ -1,23 +1,50 @@
 const express = require('express');
 const {
-    createInvoiceQuoteroute,
-    getInvoiceQuoterouteById,
-    updateInvoiceQuoteroute,
-    deleteInvoiceQuoteroute
-} = require('../controllers/invoiceQuoterouteController.js');
+    createInvoiceQuote,
+    updateInvoiceQuote,
+    deleteInvoiceQuote,
+    getInvoiceQuoteById,
+    getAllInvoicesQuotes,
+    
+
+} = require('../controllers/invoiceQuoterouteController');
+
 
 const router = express.Router();
 
 // Create a new invoice or quote
-router.post('/', createInvoiceQuoteroute);
+router.post('/createInvoiceQuote', createInvoiceQuote);
+
+
+
+// get all invoices showing list
+router.get('/allInvoicesQuotes', getAllInvoicesQuotes);
+
+
 
 // Get an invoice or quote by ID
-router.get('/:id', getInvoiceQuoterouteById);
+router.get('/:id', getInvoiceQuoteById);
 
-// Update an invoice or quote by ID
-router.put('/:id', updateInvoiceQuoteroute);
+
+
+// then after getting editing specific invoice
+router.put('/:id', updateInvoiceQuote);
+
+
 
 // Delete an invoice or quote by ID
-router.delete('/:id', deleteInvoiceQuoteroute);
+router.delete('/:id', deleteInvoiceQuote);
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router;

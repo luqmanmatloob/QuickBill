@@ -5,12 +5,17 @@ const Header = () => {
   return (
     <div className="bg-gray-800 py-4">
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-white">Amazing Import</h1>
+        <NavLink to="/"  className="text-2xl font-bold text-white">Amazing Import</NavLink>
         <nav>
           <ul className="flex space-x-4">
             <li>
               <NavLink exact to="/" className="text-white hover:text-gray-300" activeClassName="font-bold">
                 Home
+              </NavLink>
+            </li> 
+             <li>
+              <NavLink exact to="/InvoiceQuotesListPage" className="text-white hover:text-gray-300" activeClassName="font-bold">
+                Invoice 
               </NavLink>
             </li>
             <li>
@@ -24,16 +29,16 @@ const Header = () => {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/" className="text-white hover:text-gray-300" activeClassName="font-bold">
+              <NavLink to="/gonnabeoutsoon" className="text-white hover:text-gray-300" activeClassName="font-bold">
                 bulk print
               </NavLink>
             </li>
             <li>
-              <NavLink to="/" className="text-white hover:text-gray-300" activeClassName="font-bold">
-                Bukl download zip
+              <NavLink to="/gonnabeoutsoon" className="text-white hover:text-gray-300" activeClassName="font-bold">
+                Bulk download zip
               </NavLink>
             </li>  <li>
-              <NavLink to="/" className="text-white hover:text-gray-300" activeClassName="font-bold">
+              <NavLink to="/gonnabeoutsoon" className="text-white hover:text-gray-300" activeClassName="font-bold">
                 mail
               </NavLink>
             </li>

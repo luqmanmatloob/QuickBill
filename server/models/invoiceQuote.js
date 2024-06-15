@@ -43,10 +43,40 @@ const itemSchema = new mongoose.Schema({
 const invoiceOrQuoteSchema = new mongoose.Schema({
     type: { type: String, enum: ['invoice', 'quote'] }, // Type can be 'invoice' or 'quote'
     orderNumber: String,
+    note: String,
     dateOrdered: Date,
     dateDue: Date,
     orderTotal: Number,
-    items: [itemSchema] // Array of items
+    billingCity :String,
+    billingAddress : String,
+    billingState : String,
+    billingEmailAddress : String,
+    shippingAddress : String,
+    shippingCity : String,
+    shippingAddress : String,
+    shippingState : String,
+    shippingPostcode : String,
+    shippingMethod: String,
+
+    
+
+
+    items: [itemSchema], // Array of items
+    uniqueKey: { type: Number, default: 0, unique: true } // Unique key starting from 1
+});
+
+// Middleware to generate unique key before saving
+invoiceOrQuoteSchema.pre('save', async function(next) {
+    try {
+        if (!this.uniqueKey) {
+            const maxInvoice = await InvoiceOrQuote.findOne({}, {}, { sort: { 'uniqueKey': -1 } });
+            const newUniqueKey = maxInvoice ? maxInvoice.uniqueKey + 1 : 1;
+            this.uniqueKey = newUniqueKey;
+        }
+        next();
+    } catch (err) {
+        next(err);
+    }
 });
 
 // Create models

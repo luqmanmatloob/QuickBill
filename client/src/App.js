@@ -5,6 +5,9 @@ import Footer from './components/layout/Footer';
 import Home from './pages/Home';
 import Upload from './pages/Upload';
 import Setting from './pages/Settings'; 
+import Edit from './pages/Edit'
+import InvoiceQuotesListPage from './pages/InvoiceQuotesListPage'
+
 
 const App = () => {
   return (
@@ -14,7 +17,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/upload" element={<Upload />} />
+          <Route path="/edit/:id" element={<Edit />} /> 
           <Route path="/setting" element={<Setting />} />
+          <Route path="/InvoiceQuotesListPage" element={<InvoiceQuotesListPage />} />
         </Routes>
         <Footer />
       </div>
