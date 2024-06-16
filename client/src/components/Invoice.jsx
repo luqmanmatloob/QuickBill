@@ -78,7 +78,7 @@ const Invoice = () => {
             designName: '',
             designPrice: 0
         }],
-        notes: 'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.'
+        note: 'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.'
     });
 
 
@@ -663,8 +663,8 @@ const Invoice = () => {
                     <div className="flex justify-between gap-5 items-start px-5 border-b">
                         <div className="mt-4 w-full sm:w-[500px] ">
                             <textarea
-                                name="notes"
-                                value={formData.notes}
+                                name="note"
+                                value={formData.note}
                                 onChange={handleChange}
                                 className="rounded px-2 py-1 w-full h-32"
                             ></textarea>

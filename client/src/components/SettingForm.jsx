@@ -61,7 +61,9 @@ const SettingForm = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white rounded-lg shadow-2xl p-8 my-5 border-b-slate-300 border-solid border-2">
+    <div 
+    className="max-w-lg mx-auto bg-white rounded-lg shadow-2xl p-8 my-5 border-b-slate-300 border-solid border-2"
+    >
       <h2 className="text-2xl font-semibold mb-6">Settings</h2>
       <form onSubmit={handleSubmit}>
         <div className="flex gap-10 flex-wrap">

@@ -1,12 +1,13 @@
 import React from 'react'
-import InvoiceManagement from '../components/InvoiceManagement'
-const Upload = () => {
+import Upload from '../components/Upload'
+const UploadPage = () => {
   return (
     <div>
-      <InvoiceManagement/>
+      
+      <Upload/>
 
     </div>
   )
 }
 
-export default Upload
+export default UploadPage

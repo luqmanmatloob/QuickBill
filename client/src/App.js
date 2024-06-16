@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import Home from './pages/Home';
-import Upload from './pages/Upload';
+import UploadPage from './pages/Upload';
 import Setting from './pages/Settings'; 
 import Edit from './pages/Edit'
 import InvoiceQuotesListPage from './pages/InvoiceQuotesListPage'
@@ -16,7 +16,7 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/upload" element={<Upload />} />
+          <Route path="/uploadPage" element={<UploadPage />} />
           <Route path="/edit/:id" element={<Edit />} /> 
           <Route path="/setting" element={<Setting />} />
           <Route path="/InvoiceQuotesListPage" element={<InvoiceQuotesListPage />} />

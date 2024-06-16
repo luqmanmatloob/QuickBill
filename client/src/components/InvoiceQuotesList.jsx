@@ -18,7 +18,6 @@ const InvoiceQuotesList = () => {
                 throw new Error('Failed to fetch data');
             }
             const data = await response.json();
-            // Reverse the array to display the last added record first
             const reversedData = data.data.reverse();
             setInvoicesQuotes(reversedData);
         } catch (error) {
@@ -33,26 +32,31 @@ const InvoiceQuotesList = () => {
     };
 
     const handleDelete = async (uniqueKey) => {
-      try {
-          const response = await fetch(`${BASE_URL}/api/invoicequote/deleteInvoiceQuote`, {
-              method: 'DELETE',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({ uniqueKey }), // Adjust to match your backend endpoint's expectations
-          });
-          if (!response.ok) {
-              throw new Error('Failed to delete data');
-          }
-          // Remove the deleted record from the state
-          setInvoicesQuotes(invoicesQuotes.filter(item => item.uniqueKey !== uniqueKey));
-      } catch (error) {
-          console.error('Error deleting invoice/quote:', error);
-      }
-  };
+        const isConfirmed = window.confirm(`Are you sure you want to delete this item?`);
+        if (!isConfirmed) {
+            return; // If the user cancels, do nothing
+        }
+        try {
+            const response = await fetch(`${BASE_URL}/api/invoicequote/deleteInvoiceQuote`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ uniqueKey }), // Adjust to match your backend endpoint's expectations
+            });
+            if (!response.ok) {
+                throw new Error('Failed to delete data');
+            }
+            setInvoicesQuotes(invoicesQuotes.filter(item => item.uniqueKey !== uniqueKey));
+        } catch (error) {
+            console.error('Error deleting invoice/quote:', error);
+        }
+    };
 
     return (
-        <div className="container mx-auto p-4">
+        <div className="
+        container p-6 mx-auto bg-white rounded-lg shadow-2xl  my-5 border-b-slate-300 border-solid border-2"
+        >
             <h1 className="text-3xl font-bold mb-4">All Invoices and Quotes</h1>
             <table className="table-auto w-full border-collapse border border-gray-300">
                 <thead>

@@ -48,7 +48,7 @@ exports.createInvoiceQuote = async (req, res) => {
 
         // Validate the request body (you can use a validation library like Joi for better validation)
         const { 
-            type, orderNumber, notes, dateOrdered, dateDue, orderTotal, items,
+            type, orderNumber, note, dateOrdered, dateDue, orderTotal, items,
             billingCity, billingAddress, billingState, billingEmailAddress,
             shippingAddress, shippingCity ,shippingMethod, shippingState, shippingPostcode
         } = req.body;
@@ -62,7 +62,7 @@ exports.createInvoiceQuote = async (req, res) => {
         const newInvoiceOrQuote = new InvoiceOrQuote({
             type,
             orderNumber,
-            notes,
+            note,
             dateOrdered,
             dateDue,
             orderTotal,
@@ -270,7 +270,7 @@ exports.updateInvoiceQuote = async (req, res) => {
 
 exports.updateInvoiceQuote = async (req, res) => {
     const { 
-        type, orderNumber, notes, dateOrdered, dateDue, orderTotal, items,
+        type, orderNumber, note, dateOrdered, dateDue, orderTotal, items,
         billingCity, billingAddress, billingState, billingEmailAddress,
         shippingAddress, shippingCity, shippingState, shippingPostcode
     } = req.body;
@@ -291,7 +291,7 @@ exports.updateInvoiceQuote = async (req, res) => {
         // Update the fields
         existingInvoiceOrQuote.type = type;
         existingInvoiceOrQuote.orderNumber = orderNumber;
-        existingInvoiceOrQuote.notes = notes;
+        existingInvoiceOrQuote.note = note;
         existingInvoiceOrQuote.dateOrdered = dateOrdered;
         existingInvoiceOrQuote.dateDue = dateDue;
         existingInvoiceOrQuote.orderTotal = orderTotal;

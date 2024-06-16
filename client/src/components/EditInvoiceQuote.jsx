@@ -1,25 +1,16 @@
-
-
-
 import React from 'react'
 import { useState, useEffect } from 'react'
 import Company from './Company'
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const EditInvoiceQuote = ({ id }) => {
+
+  
+  const [subtotal, setSubtotal] = useState(0);
+  const [totalTax, setTotalTax] = useState(0);
+  const [grandTotal, setGrandTotal] = useState(0);
+  const [responseMessage, setResponseMessage] = useState('');
+
+
   const [formData, setFormData] = useState({
     type: 'invoice',
     orderNumber: '',
@@ -72,17 +63,14 @@ const EditInvoiceQuote = ({ id }) => {
       designName: '',
       designPrice: 0
     }],
-    notes: 'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.'
+    note: 'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.'
   });
-
-  const [subtotal, setSubtotal] = useState(0);
-  const [totalTax, setTotalTax] = useState(0);
-  const [grandTotal, setGrandTotal] = useState(0);
-  const [responseMessage, setResponseMessage] = useState('');
 
   useEffect(() => {
     calculateTotals();
   }, [formData.items]);
+
+
 
   useEffect(() => {
     const fetchInvoiceQuote = async () => {
@@ -159,7 +147,7 @@ const EditInvoiceQuote = ({ id }) => {
             designName: '',
             designPrice: 0
           }],
-          notes: data.notes || 'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.'
+          note: data.note || 'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.'
         }));
 
       } catch (error) {
@@ -171,10 +159,6 @@ const EditInvoiceQuote = ({ id }) => {
     fetchInvoiceQuote();
 
   }, [id]); // Fetch data when id changes
-
-
-
-
 
 
 
@@ -232,6 +216,32 @@ const EditInvoiceQuote = ({ id }) => {
   };
 
 
+  // const calculateTotals = () => {
+  //   let subtotal = 0;
+  //   let totalTax = 0;
+  //   formData.items.forEach((item) => {
+  //     const unitPrice = parseFloat(item.unitPrice) || 0;
+  //     const lineQty = parseInt(item.lineQty) || 0;
+  //     const lineTotal = unitPrice * lineQty;
+  //     const tax = parseFloat(item.tax) || 0;
+  //     const taxExempt = item.taxExempt;
+  //     const taxAmount = taxExempt ? 0 : (lineTotal * tax) / 100;
+
+  //     subtotal += lineTotal;
+  //     totalTax += taxAmount;
+  //   });
+  //   setSubtotal(subtotal);
+  //   setTotalTax(totalTax);
+  //   setGrandTotal(subtotal + totalTax);
+
+  //   const computedOrderTotal = grandTotal;
+  //   console.log(`grandtotal ${grandTotal}`)
+  //   console.log(`computedordertotal ${computedOrderTotal}`)
+  //   const updatedFormData = { ...formData, orderTotal: computedOrderTotal };
+  //   setFormData(updatedFormData);
+
+  // };
+
   const calculateTotals = () => {
     let subtotal = 0;
     let totalTax = 0;
@@ -242,28 +252,21 @@ const EditInvoiceQuote = ({ id }) => {
       const tax = parseFloat(item.tax) || 0;
       const taxExempt = item.taxExempt;
       const taxAmount = taxExempt ? 0 : (lineTotal * tax) / 100;
-
+  
       subtotal += lineTotal;
       totalTax += taxAmount;
     });
+  
     setSubtotal(subtotal);
     setTotalTax(totalTax);
-    setGrandTotal(subtotal + totalTax);
-
-
-
-
-
-    const computedOrderTotal = grandTotal;
-    // console.log(`grandtotal ${grandTotal}`)
-    // console.log(`computedordertotal ${computedOrderTotal}`)
-
+    const computedOrderTotal = subtotal + totalTax; // Calculate grand total here
+    setGrandTotal(computedOrderTotal); // Update grand total state
+  
+    // Update form data with the calculated total
     const updatedFormData = { ...formData, orderTotal: computedOrderTotal };
     setFormData(updatedFormData);
-
   };
-
-
+  
   const addItem = () => {
     const newItems = [...formData.items, {
       orderNumber: '',
@@ -740,8 +743,8 @@ const EditInvoiceQuote = ({ id }) => {
           <div className="flex justify-between gap-5 items-start px-5 border-b">
             <div className="mt-4 w-full sm:w-[500px] ">
               <textarea
-                name="notes"
-                value={formData.notes}
+                name="note"
+                value={formData.note}
                 onChange={handleChange}
                 className="rounded px-2 py-1 w-full h-32"
               ></textarea>
