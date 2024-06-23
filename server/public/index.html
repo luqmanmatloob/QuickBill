@@ -1,74 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JWT Authentication Example</title>
-    <!-- Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <title>App</title>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <div class="max-w-md w-full p-6 bg-white rounded shadow-lg">
-        <h1 class="text-2xl font-bold mb-6 text-center">JWT Authentication Example</h1>
-        
-        <!-- Login Form -->
-        <form id="loginForm" class="space-y-4">
-            <div>
-                <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                <input type="text" id="username" name="username" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
-            </div>
-            
-            <div>
-                <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                <input type="password" id="password" name="password" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
-            </div>
-            
-            <div>
-                <button type="submit" class="w-full bg-indigo-500 text-white py-2 px-4 rounded-md hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600">Login</button>
-            </div>
-        </form>
 
-        <!-- Result Message -->
-        <p id="resultMessage" class="text-red-500 text-sm mt-2 hidden"></p>
+<body>
+
+    <div style="display: flex; justify-content: center; align-items: center; height: 90vh;">
+        <h1>
+            Express app is up and running
+        </h1>
     </div>
 
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            try {
-                const response = await fetch('/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ username, password })
-                });
-
-                if (!response.ok) {
-                    throw new Error('Authentication failed');
-                }
-
-                const data = await response.json();
-                const token = data.token;
-
-                // Store token in localStorage or sessionStorage
-                localStorage.setItem('token', token);
-
-                // Redirect to protected page or display success message
-                alert('Login successful! Token stored in localStorage.');
-
-                // Example redirect
-                window.location.href = '/protected'; // Replace with your protected route
-
-            } catch (error) {
-                document.getElementById('resultMessage').textContent = error.message;
-                document.getElementById('resultMessage').classList.remove('hidden');
-            }
-        });
-    </script>
 </body>
+
 </html>
