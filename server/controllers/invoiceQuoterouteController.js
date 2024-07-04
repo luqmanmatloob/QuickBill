@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-const csv = require('csv-parser');
 const { InvoiceOrQuote } = require('../models/invoiceQuote');
 
 // Ensure uploads directory exists
