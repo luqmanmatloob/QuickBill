@@ -14,10 +14,10 @@ const invoiceQuoteRoute = require('./routes/invoiceQuoteRoute');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
-app.use(cors());
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(express.static('public'));
+// // Middleware
+// app.use(cors());
+// app.use(bodyParser.json({ limit: '50mb' }));
+// app.use(express.static('public'));
 
 // MongoDB connection
 mongoose.connect(process.env.MONGODB_URI, {
@@ -27,10 +27,11 @@ mongoose.connect(process.env.MONGODB_URI, {
   .catch(err => console.error(err));
 
 // Routes
-app.use('/api/settings', settingRoute);
-app.use('/api/invoicequote', invoiceQuoteRoute);
+// app.use('/api/settings', settingRoute);
+// app.use('/api/invoicequote', invoiceQuoteRoute);
 
 // Start server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
