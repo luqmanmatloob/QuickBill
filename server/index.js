@@ -10,6 +10,7 @@ require('dotenv').config();
 const settingRoute = require('./routes/settingRoute');
 const invoiceQuoteRoute = require('./routes/invoiceQuoteRoute');
 
+
 // Initialize Express app
 const app = express();
 const PORT = process.env.PORT || 3001;
