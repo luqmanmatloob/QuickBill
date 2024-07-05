@@ -8,7 +8,7 @@ require('dotenv').config();
 
 // Import routes
 const settingRoute = require('./routes/settingRoute');
-const invoiceQuoteRoute = require('./routes/invoiceQuoteRoute');
+const invoiceQuoteRoute = require('./routes/invoiceQuoteroute');
 
 
 // Initialize Express app
