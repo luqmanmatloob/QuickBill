@@ -3,10 +3,10 @@ const fs = require('fs');
 const { InvoiceOrQuote } = require('../models/invoiceQuote');
 
 // Ensure uploads directory exists
-const uploadsDir = path.join(__dirname, '../uploads');
-if (!fs.existsSync(uploadsDir)){
-    fs.mkdirSync(uploadsDir);
-}
+// const uploadsDir = path.join(__dirname, '../uploads');
+// if (!fs.existsSync(uploadsDir)){
+//     fs.mkdirSync(uploadsDir);
+// }
 
 // Helper function to parse numbers
 const parseNumber = (value, defaultValue = 0) => {
