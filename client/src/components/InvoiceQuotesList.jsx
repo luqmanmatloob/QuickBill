@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -43,7 +43,7 @@ const InvoiceQuotesList = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ uniqueKey }), 
+                body: JSON.stringify({ uniqueKey }),
             });
             if (!response.ok) {
                 throw new Error('Failed to delete data');
@@ -62,7 +62,7 @@ const InvoiceQuotesList = () => {
             <table className="table-auto w-full border-collapse border border-gray-300">
                 <thead>
                     <tr className="bg-gray-100">
-                        {/* <th className="border border-gray-300 px-4 py-2">Unique Key</th> */}
+                        <th className="border border-gray-300 px-4 py-2">Unique Key</th>
                         <th className="border border-gray-300 px-4 py-2">Order Number </th>
                         <th className="border border-gray-300 px-4 py-2">Type</th>
                         <th className="border border-gray-300 px-4 py-2">Date Ordered</th>
@@ -75,7 +75,7 @@ const InvoiceQuotesList = () => {
                 <tbody>
                     {invoicesQuotes.map((invoiceQuote) => (
                         <tr key={invoiceQuote._id} className="bg-white text-center">
-                            {/* <td className="border border-gray-300 px-4 py-2">{invoiceQuote.uniqueKey}</td> */}
+                            <td className="border border-gray-300 px-4 py-2">{invoiceQuote.uniqueKey}</td>
                             <td className="border border-gray-300 px-4 py-2">{invoiceQuote.orderNumber}</td>
                             <td className="border border-gray-300 px-4 py-2">{invoiceQuote.type}</td>
                             <td className="border border-gray-300 px-4 py-2">{formatDate(invoiceQuote.dateOrdered)}</td>

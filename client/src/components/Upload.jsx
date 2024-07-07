@@ -1,66 +1,53 @@
-
-
 import React, { useState } from 'react';
 import Papa from 'papaparse';
+import { Link } from 'react-router-dom';
 
 const Upload = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
-  const [csvData, setCsvData] = useState([]);
   const [file, setFile] = useState(null);
+  const [uploadedInvoices, setUploadedInvoices] = useState([]);
+  const [invoicesQuotes, setInvoicesQuotes] = useState([]);
 
-  // Function to handle file change
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
-    setCsvData([]);
   };
 
-  // Function to parse the CSV file
-  const handleParse = () => {
-    return new Promise((resolve, reject) => {
-      if (!file) return reject(new Error('No file selected'));
+  const handleParseAndSubmit = async () => {
+    if (!file) {
+      alert('No file selected');
+      return;
+    }
 
-      Papa.parse(file, {
-        header: true,
-        skipEmptyLines: true,
-        complete: (result) => {
-          // Filter out rows where all values are empty
-          const filteredData = result.data.filter(row => Object.values(row).some(value => value !== ''));
-
-          // Group data by Order Number
-          const groupedData = {};
-          filteredData.forEach(row => {
-            const orderNumber = row['Order Number'];
-            if (!groupedData[orderNumber]) {
-              groupedData[orderNumber] = [];
-            }
-            groupedData[orderNumber].push(row);
-          });
-
-          // Convert grouped data into an array of invoices
-          const invoices = Object.values(groupedData);
-
-          // Set the state with grouped invoices
-          setCsvData(invoices);
-          resolve();
-        },
-        error: (error) => {
-          reject(error);
-        }
-      });
-    });
-  };
-
-  // Function to submit parsed invoices
-  const handleSubmitInvoices = async () => {
     try {
-      await handleParse(); // Wait for parsing to complete and csvData to be updated
+      const parsedData = await new Promise((resolve, reject) => {
+        Papa.parse(file, {
+          header: true,
+          skipEmptyLines: true,
+          complete: (result) => {
+            const filteredData = result.data.filter(row => Object.values(row).some(value => value !== ''));
 
-      if (csvData.length === 0) {
-        throw new Error('No valid data to submit');
-      }
+            const groupedData = {};
+            filteredData.forEach(row => {
+              const orderNumber = row['Order Number'];
+              if (!groupedData[orderNumber]) {
+                groupedData[orderNumber] = [];
+              }
+              groupedData[orderNumber].push(row);
+            });
 
-      for (let i = 0; i < csvData.length; i++) {
-        const items = csvData[i].map(row => ({
+            const invoices = Object.values(groupedData);
+            resolve(invoices);
+          },
+          error: (error) => {
+            reject(error);
+          }
+        });
+      });
+
+      const uploadedUniqueKeys = [];
+
+      for (let i = 0; i < parsedData.length; i++) {
+        const items = parsedData[i].map(row => ({
           productName: row['Product Name'] || '',
           productCode: row['Product Code'] || '',
           size: row['Size'] || '',
@@ -97,21 +84,20 @@ const Upload = () => {
           designPrice: parseFloat(row['Design Price']) || 0
         }));
 
-        // Prepare formData for the current invoice
         const invoiceData = {
-          type: 'invoice', 
-          orderNumber: csvData[i][0]['Order Number'] || '',
-          dateOrdered: csvData[i][0]['Date Ordered'] || '',
-          dateDue: csvData[i][0]['Date Due'] || '',
-          orderTotal: parseFloat(csvData[i][0]['Order Total']) || 0,
-          billingCity: csvData[i][0]['Billing City'] || '',
-          billingAddress: csvData[i][0]['Billing Address'] || '',
-          billingState: csvData[i][0]['Billing State'] || '',
-          shippingAddress: csvData[i][0]['Shipping Address'] || '',
-          shippingCity: csvData[i][0]['Shipping City'] || '',
-          shippingMethod: csvData[i][0]['Shipping Method'] || '',
-          shippingState: csvData[i][0]['Shipping State'] || '',
-          shippingPostcode: csvData[i][0]['Shipping Postcode/zip'] || '',
+          type: 'invoice',
+          orderNumber: parsedData[i][0]['Order Number'] || '',
+          dateOrdered: parsedData[i][0]['Date Ordered'] || '',
+          dateDue: parsedData[i][0]['Date Due'] || '',
+          orderTotal: parseFloat(parsedData[i][0]['Order Total']) || 0,
+          billingCity: parsedData[i][0]['Billing City'] || '',
+          billingAddress: parsedData[i][0]['Billing Address'] || '',
+          billingState: parsedData[i][0]['Billing State'] || '',
+          shippingAddress: parsedData[i][0]['Shipping Address'] || '',
+          shippingCity: parsedData[i][0]['Shipping City'] || '',
+          shippingMethod: parsedData[i][0]['Shipping Method'] || '',
+          shippingState: parsedData[i][0]['Shipping State'] || '',
+          shippingPostcode: parsedData[i][0]['Shipping Postcode/zip'] || '',
           items: items,
           note: ''
         };
@@ -130,18 +116,110 @@ const Upload = () => {
           throw new Error(`Failed to upload invoice ${i + 1}`);
         }
 
+        const result = await response.json();
+        uploadedUniqueKeys.push(result.invoiceOrQuote.uniqueKey);
         console.log(`Invoice ${i + 1} submitted successfully`);
       }
 
-      alert('All invoices submitted successfully');
+      fetchUploadedInvoices(uploadedUniqueKeys);
     } catch (error) {
-      console.error('Error submitting invoices:', error);
-      alert('Failed to submit all invoices');
+      console.error('Error during processing:', error);
+      alert('Failed to process the file and submit invoices');
     }
   };
 
+  const fetchUploadedInvoices = async (uniqueKeys) => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/invoicequote/getInvoicesByUniqueKeys`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uniqueKeys }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch uploaded invoices');
+      }
+
+      const fetchedInvoices = await response.json();
+      setInvoicesQuotes(fetchedInvoices); // Update state with fetched invoices
+    } catch (error) {
+      console.error('Error fetching uploaded invoices:', error);
+      alert('Failed to fetch uploaded invoices');
+    }
+  };
+
+  const handleDelete = async (uniqueKey) => {
+    const isConfirmed = window.confirm(`Are you sure you want to delete this item?`);
+    if (!isConfirmed) {
+      return; // If the user cancels, do nothing
+    }
+    try {
+      const response = await fetch(`${BASE_URL}/api/invoicequote/deleteInvoiceQuote`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uniqueKey }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete data');
+      }
+      setInvoicesQuotes(invoicesQuotes.filter(item => item.uniqueKey !== uniqueKey)); // Update state after deletion
+    } catch (error) {
+      console.error('Error deleting invoice/quote:', error);
+      alert('Failed to delete invoice/quote');
+    }
+  };
+
+  const [success, setSuccess] = useState('');
+
+  const handleSave = () => {
+    // Simulate saving data (you can replace this with actual API call or other logic)
+    setTimeout(() => {
+      setSuccess('Saved successfully!');
+    }, 1000); // Assuming saving takes 1 second
+
+    // Clear success message after 3 seconds
+    setTimeout(() => {
+      setSuccess('');
+    }, 3000); // Show success message for 3 seconds
+  };
+
+  // Function to format date into readable format
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const cancel = async () => {
+    const isConfirmed = window.confirm(`Are you sure you want to delete all uploaded invoices?`);
+    if (!isConfirmed) {
+      return; // If the user cancels, do nothing
+    }
+    try {
+      const uniqueKeys = invoicesQuotes.map(invoice => invoice.uniqueKey);
+      const response = await fetch(`${BASE_URL}/api/invoicequote/deleteMultipleInvoices`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uniqueKeys }),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to delete all uploaded invoices');
+      }
+      setInvoicesQuotes([]); // Clear the state after deletion
+    } catch (error) {
+      console.error('Error deleting all uploaded invoices:', error);
+      alert('Failed to delete all uploaded invoices');
+    }
+  };
+  
+
   return (
-    <div className="m-10">
+    <div className="m-10 mb-[70vh]">
       <div className='flex items-center justify-center max-w-3xl mx-auto mt-8 p-4 bg-white shadow-xl border-2 rounded-md'>
         <input
           type="file"
@@ -150,50 +228,68 @@ const Upload = () => {
           className=""
         />
         <button
-          onClick={handleParse}
+          onClick={handleParseAndSubmit}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
         >
-          Parse CSV
+          OK
         </button>
       </div>
 
-      <button
-        onClick={handleSubmitInvoices}
-        disabled={csvData.length === 0 || !file}
-        className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-      >
-        Save Invoices
-      </button>
+      <div className="mt-20">
+        <div className='flex items-center justify-between mb-5'>
+          <h1 className="text-3xl font-bold">Invoices/Quotes</h1>
+          <div >
+            <button onClick={cancel} className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-3">
+              Cancel
+            </button>
+            <button onClick={handleSave} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              Save All
+            </button>
+          </div>
+        </div>
+        {success && (
+          <div className="mt-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+            {success}
+          </div>
+        )}
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white border border-gray-300">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 border-b">Unique Key</th>
+                <th className="py-2 px-4 border-b">Order Number</th>
+                <th className="py-2 px-4 border-b">Date Ordered</th>
+                <th className="py-2 px-4 border-b">Date Due</th>
+                <th className="py-2 px-4 border-b">Order Total</th>
+                <th className="py-2 px-4 border-b">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {invoicesQuotes.map((invoice) => (
+                <tr key={invoice.uniqueKey}>
+                  <td className="py-2 px-4 border-b">{invoice.uniqueKey}</td>
+                  <td className="py-2 px-4 border-b">{invoice.orderNumber}</td>
+                  <td className="py-2 px-4 border-b">{formatDate(invoice.dateOrdered)}</td>
+                  <td className="py-2 px-4 border-b">{formatDate(invoice.dateDue)}</td>
+                  <td className="py-2 px-4 border-b">${invoice.orderTotal.toFixed(2)}</td>
+                  <td className="py-2 px-4 border-b">
+                    <button
+                      onClick={() => handleDelete(invoice.uniqueKey)}
+                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                      Delete
+                    </button>
 
-      <div id="table-container" className="mt-4 overflow-x-auto overflow-y-auto" style={{ maxHeight: '80vh' }}>
-        {csvData.length > 0 &&
-          csvData.map((invoice, index) => (
-            <div key={index} className="mb-8">
-              <h2 className="text-lg font-bold mb-2">Invoice #{index + 1}</h2>
-              <table className='w-full table-auto'>
-                <thead className='bg-gray-400 border-2 border-black'>
-                  <tr className='text-center sticky top-0 bg-slate-400'>
-                    {Object.keys(invoice[0]).map((key, idx) => (
-                      <th key={idx} className='border-2 border-black' style={{ height: '30px', minWidth: '150px' }}>
-                        {key}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {invoice.map((row, idx) => (
-                    <tr key={idx} className='text-center'>
-                      {Object.values(row).map((value, i) => (
-                        <td key={i} className='border-2 border-black' style={{ height: '30px', minWidth: '150px' }}>
-                          {value}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ))}
+
+                    <Link to={`/Edit/${invoice.uniqueKey}`} target="_blank" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2">Edit</Link>
+
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+        </div>
       </div>
     </div>
   );

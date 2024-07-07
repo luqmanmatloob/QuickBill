@@ -40,24 +40,76 @@ const parseDate = (dateString, fallbackDate = new Date()) => {
 
 
 
+// exports.createInvoiceQuote = async (req, res) => {
+//     try {
+//         // Log the request body for debugging
+//         console.log(req.body);
+
+//         // Validate the request body (you can use a validation library like Joi for better validation)
+//         const { 
+//             type, orderNumber, note, dateOrdered, dateDue, orderTotal, items,
+//             billingCity, billingAddress, billingState, billingEmailAddress,
+//             shippingAddress, shippingCity ,shippingMethod, shippingState, shippingPostcode
+//         } = req.body;
+
+//         // Basic validation
+//         if (!type || !['invoice', 'quote'].includes(type)) {
+//             return res.status(400).send("Invalid type. Must be 'invoice' or 'quote'.");
+//         }
+
+//         // Create a new InvoiceOrQuote document
+//         const newInvoiceOrQuote = new InvoiceOrQuote({
+//             type,
+//             orderNumber,
+//             note,
+//             dateOrdered,
+//             dateDue,
+//             orderTotal,
+//             shippingMethod,
+//             billingCity,
+//             billingAddress,
+//             billingState,
+//             billingEmailAddress,
+//             shippingAddress,
+//             shippingCity, 
+//             shippingState,
+//             shippingPostcode,
+//             items
+//         });
+
+//         // Save the document to the database
+//         await newInvoiceOrQuote.save();
+
+//         // Send a success response with the created document
+//         res.status(201).json({
+//             message: "Invoice or quote created successfully",
+//             invoiceOrQuote: newInvoiceOrQuote
+//         });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send("An error occurred while creating the invoice or quote");
+//     }
+// };
+
+
+
+
+
+
 exports.createInvoiceQuote = async (req, res) => {
     try {
-        // Log the request body for debugging
         console.log(req.body);
 
-        // Validate the request body (you can use a validation library like Joi for better validation)
         const { 
             type, orderNumber, note, dateOrdered, dateDue, orderTotal, items,
             billingCity, billingAddress, billingState, billingEmailAddress,
-            shippingAddress, shippingCity ,shippingMethod, shippingState, shippingPostcode
+            shippingAddress, shippingCity, shippingMethod, shippingState, shippingPostcode
         } = req.body;
 
-        // Basic validation
         if (!type || !['invoice', 'quote'].includes(type)) {
             return res.status(400).send("Invalid type. Must be 'invoice' or 'quote'.");
         }
 
-        // Create a new InvoiceOrQuote document
         const newInvoiceOrQuote = new InvoiceOrQuote({
             type,
             orderNumber,
@@ -71,18 +123,17 @@ exports.createInvoiceQuote = async (req, res) => {
             billingState,
             billingEmailAddress,
             shippingAddress,
-            shippingCity, // Ensure shippingCity is included here
+            shippingCity,
             shippingState,
             shippingPostcode,
             items
         });
 
-        // Save the document to the database
         await newInvoiceOrQuote.save();
 
-        // Send a success response with the created document
         res.status(201).json({
             message: "Invoice or quote created successfully",
+            uniqueKey: newInvoiceOrQuote.uniqueKey,
             invoiceOrQuote: newInvoiceOrQuote
         });
     } catch (error) {
@@ -90,12 +141,6 @@ exports.createInvoiceQuote = async (req, res) => {
         res.status(500).send("An error occurred while creating the invoice or quote");
     }
 };
-
-
-
-
-
-
 
 
 
@@ -317,3 +362,55 @@ exports.updateInvoiceQuote = async (req, res) => {
         res.status(500).send("An error occurred while updating the invoice or quote");
     }
 };
+
+
+
+
+
+
+
+// Controller for getting uploaded invoices by unique keys
+exports.getInvoicesByUniqueKeys = async (req, res) => {
+    try {
+        const { uniqueKeys } = req.body;
+        
+        if (!uniqueKeys || !Array.isArray(uniqueKeys)) {
+            return res.status(400).send("Invalid request. 'uniqueKeys' must be an array.");
+        }
+
+        const invoices = await InvoiceOrQuote.find({ uniqueKey: { $in: uniqueKeys } });
+
+        if (!invoices || invoices.length === 0) {
+            return res.status(404).send("No invoices found for the provided unique keys.");
+        }
+
+        res.status(200).json(invoices);
+    } catch (error) {
+        console.error("Error retrieving invoices:", error);
+        res.status(500).send("An error occurred while retrieving the invoices");
+    }
+};
+
+
+// Controller for deleting multiple invoices by unique keys
+exports.deleteMultipleInvoices = async (req, res) => {
+    try {
+      const { uniqueKeys } = req.body;
+  
+      if (!uniqueKeys || !Array.isArray(uniqueKeys)) {
+        return res.status(400).send("Invalid request. 'uniqueKeys' must be an array.");
+      }
+  
+      const result = await InvoiceOrQuote.deleteMany({ uniqueKey: { $in: uniqueKeys } });
+  
+      if (result.deletedCount === 0) {
+        return res.status(404).send("No invoices found for the provided unique keys.");
+      }
+  
+      res.status(200).send(`Deleted ${result.deletedCount} invoices successfully`);
+    } catch (error) {
+      console.error("Error deleting invoices:", error);
+      res.status(500).send("An error occurred while deleting the invoices");
+    }
+  };
+  

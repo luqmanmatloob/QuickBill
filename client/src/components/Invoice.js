@@ -302,12 +302,12 @@ const Invoice = () => {
                             <Company />
                         </div>
                         <div>
-                            <div>
+                            <div className='flex justify-start items-center  max-w-[260px]'>
                                 <select
                                     name="type"
                                     value={formData.type}
                                     onChange={handleChange}
-                                    className="text-xl font-semibold borde rounded px-2 py-1 w-full"
+                                    className="text-xl font-semibold borde px-3 rounded py-1 w-full"
                                 >
                                     {/* <option value="">Select</option> */}
                                     <option value="invoice">Invoice</option>
