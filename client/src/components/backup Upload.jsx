@@ -11,6 +11,7 @@ const Upload = () => {
   // Function to handle file change
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
+    // Clear previous data when new file is selected
     setCsvData([]);
   };
 
@@ -99,7 +100,7 @@ const Upload = () => {
 
         // Prepare formData for the current invoice
         const invoiceData = {
-          type: 'invoice', 
+          type: 'invoice', // Assuming it's always an invoice based on formData initial state
           orderNumber: csvData[i][0]['Order Number'] || '',
           dateOrdered: csvData[i][0]['Date Ordered'] || '',
           dateDue: csvData[i][0]['Date Due'] || '',
@@ -142,6 +143,7 @@ const Upload = () => {
 
   return (
     <div className="m-10">
+      {/* File input and Parse CSV button */}
       <div className='flex items-center justify-center max-w-3xl mx-auto mt-8 p-4 bg-white shadow-xl border-2 rounded-md'>
         <input
           type="file"
@@ -157,6 +159,7 @@ const Upload = () => {
         </button>
       </div>
 
+      {/* Button to submit parsed invoices */}
       <button
         onClick={handleSubmitInvoices}
         disabled={csvData.length === 0 || !file}
@@ -165,6 +168,7 @@ const Upload = () => {
         Save Invoices
       </button>
 
+      {/* Container for parsed CSV data table */}
       <div id="table-container" className="mt-4 overflow-x-auto overflow-y-auto" style={{ maxHeight: '80vh' }}>
         {csvData.length > 0 &&
           csvData.map((invoice, index) => (

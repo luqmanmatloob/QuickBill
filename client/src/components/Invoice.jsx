@@ -289,7 +289,7 @@ const Invoice = () => {
 
 
     return (
-        <div className='print-Invoice-container'>
+        <div className='print-Invoice-container py-6 mx-auto bg-white rounded-lg shadow-2xl p-8 my-5 border-b-slate-300 border-solid border-2'>
             <form
                 className="relative flex flex-col px-2 md:flex-row"
                 onSubmit={handleSubmit}            >

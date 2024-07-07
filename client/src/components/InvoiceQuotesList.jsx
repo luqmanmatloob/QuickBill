@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Assuming you're using React Router for navigation
-
+import { Link } from 'react-router-dom'; 
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -27,7 +26,7 @@ const InvoiceQuotesList = () => {
         }
     };
 
-    // Function to format date into human-readable format
+    // Function to format date into readable format
     const formatDate = (dateString) => {
         const options = { year: 'numeric', month: 'short', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
@@ -44,7 +43,7 @@ const InvoiceQuotesList = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ uniqueKey }), // Adjust to match your backend endpoint's expectations
+                body: JSON.stringify({ uniqueKey }), 
             });
             if (!response.ok) {
                 throw new Error('Failed to delete data');
@@ -71,7 +70,6 @@ const InvoiceQuotesList = () => {
                         <th className="border border-gray-300 px-4 py-2">Order Total</th>
                         <th className="border border-gray-300 px-4 py-2">Edit</th>
                         <th className="border border-gray-300 px-4 py-2">Delete</th>
-                        {/* Add more headers as per your data structure */}
                     </tr>
                 </thead>
                 <tbody>
@@ -86,7 +84,6 @@ const InvoiceQuotesList = () => {
                             <td className="border border-gray-300 px-4 py-2"><Link to={`/Edit/${invoiceQuote.uniqueKey}`} className="text-blue-500 hover:underline mr-4">Edit</Link></td>
                             <td className="border border-gray-300 px-4 py-2"><button onClick={() => handleDelete(invoiceQuote.uniqueKey)} className="text-red-500 hover:underline">Delete</button></td>
 
-                            {/* Render more data fields as needed */}
                         </tr>
                     ))}
                 </tbody>

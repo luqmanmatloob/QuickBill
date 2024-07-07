@@ -15,13 +15,13 @@ const Header = () => {
             </li>
             <li>
               <NavLink exact to="/InvoiceQuotesListPage" className="text-white hover:text-gray-300" activeClassName="font-bold">
-                Invoice
+                Invoices
               </NavLink>
             </li>
 
             <li>
               <NavLink to="/setting" className="text-white hover:text-gray-300" activeClassName="font-bold">
-                Setting
+                Settings
               </NavLink>
             </li>
             <li>
@@ -29,7 +29,7 @@ const Header = () => {
                 Upload
               </NavLink>
             </li>
-            <li>
+            {/* <li>
               <NavLink to="/gonnabeoutsoon" className="text-white hover:text-gray-300" activeClassName="font-bold">
                 bulk print
               </NavLink>
@@ -42,7 +42,7 @@ const Header = () => {
               <NavLink to="/gonnabeoutsoon" className="text-white hover:text-gray-300" activeClassName="font-bold">
                 mail
               </NavLink>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </div>
