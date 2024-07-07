@@ -62,7 +62,7 @@ const SettingForm = () => {
 
   return (
     <div 
-    className="max-w-lg mx-auto bg-white rounded-lg shadow-2xl p-8 my-5 border-b-slate-300 border-solid border-2"
+    className="max-w-lg mx-auto bg-white rounded-lg shadow-2xl p-8 my-5 border-b-slate-300 border-solid border-2 border-r-[#6539c0] border-l-[#6539c0]" 
     >
       <h2 className="text-2xl font-semibold mb-6">Settings</h2>
       <form onSubmit={handleSubmit}>
@@ -155,7 +155,7 @@ const SettingForm = () => {
           <div className="mt- w-full">
             <button
               type="submit"
-              className=" min-w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+              className=" min-w-full px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-500  text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
             >
               Update
             </button>

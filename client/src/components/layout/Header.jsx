@@ -3,9 +3,9 @@ import { NavLink } from 'react-router-dom';
 
 const Header = () => {
   return (
-    <div className="bg-gray-800 py-4">
+    <div className="bg-[#6539c0] py-4">
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <NavLink to="/" className="text-2xl font-bold text-white">Amazing Import</NavLink>
+        <NavLink to="/" className="text-2xl font-bold text-white">AmazingInvoice</NavLink>
         <nav>
           <ul className="flex space-x-4">
             <li>

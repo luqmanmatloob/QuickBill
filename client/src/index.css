@@ -5,6 +5,11 @@
 @tailwind components;
 @tailwind utilities;
 
+
+body{
+    background-color: #F4F5F6;
+}
+
 /* Print-specific styles */
 @media print {
    

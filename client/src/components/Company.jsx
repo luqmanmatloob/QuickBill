@@ -42,7 +42,7 @@ const Company = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">{settings.companyName}</h1>
+      <h2 className="text-[1.75rem] font-bold mb-4 text-[#6539c0]">{settings.companyName}</h2>
       <div className="flex flex-col space-y-2">
         <p>{settings.companyName} - {settings.phoneNumber}</p>
         <p> {settings.address}</p>

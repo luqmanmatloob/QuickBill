@@ -7,12 +7,14 @@ const Upload = () => {
   const [file, setFile] = useState(null);
   const [uploadedInvoices, setUploadedInvoices] = useState([]);
   const [invoicesQuotes, setInvoicesQuotes] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
   const handleParseAndSubmit = async () => {
+    setLoading(true)
     if (!file) {
       alert('No file selected');
       return;
@@ -122,6 +124,7 @@ const Upload = () => {
       }
 
       fetchUploadedInvoices(uploadedUniqueKeys);
+      setLoading(false)
     } catch (error) {
       console.error('Error during processing:', error);
       alert('Failed to process the file and submit invoices');
@@ -194,7 +197,7 @@ const Upload = () => {
   };
 
   const cancel = async () => {
-    const isConfirmed = window.confirm(`Are you sure you want to delete all uploaded invoices?`);
+    const isConfirmed = window.confirm(`Are you sure you want to cancel uploading?`);
     if (!isConfirmed) {
       return; // If the user cancels, do nothing
     }
@@ -210,17 +213,17 @@ const Upload = () => {
       if (!response.ok) {
         throw new Error('Failed to delete all uploaded invoices');
       }
-      setInvoicesQuotes([]); // Clear the state after deletion
+      setInvoicesQuotes([]);
     } catch (error) {
       console.error('Error deleting all uploaded invoices:', error);
       alert('Failed to delete all uploaded invoices');
     }
   };
-  
+
 
   return (
     <div className="m-10 mb-[70vh]">
-      <div className='flex items-center justify-center max-w-3xl mx-auto mt-8 p-4 bg-white shadow-xl border-2 rounded-md'>
+      <div className='flex items-center justify-center max-w-3xl mx-auto mt-8 p-4 bg-white shadow-xl  rounded-md border-t-[#6539c0] border-b-[#6539c0] border-2 py-8'>
         <input
           type="file"
           accept=".csv"
@@ -229,33 +232,39 @@ const Upload = () => {
         />
         <button
           onClick={handleParseAndSubmit}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
+          className="bg-gradient-to-r from-purple-600 to-blue-500 hover:text-black text-white font-bold py-2 px-8 rounded ml-4"
         >
           OK
         </button>
       </div>
 
-      <div className="mt-20">
-        <div className='flex items-center justify-between mb-5'>
+      <div className="mt-20 shadow-2xl p-5 border-r-[#6539c0] border-l-[#6539c0] border-2">
+        <div className='flex items-center justify-between mb-5 '>
           <h1 className="text-3xl font-bold">Invoices/Quotes</h1>
           <div >
             <button onClick={cancel} className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-3">
               Cancel
             </button>
-            <button onClick={handleSave} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <button onClick={handleSave} className="bg-[#6539c0] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Save All
             </button>
           </div>
         </div>
         {success && (
-          <div className="mt-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+          <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
             {success}
           </div>
         )}
+          {loading && (
+          <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+            Processing ...
+          </div>
+        )}
+        
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border border-gray-300">
-            <thead>
-              <tr>
+          <table className="min-w-full bg-gray-200 border border-gray-300 ">
+            <thead className='rounded-lg'>
+              <tr className='bg-gray-300 rounded-md py-20'>
                 <th className="py-2 px-4 border-b">Unique Key</th>
                 <th className="py-2 px-4 border-b">Order Number</th>
                 <th className="py-2 px-4 border-b">Date Ordered</th>
@@ -265,8 +274,8 @@ const Upload = () => {
               </tr>
             </thead>
             <tbody>
-              {invoicesQuotes.map((invoice) => (
-                <tr key={invoice.uniqueKey}>
+              {invoicesQuotes.map((invoice, index) => (
+                <tr key={invoice.uniqueKey} className={`bg-white text-center ${index % 2 === 0 ? '' : 'bg-[#f1f1f1]'}`}>
                   <td className="py-2 px-4 border-b">{invoice.uniqueKey}</td>
                   <td className="py-2 px-4 border-b">{invoice.orderNumber}</td>
                   <td className="py-2 px-4 border-b">{formatDate(invoice.dateOrdered)}</td>
@@ -275,13 +284,13 @@ const Upload = () => {
                   <td className="py-2 px-4 border-b">
                     <button
                       onClick={() => handleDelete(invoice.uniqueKey)}
-                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                      className="bg-red-500 hover:bg-red-700 text-white font-md py-1 my-1 px-4 rounded"
                     >
                       Delete
                     </button>
 
 
-                    <Link to={`/Edit/${invoice.uniqueKey}`} target="_blank" className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded ml-2">Edit</Link>
+                    <Link to={`/Edit/${invoice.uniqueKey}`} target="_blank" className="bg-green-500 hover:bg-green-700 text-white font-md py-1 my-1 px-4 rounded ml-2">Edit</Link>
 
                   </td>
                 </tr>
