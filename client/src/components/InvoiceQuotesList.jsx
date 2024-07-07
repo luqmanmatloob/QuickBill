@@ -5,6 +5,8 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const InvoiceQuotesList = () => {
     const [invoicesQuotes, setInvoicesQuotes] = useState([]);
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         fetchInvoicesQuotes();
@@ -19,6 +21,7 @@ const InvoiceQuotesList = () => {
             }
             const data = await response.json();
             console.log(data)
+            setLoading(false)
             const reversedData = data.data.reverse();
             setInvoicesQuotes(reversedData);
         } catch (error) {
@@ -59,6 +62,13 @@ const InvoiceQuotesList = () => {
         container p-6 mx-auto bg-white rounded-lg shadow-2xl  my-5 border-b-slate-300 border-solid border-2 border-r-[#6539c0] border-l-[#6539c0]"
         >
             <h1 className="text-3xl font-bold mb-4">All Invoices/Quotes</h1>
+
+            {loading && (
+                <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+                    Loading Invoices ...
+                </div>
+            )}
+
             <table className="table-auto w-full border-collapse border border-gray-300 ">
                 <thead>
                     <tr className=" bg-gray-300">

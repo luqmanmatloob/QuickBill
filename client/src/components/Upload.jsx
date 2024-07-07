@@ -255,12 +255,13 @@ const Upload = () => {
             {success}
           </div>
         )}
-          {loading && (
+        
+        {loading && (
           <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
             Processing ...
           </div>
         )}
-        
+
         <div className="overflow-x-auto">
           <table className="min-w-full bg-gray-200 border border-gray-300 ">
             <thead className='rounded-lg'>

@@ -5,7 +5,7 @@ const Footer = () => {
     <div>
       <div className='bg-white text-slate-700 py-4 flex items-center justify-center mt-32  border-t-2 border-[#6539c0]'>
         <div>
-    All rights reserved 2024 | Amazing Imports 
+    All rights reserved 2024 | Amazing Imports   
 
 </div>
       </div>

@@ -5,8 +5,8 @@ const Header = () => {
   return (
     <div className="bg-[#6539c0] py-4">
       <div className="container mx-auto px-4 flex justify-between items-center">
-        <NavLink to="/" className="text-2xl font-bold text-white">AmazingInvoice</NavLink>
-        <nav>
+        <NavLink to="/" className="text-2xl font-bold text-white upp">AmazingInvoice</NavLink>
+        <nav className='font-semibold uppercase text-sm'>
           <ul className="flex space-x-4">
             <li>
               <NavLink exact to="/" className="text-white hover:text-gray-300" activeClassName="font-bold">
