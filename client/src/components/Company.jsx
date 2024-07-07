@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const Company = () => {
+  const [loading, setLoading] = useState(true);
   const [settings, setSettings] = useState({
     companyName: '',
     phoneNumber: '',
@@ -35,6 +36,9 @@ const Company = () => {
         country: data.country || '',
         url: data.url || ''
       });
+
+      setLoading(false)
+
     } catch (error) {
       console.error('Error fetching settings:', error);
     }
@@ -42,6 +46,11 @@ const Company = () => {
 
   return (
     <div className="p-4">
+      {loading && (
+        <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+          Loading...
+        </div>
+      )}
       <h2 className="text-[1.75rem] font-bold mb-4 text-[#6539c0]">{settings.companyName}</h2>
       <div className="flex flex-col space-y-2">
         <p>{settings.companyName} - {settings.phoneNumber}</p>

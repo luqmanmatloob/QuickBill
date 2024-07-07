@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const SettingForm = () => {
+  const [loading, setLoading] = useState(true);
   const [settings, setSettings] = useState({
     companyName: '',
     phoneNumber: '',
@@ -34,6 +35,8 @@ const SettingForm = () => {
         country: data.country || '',
         url: data.url || ''
       });
+      setLoading(false)
+
     } catch (error) {
       console.error('Error fetching settings:', error);
     }
@@ -64,6 +67,11 @@ const SettingForm = () => {
     <div 
     className="max-w-lg mx-auto bg-white rounded-lg shadow-2xl p-8 my-5 border-b-slate-300 border-solid border-2 border-r-[#6539c0] border-l-[#6539c0]" 
     >
+       {loading && (
+        <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+          Loading...
+        </div>
+      )}
       <h2 className="text-2xl font-semibold mb-6">Settings</h2>
       <form onSubmit={handleSubmit}>
         <div className="flex gap-10 flex-wrap">
