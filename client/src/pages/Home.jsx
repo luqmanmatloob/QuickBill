@@ -7,7 +7,7 @@ const Home = () => {
     <div className=''>
 
       <div className="">
-        <div className="mx-auto max-w-5xl">
+        <div className="mx-auto max-w-5xl py-12">
           <Invoice />
         </div>
       </div>

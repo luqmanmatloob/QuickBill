@@ -1,8 +1,17 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useReactToPrint } from 'react-to-print';
 import Company from "./Company";
 
 const Invoice = () => {
+
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
+
+
   const [formData, setFormData] = useState({
     type: "invoice",
     orderNumber: "",
@@ -72,9 +81,9 @@ const Invoice = () => {
     calculateTotals();
   }, [formData.items, grandTotal]);
 
-  const handlePrint = () => {
-    window.print();
-  };
+  // const handlePrint = () => {
+  //   window.print();
+  // };
 
   const removeItem = (index) => {
     const updatedItems = [...formData.items];
@@ -236,7 +245,7 @@ const Invoice = () => {
   };
 
   return (
-    <div className="print-Invoice-container py-6 mx-auto bg-white rounded-lg shadow-2xl p-8 my-12 border-r-[#6539c0] border-l-[#6539c0] border-solid border-2">
+    <div ref={componentRef} className=" py-6 mx-auto bg-white rounded-lg shadow-2xl p-8 border-r-[#6539c0] border-l-[#6539c0] border-solid border-2">
       <form
         className="relative flex flex-col px-2 md:flex-row"
         onSubmit={handleSubmit}

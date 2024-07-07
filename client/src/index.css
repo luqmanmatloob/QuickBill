@@ -10,32 +10,3 @@ body{
     background-color: #F4F5F6;
 }
 
-/* Print-specific styles */
-@media print {
-   
-    title {
-      display: none !important;
-  }
-    title {
-        display: none !important;
-    }
-
-
-    .print-Invoice-container, .print-Invoice-container * {
-        visibility: visible;
-    }
-    .print-Invoice-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        top: 0;
-        bottom: 0;
-    }
-    title {
-        display: none !important;
-    }
-    
-    h1, h2, h3, h4, h5, h6 {
-        display: none !important; 
-    }
-}
