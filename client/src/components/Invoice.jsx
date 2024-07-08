@@ -457,7 +457,7 @@ const Invoice = () => {
 
           {/* row 3 items  product, color, size/qty, unit price, tax, qty, total, tax exempt  */}
           <div className="pt-12">
-            <h3 className="text-xl font-semibold mb-2 bg-[#6539c0] block text-white px-5 py-2 rounded-md m-[-10">
+            <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-blue-500 to-purple-600  block text-white px-5 py-2 rounded-md m-[-10">
               Items
             </h3>
           </div>
@@ -647,14 +647,14 @@ const Invoice = () => {
           <div className="pt-10 px-5">
             <button
               type="submit"
-              className="bg-[#6539c0] hover:bg-purple-500 text-white px-4 py-2  rounded"
+              className="bg-[#6539c0] hover:bg-purple-500 text-white px-6 py-2  rounded"
             >
               Save
             </button>
 
             <button
               onClick={handlePrint}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mx-3"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded mx-3"
             >
               Print
             </button>
