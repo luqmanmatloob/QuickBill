@@ -9,7 +9,7 @@ const Edit = () => {
     console.log(id)
 
     return (<>
-   <p className='flex justify-center text-2xl p-5 m-2'>EDIT</p>
+   <p className='text-gradient-to-r from-blue-500 to-purple-600 flex justify-center text-2xl p-5 m-2'>EDIT</p>
 
         <div className='bg-gray-100'>
 

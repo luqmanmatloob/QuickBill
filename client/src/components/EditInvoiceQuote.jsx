@@ -1,8 +1,16 @@
 import React from 'react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { useReactToPrint } from 'react-to-print';
+
 import Company from './Company'
 
 const EditInvoiceQuote = ({ id }) => {
+
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
 
   
   const [subtotal, setSubtotal] = useState(0);
@@ -163,11 +171,6 @@ const EditInvoiceQuote = ({ id }) => {
 
 
 
-
-
-  const handlePrint = () => {
-    window.print();
-  };
 
 
 
@@ -369,7 +372,7 @@ const EditInvoiceQuote = ({ id }) => {
 
 
   return (
-    <div className='print-Invoice-container'>
+    <div className='' ref={componentRef}>
       <form
         className="relative flex flex-col px-2 md:flex-row"
         onSubmit={handleSubmit}            >
