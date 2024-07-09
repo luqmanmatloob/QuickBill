@@ -245,7 +245,7 @@ const Invoice = () => {
   };
 
   return (
-    <div ref={componentRef} className=" py-6 mx-auto bg-white rounded-lg shadow-2xl p-8 border-r-[#6539c0] border-l-[#6539c0] border-solid border-2">
+    <div ref={componentRef} className="print-no-shadow py-6 mx-auto bg-white rounded-lg shadow-2xl p-8 border-r-[#6539c0] border-l-[#6539c0] border-solid border-2">
       <form
         className="relative flex flex-col px-2 md:flex-row"
         onSubmit={handleSubmit}
@@ -460,7 +460,8 @@ const Invoice = () => {
             <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-blue-500 to-purple-600  block text-white px-5 py-2 rounded-md m-[-10">
               Items
             </h3>
-          </div>
+          </div> 
+          
           <div className="flex justify-between px-5 border-b ">
             <div className="mt-4 ">
               <div className="grid grid-cols-9 gap-4 mb-4 ">
@@ -576,7 +577,7 @@ const Invoice = () => {
                     <button
                       type="button"
                       onClick={() => removeItem(index)}
-                      className="bg-red-500 hover:bg-red-600 m-1 text-white px-4 py-1 rounded"
+                      className="no-print bg-red-500 hover:bg-red-600 m-1 text-white px-4 py-1 rounded"
                     >
                       X
                     </button>
@@ -586,7 +587,7 @@ const Invoice = () => {
               <button
                 type="button"
                 onClick={addItem}
-                className="my-3 bg-gradient-to-r from-purple-600 to-blue-500 text-white px-4 py-1 rounded"
+                className="no-print my-3 bg-gradient-to-r from-purple-600 to-blue-500 text-white px-4 py-1 rounded"
               >
                 Add Item
               </button>
@@ -647,14 +648,14 @@ const Invoice = () => {
           <div className="pt-10 px-5">
             <button
               type="submit"
-              className="bg-[#6539c0] hover:bg-purple-500 text-white px-6 py-2  rounded"
+              className="no-print bg-[#6539c0] hover:bg-purple-500 text-white px-6 py-2  rounded"
             >
               Save
             </button>
 
             <button
               onClick={handlePrint}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded mx-3"
+              className="no-print bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded mx-3"
             >
               Print
             </button>

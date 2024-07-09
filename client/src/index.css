@@ -10,3 +10,13 @@ body{
     background-color: #F4F5F6;
 }
 
+@media print {
+    .no-print {
+      display: none;
+    }
+    .print-no-shadow {
+        box-shadow: none !important;
+      } 
+    
+  }
+  

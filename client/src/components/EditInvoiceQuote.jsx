@@ -12,7 +12,7 @@ const EditInvoiceQuote = ({ id }) => {
   });
 
 
-  
+
   const [subtotal, setSubtotal] = useState(0);
   const [totalTax, setTotalTax] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
@@ -31,7 +31,7 @@ const EditInvoiceQuote = ({ id }) => {
     billingState: '',
     billingEmailAddress: '',
     shippingAddress: '',
-    shippingCity:'',
+    shippingCity: '',
     shippingState: '',
     shippingPostcode: '',
     items: [{
@@ -255,21 +255,21 @@ const EditInvoiceQuote = ({ id }) => {
       const tax = parseFloat(item.tax) || 0;
       const taxExempt = item.taxExempt;
       const taxAmount = taxExempt ? 0 : (lineTotal * tax) / 100;
-  
+
       subtotal += lineTotal;
       totalTax += taxAmount;
     });
-  
+
     setSubtotal(subtotal);
     setTotalTax(totalTax);
     const computedOrderTotal = subtotal + totalTax; // Calculate grand total here
     setGrandTotal(computedOrderTotal); // Update grand total state
-  
+
     // Update form data with the calculated total
     const updatedFormData = { ...formData, orderTotal: computedOrderTotal };
     setFormData(updatedFormData);
   };
-  
+
   const addItem = () => {
     const newItems = [...formData.items, {
       orderNumber: '',
@@ -314,7 +314,7 @@ const EditInvoiceQuote = ({ id }) => {
   };
 
 
-  
+
 
 
 
@@ -326,7 +326,7 @@ const EditInvoiceQuote = ({ id }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await fetch(`${BASE_URL}/api/invoicequote/${id}`, {
         method: 'PUT',
@@ -335,29 +335,29 @@ const EditInvoiceQuote = ({ id }) => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-  
+
       const data = await response.json();
       console.log('Invoice updated successfully:', data);
       setResponseMessage('Invoice updated successfully.');
-  
+
       setTimeout(() => {
         setResponseMessage('');
       }, 1000);
-  
+
     } catch (error) {
       console.error('Error updating invoice:', error);
       setResponseMessage('Error');
-  
+
       setTimeout(() => {
         setResponseMessage('');
       }, 1000);
     }
   };
-  
+
 
 
 
@@ -372,7 +372,7 @@ const EditInvoiceQuote = ({ id }) => {
 
 
   return (
-    <div className='' ref={componentRef}>
+    <div ref={componentRef} className='print-no-shadow py-6 mx-auto bg-white rounded-lg shadow-2xl p-8 border-r-[#6539c0] border-l-[#6539c0] border-solid border-2' >
       <form
         className="relative flex flex-col px-2 md:flex-row"
         onSubmit={handleSubmit}            >
@@ -599,11 +599,15 @@ const EditInvoiceQuote = ({ id }) => {
 
 
           {/* row 3 items  product, color, size/qty, unit price, tax, qty, total, tax exempt  */}
+          <div className="pt-12">
+            <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-blue-500 to-purple-600  block text-white px-5 py-2 rounded-md m-[-10">
+              Items
+            </h3>
+          </div> 
           <div className='flex justify-between px-5 border-b '>
 
 
             <div className="mt-4">
-              <h3 className="text-xl font-semibold mb-2">Items</h3>
               <div className="grid grid-cols-9 gap-4 mb-4">
                 <p>Product </p>
                 <p>Color:
@@ -721,7 +725,7 @@ const EditInvoiceQuote = ({ id }) => {
                     <button
                       type="button"
                       onClick={() => removeItem(index)}
-                      className="bg-red-500 hover:bg-red-600 m-1 text-white px-4 py-1 rounded"
+                      className="no-print bg-red-500 hover:bg-red-600 m-1 text-white px-4 py-1 rounded"
                     >
                       X
                     </button>
@@ -731,7 +735,7 @@ const EditInvoiceQuote = ({ id }) => {
               <button
                 type="button"
                 onClick={addItem}
-                className="my-3 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"
+                className="no-print my-3 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"
               >
                 Add Item
               </button>
@@ -797,17 +801,18 @@ const EditInvoiceQuote = ({ id }) => {
           <div className='pt-10 px-5'>
             <button
               type="submit"
-              className="bg-green-500 hover:bg-green-600 text-white px-4 py-2  rounded"
+              className="no-print bg-green-500 hover:bg-green-600 text-white px-4 py-2  rounded"
             >
               Update
             </button>
 
             <button
               onClick={handlePrint}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mx-3"
+              className="no-print bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mx-3"
             >
               Print
             </button>
+
             {responseMessage && (
               <span className={`mt-4 ${responseMessage.startsWith('Error') ? 'text-red-500' : 'text-green-500'}`}>
                 {responseMessage}
