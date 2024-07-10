@@ -5,18 +5,42 @@
 @tailwind components;
 @tailwind utilities;
 
-
-body{
-    background-color: #F4F5F6;
+body {
+  background-color: #f4f5f6;
 }
 
 @media print {
-    .no-print {
-      display: none;
-    }
-    .print-no-shadow {
-        box-shadow: none !important;
-      } 
-    
+  .no-print {
+    display: none;
+  }
+  .print-no-shadow {
+    box-shadow: none !important;
+  }
+  .print-no-py {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  .print-no-my {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+  input[type="text"] {
+    font-size: 8px;
+  }
+  label{
+    font-size: 12px;
+  } 
+  .print-text-8px {
+    font-size: 8px;
+  }
+  .print-text-10px{
+    font-size: 12px;
+  } 
+  .print-text-12px{
+    font-size: 12px;
+  }
+  .print-border-none{
+    border: none;
   }
   
+}

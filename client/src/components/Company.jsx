@@ -45,14 +45,14 @@ const Company = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 print-no-py print-no-my">
       {loading && (
         <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
           Loading...
         </div>
       )}
       <h2 className="text-[1.75rem] font-bold mb-4 text-[#6539c0]">{settings.companyName}</h2>
-      <div className="flex flex-col space-y-2">
+      <div className="flex flex-col space-y-2 print-text-10px">
         <p>{settings.companyName} - {settings.phoneNumber}</p>
         <p> {settings.address}</p>
         <p>{settings.city}, {settings.state}</p>

@@ -245,12 +245,12 @@ const Invoice = () => {
   };
 
   return (
-    <div ref={componentRef} className="print-no-shadow py-6 mx-auto bg-white rounded-lg shadow-2xl p-8 border-r-[#6539c0] border-l-[#6539c0] border-solid border-2">
+    <div ref={componentRef} className="print-border-none print-no-shadow print-no-py .print-no-my py-6 mx-auto bg-white rounded-lg shadow-2xl p-8 border-r-[#6539c0] border-l-[#6539c0] border-solid border-2">
       <form
         className="relative flex flex-col px-2 md:flex-row"
         onSubmit={handleSubmit}
       >
-        <div className="my-6 flex-1 space-y-2  rounded-md bg-white p-4 shadow-sm sm:space-y-4 md:p-6">
+        <div className="print-no-py .print-no-my my-6 flex-1 space-y-2  rounded-md bg-white p-4 shadow-sm sm:space-y-4 md:p-6">
           {/* row 1 compnay info and invoice infor */}
           <div className="flex justify-between w-full border-b">
             <div>
@@ -269,19 +269,7 @@ const Invoice = () => {
                   <option value="quote">Quote</option>
                 </select>
               </div>
-              <div className="flex min-w-[100px] items-center ">
-                <label className="min-w-24 ">Invoice_No: </label>{" "}
-                {/*Order Number*/}
-                <input
-                  type="text"
-                  name="orderNumber"
-                  value={formData.orderNumber}
-                  placeholder="Invoice no"
-                  onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                  required
-                />
-              </div>
+             
               <div className="flex min-w-[100px] items-center ">
                 <label className="min-w-24 ">Order_Date: </label>
                 <input
@@ -291,7 +279,7 @@ const Invoice = () => {
                   value={formData.dateOrdered}
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                  required
+                    
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -303,7 +291,7 @@ const Invoice = () => {
                   value={formData.dateDue}
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                  required
+                    
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -315,7 +303,20 @@ const Invoice = () => {
                   placeholder="Shipping Method"
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                  required
+                    
+                />
+              </div>
+              <div className="flex min-w-[100px] items-center ">
+                <label className="min-w-24 ">Invoice_No: </label>{" "}
+                {/*Order Number*/}
+                <input
+                  type="text"
+                  name="orderNumber"
+                  value={formData.orderNumber}
+                  placeholder="Invoice no"
+                  onChange={handleChange}
+                  className="px-2 py-1 w-full"
+                    
                 />
               </div>
               {/*                                 
@@ -328,7 +329,7 @@ const Invoice = () => {
                                         placeholder='Invoice no'
                                         onChange={handleChange}
                                         className="px-2 py-1 w-full"
-                                        required
+                                          
                                     />
                                 </div>*/}
             </div>
@@ -337,7 +338,7 @@ const Invoice = () => {
           {/* row 2, billing adress and shipping adress  city statecounty email adress */}
           <div className="flex justify-between px-5 border-b">
             <div>
-              <p className="p-2 text-lg font-semibold">Billing Address</p>
+              <p className="print-text-12px p-2 text-lg font-semibold">Billing Address</p>
               <div className="flex min-w-[100px] items-center ">
                 <input
                   type="text"
@@ -346,7 +347,7 @@ const Invoice = () => {
                   placeholder="Address"
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                  required
+                    
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -357,7 +358,7 @@ const Invoice = () => {
                   placeholder="City"
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                  required
+                    
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -368,7 +369,7 @@ const Invoice = () => {
                   placeholder="State"
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                  required
+                    
                 />
               </div>
               {/* <div className="flex min-w-[100px] items-center "> country
@@ -379,7 +380,7 @@ const Invoice = () => {
                                     placeholder='Shipping Method'
                                     onChange={handleChange}
                                     className="px-2 py-1 w-full"
-                                    required
+                                      
                                 />
                             </div> */}
               <div className="flex min-w-[100px] items-center ">
@@ -390,13 +391,13 @@ const Invoice = () => {
                   placeholder="Email "
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                  required
+                    
                 />
               </div>
             </div>
 
             <div>
-              <p className="p-2 text-lg font-semibold">Shipping Address</p>
+              <p className="print-text-12px p-2 text-lg font-semibold">Shipping Address</p>
               <div className="flex min-w-[100px] items-center ">
                 <input
                   type="text"
@@ -405,7 +406,7 @@ const Invoice = () => {
                   placeholder="Address"
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                  required
+                    
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -416,7 +417,7 @@ const Invoice = () => {
                   placeholder="City"
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                  required
+                    
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -427,7 +428,7 @@ const Invoice = () => {
                   placeholder="State"
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                  required
+                    
                 />
               </div>
               {/* <div className="flex min-w-[100px] items-center "> country
@@ -438,7 +439,7 @@ const Invoice = () => {
                                     placeholder='Shipping Method'
                                     onChange={handleChange}
                                     className="px-2 py-1 w-full"
-                                    required
+                                      
                                 />
                             </div> */}
               <div className="flex min-w-[100px] items-center ">
@@ -449,29 +450,29 @@ const Invoice = () => {
                   placeholder="Postcode "
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                  required
+                    
                 />
               </div>
             </div>
           </div>
 
           {/* row 3 items  product, color, size/qty, unit price, tax, qty, total, tax exempt  */}
-          <div className="pt-12">
-            <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-blue-500 to-purple-600  block text-white px-5 py-2 rounded-md m-[-10">
+          <div className="pt-12 print-no-py">
+            <h3 className="print-no-py text-xl font-semibold mb-2 bg-gradient-to-r from-blue-500 to-purple-600  block text-white px-5 py-2 rounded-md m-[-10">
               Items
             </h3>
           </div> 
           
           <div className="flex justify-between px-5 border-b ">
-            <div className="mt-4 ">
-              <div className="grid grid-cols-9 gap-4 mb-4 ">
+            <div className="mt-4 print-no-my">
+              <div className=".print-no-my print-text-12px grid grid-cols-9 gap-4 mb-4 ">
                 <p>Product </p>
-                <p>Color:</p>
-                <p>Size:</p>
+                <p>Color</p>
+                <p>Size</p>
                 <p>Quantity:</p>
-                <p>Unit Price:</p>
-                <p>{"Tax (%):"}</p>
-                <p>Tax Exempt:</p>
+                <p>Unit Price</p>
+                <p>{"Tax (%)"}</p>
+                <p>{`Tax Exempt`}</p>
                 <p>Total:</p>
               </div>
 
@@ -487,7 +488,7 @@ const Invoice = () => {
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
                       placeholder="Name"
-                      required
+                        
                     />
                   </div>
                   {/* Color */}
@@ -500,7 +501,7 @@ const Invoice = () => {
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
                       placeholder="Color"
-                      required
+                        
                     />
                   </div>
                   {/* Size */}
@@ -513,7 +514,7 @@ const Invoice = () => {
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
                       placeholder="Size"
-                      required
+                        
                     />
                   </div>
                   {/* Quantity */}
@@ -525,7 +526,7 @@ const Invoice = () => {
                       value={item.lineQty}
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
-                      required
+                        
                     />
                   </div>
                   {/* Unit Price */}
@@ -537,7 +538,7 @@ const Invoice = () => {
                       value={item.unitPrice}
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
-                      required
+                        
                     />
                   </div>
                   {/* Tax */}
@@ -597,7 +598,7 @@ const Invoice = () => {
 
           {/* row 4 message,  sub total,  tax, grand total  */}
           <div className="flex justify-between gap-5 items-start px-5 border-b">
-            <div className="mt-4 w-full sm:w-[500px] ">
+            <div className="print-text-12px mt-4 w-full sm:w-[500px] ">
               <textarea
                 name="note"
                 value={formData.note}
@@ -605,7 +606,8 @@ const Invoice = () => {
                 className="rounded px-2 py-1 w-full h-32"
               ></textarea>
             </div>
-            <div className="mt-4 w-full sm:w-1/2 flex flex-col space-y-4">
+
+            <div className="mt-4 w-full sm:w-1/2 flex flex-col 4">
               <div className="flex justify-end items-center gap-3">
                 <label className="block mb-2 ">Subtotal:</label>
                 <input
@@ -617,8 +619,9 @@ const Invoice = () => {
                   className=" rounded px-2 py-1 w-1/2"
                 />
               </div>
-              <div className="flex justify-end items-center gap-3">
-                <label className="block mb-2 ">Total Tax:</label>
+
+              <div className=" flex justify-end items-center gap-3">
+                <label className="block mb-2 ">{`Total Tax (%):`}</label>
                 <div className="flex w-1/2 items-center">
                   <input
                     type="number"
@@ -628,7 +631,6 @@ const Invoice = () => {
                     onChange={handleChange}
                     className=" rounded px-2 py-1 w-full"
                   />
-                  <span className="ml-2">%</span>
                 </div>
               </div>
               <div className="flex justify-end items-center gap-3">
@@ -645,17 +647,17 @@ const Invoice = () => {
             </div>
           </div>
 
-          <div className="pt-10 px-5">
+          <div className="no-print print-no-py print-no-my pt-10 px-5">
             <button
               type="submit"
-              className="no-print bg-[#6539c0] hover:bg-purple-500 text-white px-6 py-2  rounded"
+              className=" bg-[#6539c0] hover:bg-purple-500 text-white px-6 py-2  rounded"
             >
               Save
             </button>
 
             <button
               onClick={handlePrint}
-              className="no-print bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded mx-3"
+              className=" bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded mx-3"
             >
               Print
             </button>
