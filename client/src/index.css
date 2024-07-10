@@ -24,7 +24,10 @@ body {
     padding-top: 0px;
     padding-bottom: 0px;
   }
-  input[type="text"] {
+  input[type="text"] 
+  input[type="date"] 
+  input[type="number"] 
+   {
     font-size: 8px;
   }
   label{
