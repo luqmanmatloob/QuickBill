@@ -17,6 +17,7 @@ const EditInvoiceQuote = ({ id }) => {
   const [totalTax, setTotalTax] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
   const [responseMessage, setResponseMessage] = useState('');
+  const [invoiceNoLbl, setinvoiceNoLbl] = useState('Invoice No')
 
 
   const [formData, setFormData] = useState({
@@ -73,6 +74,15 @@ const EditInvoiceQuote = ({ id }) => {
     }],
     note: 'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.'
   });
+
+  useEffect(() => {
+    if (formData.type === 'invoice') {
+      setinvoiceNoLbl('Invoice No');
+    } else if (formData.type === 'quote') {
+      setinvoiceNoLbl('Quote No');
+    }
+  }, [formData.type]);
+
 
   useEffect(() => {
     calculateTotals();
@@ -372,11 +382,11 @@ const EditInvoiceQuote = ({ id }) => {
 
 
   return (
-    <div ref={componentRef} className='print-no-shadow py-6 mx-auto bg-white rounded-lg shadow-2xl p-8 border-r-[#6539c0] border-l-[#6539c0] border-solid border-2' >
+    <div ref={componentRef} className='print-border-none print-no-shadow print-no-py .print-no-my py-6 mx-auto bg-white rounded-lg shadow-2xl p-8 border-r-[#6539c0] border-l-[#6539c0] border-solid border-2' >
       <form
         className="relative flex flex-col px-2 md:flex-row"
         onSubmit={handleSubmit}            >
-        <div className="my-6 flex-1 space-y-2  rounded-md bg-white p-4 shadow-sm sm:space-y-4 md:p-6">
+        <div className="print-no-py .print-no-my my-6 flex-1 space-y-2  rounded-md bg-white p-4 shadow-sm sm:space-y-4 md:p-6">
 
           {/* row 1 compnay info and invoice infor */}
           <div className='flex justify-between w-full border-b'>
@@ -385,30 +395,19 @@ const EditInvoiceQuote = ({ id }) => {
               <Company />
             </div>
             <div>
-              <div>
+              <div className="mt-3 mb-1">
                 <select
                   name="type"
                   value={formData.type}
                   onChange={handleChange}
-                  className="text-xl font-semibold borde rounded px-2 py-1 w-full"
-                >
+                  className="text-xl font-semibold borde rounded py-1 w-[97%]"
+                  >
                   {/* <option value="">Select</option> */}
                   <option value="invoice">Invoice</option>
                   <option value="quote">Quote</option>
                 </select>
               </div>
-              <div className="flex min-w-[100px] items-center ">
-                <label className="min-w-24 ">Invoice_No: </label> {/*Order Number*/}
-                <input
-                  type="text"
-                  name="orderNumber"
-                  value={formData.orderNumber}
-                  placeholder='Invoice no'
-                  onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                  required
-                />
-              </div>
+
               <div className="flex min-w-[100px] items-center ">
                 <label className="min-w-24 ">Order_Date: </label>
                 <input
@@ -417,8 +416,8 @@ const EditInvoiceQuote = ({ id }) => {
                   placeholder='Order Date'
                   value={formData.dateOrdered}
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                  required
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -429,8 +428,8 @@ const EditInvoiceQuote = ({ id }) => {
                   placeholder='Due Date'
                   value={formData.dateDue}
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                  required
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -441,8 +440,20 @@ const EditInvoiceQuote = ({ id }) => {
                   value={formData.shippingMethod}
                   placeholder='Shipping Method'
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                  required
+                  className="px-2 py-1  w-full"
+
+                />
+              </div>
+              <div className="flex min-w-[100px] items-center ">
+                <label className="min-w-24 ">{invoiceNoLbl}: </label> {/*Order Number*/}
+                <input
+                  type="text"
+                  name="orderNumber"
+                  value={formData.orderNumber}
+                  placeholder={invoiceNoLbl}
+                  onChange={handleChange}
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               {/*                                 
@@ -455,7 +466,7 @@ const EditInvoiceQuote = ({ id }) => {
                                         placeholder='Invoice no'
                                         onChange={handleChange}
                                         className="px-2 py-1 w-full"
-                                        required
+                                         
                                     />
                                 </div>*/}
 
@@ -472,7 +483,7 @@ const EditInvoiceQuote = ({ id }) => {
 
             <div>
 
-              <p className='p-2 text-lg font-semibold'>Billing Address</p>
+              <p className='print-text-12px p-2 text-lg font-semibold'>Billing Address</p>
               <div className="flex min-w-[100px] items-center ">
                 <input
                   type="text"
@@ -480,8 +491,8 @@ const EditInvoiceQuote = ({ id }) => {
                   value={formData.billingAddress}
                   placeholder='Address'
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                  required
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -491,8 +502,8 @@ const EditInvoiceQuote = ({ id }) => {
                   value={formData.billingCity}
                   placeholder='City'
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                  required
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -502,8 +513,8 @@ const EditInvoiceQuote = ({ id }) => {
                   value={formData.billingState}
                   placeholder='State'
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                  required
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               {/* <div className="flex min-w-[100px] items-center "> country
@@ -514,7 +525,7 @@ const EditInvoiceQuote = ({ id }) => {
                                     placeholder='Shipping Method'
                                     onChange={handleChange}
                                     className="px-2 py-1 w-full"
-                                    required
+                                     
                                 />
                             </div> */}
               <div className="flex min-w-[100px] items-center ">
@@ -525,7 +536,7 @@ const EditInvoiceQuote = ({ id }) => {
                   placeholder='Email '
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                  required
+
                 />
               </div>
 
@@ -534,7 +545,7 @@ const EditInvoiceQuote = ({ id }) => {
 
 
             <div>
-              <p className='p-2 text-lg font-semibold'>Shipping Address</p>
+              <p className='print-text-12px p-2 text-lg font-semibold'>Shipping Address</p>
               <div className="flex min-w-[100px] items-center ">
                 <input
                   type="text"
@@ -542,8 +553,8 @@ const EditInvoiceQuote = ({ id }) => {
                   value={formData.shippingAddress}
                   placeholder='Address'
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                  required
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -553,8 +564,8 @@ const EditInvoiceQuote = ({ id }) => {
                   value={formData.shippingCity}
                   placeholder='City'
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                  required
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -564,8 +575,8 @@ const EditInvoiceQuote = ({ id }) => {
                   value={formData.shippingState}
                   placeholder='State'
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                  required
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               {/* <div className="flex min-w-[100px] items-center "> country
@@ -576,7 +587,7 @@ const EditInvoiceQuote = ({ id }) => {
                                     placeholder='Shipping Method'
                                     onChange={handleChange}
                                     className="px-2 py-1 w-full"
-                                    required
+                                     
                                 />
                             </div> */}
               <div className="flex min-w-[100px] items-center ">
@@ -587,7 +598,7 @@ const EditInvoiceQuote = ({ id }) => {
                   placeholder='Postcode '
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                  required
+
                 />
               </div>
 
@@ -599,16 +610,16 @@ const EditInvoiceQuote = ({ id }) => {
 
 
           {/* row 3 items  product, color, size/qty, unit price, tax, qty, total, tax exempt  */}
-          <div className="pt-12">
-            <h3 className="text-xl font-semibold mb-2 bg-gradient-to-r from-blue-500 to-purple-600  block text-white px-5 py-2 rounded-md m-[-10">
+          <div className="pt-12 print-no-py">
+            <h3 className="print-no-py text-xl font-semibold mb-2 bg-gradient-to-r from-blue-500 to-purple-600  block text-white px-5 py-2 rounded-md m-[-10">
               Items
             </h3>
-          </div> 
+          </div>
           <div className='flex justify-between px-5 border-b '>
 
 
-            <div className="mt-4">
-              <div className="grid grid-cols-9 gap-4 mb-4">
+            <div className="mt-4 print-no-my">
+              <div className="print-no-my print-text-12px grid grid-cols-9 gap-4 mb-4">
                 <p>Product </p>
                 <p>Color:
                 </p>
@@ -635,7 +646,7 @@ const EditInvoiceQuote = ({ id }) => {
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
                       placeholder='Name'
-                      required
+
                     />
                   </div>
                   {/* Color */}
@@ -648,7 +659,7 @@ const EditInvoiceQuote = ({ id }) => {
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
                       placeholder='Color'
-                      required
+
                     />
                   </div>
                   {/* Size */}
@@ -661,7 +672,7 @@ const EditInvoiceQuote = ({ id }) => {
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
                       placeholder='Size'
-                      required
+
                     />
                   </div>
                   {/* Quantity */}
@@ -673,7 +684,7 @@ const EditInvoiceQuote = ({ id }) => {
                       value={item.lineQty}
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
-                      required
+
                     />
                   </div>
                   {/* Unit Price */}
@@ -685,7 +696,7 @@ const EditInvoiceQuote = ({ id }) => {
                       value={item.unitPrice}
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
-                      required
+
                     />
                   </div>
                   {/* Tax */}
@@ -748,7 +759,7 @@ const EditInvoiceQuote = ({ id }) => {
 
           {/* row 4 message,  sub total,  tax, grand total  */}
           <div className="flex justify-between gap-5 items-start px-5 border-b">
-            <div className="mt-4 w-full sm:w-[500px] ">
+            <div className="print-text-12px mt-4 w-full sm:w-[500px] ">
               <textarea
                 name="note"
                 value={formData.note}
@@ -756,12 +767,12 @@ const EditInvoiceQuote = ({ id }) => {
                 className="rounded px-2 py-1 w-full h-32"
               ></textarea>
             </div>
-            <div className="mt-4 w-full sm:w-1/2 flex flex-col space-y-4">
+            <div className="mt-4 w-full sm:w-1/2 flex flex-col">
               <div className="flex justify-end items-center gap-3">
                 <label className="block mb-2 ">Subtotal:</label>
                 <input
                   type="number"
-                  value={subtotal}
+                  value={subtotal.toFixed(2)}
                   name='subtotal'
                   onChange={handleChange}
                   readOnly
@@ -769,17 +780,16 @@ const EditInvoiceQuote = ({ id }) => {
                 />
               </div>
               <div className="flex justify-end items-center gap-3">
-                <label className="block mb-2 ">Total Tax:</label>
+                <label className="block mb-2 ">{`Total Tax (%):`}</label>
                 <div className="flex w-1/2 items-center">
                   <input
                     type="number"
-                    value={totalTax}
+                    value={totalTax.toFixed(2)}
                     name='totalTax'
                     readOnly
                     onChange={handleChange}
                     className=" rounded px-2 py-1 w-full"
                   />
-                  <span className="ml-2">%</span>
                 </div>
               </div>
               <div className="flex justify-end items-center gap-3">
@@ -787,7 +797,7 @@ const EditInvoiceQuote = ({ id }) => {
                 <input
                   type="number"
                   name='grandTotal'
-                  value={grandTotal}
+                  value={grandTotal.toFixed(2)}
                   onChange={handleChange}
                   readOnly
                   className=" rounded px-2 py-1 w-1/2"
@@ -798,17 +808,18 @@ const EditInvoiceQuote = ({ id }) => {
 
 
 
-          <div className='pt-10 px-5'>
+          <div className='no-print print-no-py print-no-my pt-10 px-5'>
             <button
               type="submit"
-              className="no-print bg-green-500 hover:bg-green-600 text-white px-4 py-2  rounded"
+              className=" bg-green-500 hover:bg-green-600 text-white px-4 py-2  rounded"
             >
               Update
             </button>
 
             <button
               onClick={handlePrint}
-              className="no-print bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mx-3"
+              type="button" 
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mx-3"
             >
               Print
             </button>

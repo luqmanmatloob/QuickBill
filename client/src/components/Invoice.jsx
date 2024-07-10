@@ -76,14 +76,24 @@ const Invoice = () => {
   const [totalTax, setTotalTax] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
   const [responseMessage, setResponseMessage] = useState("");
+  const [invoiceNoLbl, setinvoiceNoLbl] = useState('Invoice No')
+
+
+  useEffect(() => {
+    if (formData.type === 'invoice') {
+      setinvoiceNoLbl('Invoice No');
+    } else if (formData.type === 'quote') {
+      setinvoiceNoLbl('Quote No');
+    }
+  }, [formData.type]);
+
+
 
   useEffect(() => {
     calculateTotals();
   }, [formData.items, grandTotal]);
 
-  // const handlePrint = () => {
-  //   window.print();
-  // };
+
 
   const removeItem = (index) => {
     const updatedItems = [...formData.items];
@@ -256,20 +266,20 @@ const Invoice = () => {
             <div>
               <Company />
             </div>
-            <div>
-              <div className="flex justify-start items-center  max-w-[260px]">
+            <div className="mt-3 mb-1">
+              <div className="">
                 <select
                   name="type"
                   value={formData.type}
                   onChange={handleChange}
-                  className="text-xl font-semibold borde px-3 rounded py-1 w-full"
+                  className="text-xl font-semibold borde rounded py-1 w-[97%]"
                 >
                   {/* <option value="">Select</option> */}
                   <option value="invoice">Invoice</option>
                   <option value="quote">Quote</option>
                 </select>
               </div>
-             
+
               <div className="flex min-w-[100px] items-center ">
                 <label className="min-w-24 ">Order_Date: </label>
                 <input
@@ -278,8 +288,8 @@ const Invoice = () => {
                   placeholder="Order Date"
                   value={formData.dateOrdered}
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                    
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -290,8 +300,8 @@ const Invoice = () => {
                   placeholder="Due Date"
                   value={formData.dateDue}
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                    
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -302,21 +312,21 @@ const Invoice = () => {
                   value={formData.shippingMethod}
                   placeholder="Shipping Method"
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                    
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
-                <label className="min-w-24 ">Invoice_No: </label>{" "}
+                <label className="min-w-24 ">{invoiceNoLbl}: </label>{" "}
                 {/*Order Number*/}
                 <input
                   type="text"
                   name="orderNumber"
                   value={formData.orderNumber}
-                  placeholder="Invoice no"
+                  placeholder={invoiceNoLbl}
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                    
+
                 />
               </div>
               {/*                                 
@@ -347,7 +357,7 @@ const Invoice = () => {
                   placeholder="Address"
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                    
+
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -357,8 +367,8 @@ const Invoice = () => {
                   value={formData.billingCity}
                   placeholder="City"
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                    
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -368,8 +378,8 @@ const Invoice = () => {
                   value={formData.billingState}
                   placeholder="State"
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                    
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               {/* <div className="flex min-w-[100px] items-center "> country
@@ -391,7 +401,7 @@ const Invoice = () => {
                   placeholder="Email "
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                    
+
                 />
               </div>
             </div>
@@ -406,7 +416,7 @@ const Invoice = () => {
                   placeholder="Address"
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                    
+
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -416,8 +426,8 @@ const Invoice = () => {
                   value={formData.shippingCity}
                   placeholder="City"
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                    
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
@@ -427,8 +437,8 @@ const Invoice = () => {
                   value={formData.shippingState}
                   placeholder="State"
                   onChange={handleChange}
-                  className="px-2 py-1 w-full"
-                    
+                  className="px-2 py-1 my-1 w-full"
+
                 />
               </div>
               {/* <div className="flex min-w-[100px] items-center "> country
@@ -450,7 +460,7 @@ const Invoice = () => {
                   placeholder="Postcode "
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
-                    
+
                 />
               </div>
             </div>
@@ -461,11 +471,11 @@ const Invoice = () => {
             <h3 className="print-no-py text-xl font-semibold mb-2 bg-gradient-to-r from-blue-500 to-purple-600  block text-white px-5 py-2 rounded-md m-[-10">
               Items
             </h3>
-          </div> 
-          
+          </div>
+
           <div className="flex justify-between px-5 border-b ">
             <div className="mt-4 print-no-my">
-              <div className=".print-no-my print-text-12px grid grid-cols-9 gap-4 mb-4 ">
+              <div className="print-no-my print-text-12px grid grid-cols-9 gap-4 mb-4 ">
                 <p>Product </p>
                 <p>Color</p>
                 <p>Size</p>
@@ -488,7 +498,7 @@ const Invoice = () => {
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
                       placeholder="Name"
-                        
+
                     />
                   </div>
                   {/* Color */}
@@ -501,7 +511,7 @@ const Invoice = () => {
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
                       placeholder="Color"
-                        
+
                     />
                   </div>
                   {/* Size */}
@@ -514,7 +524,7 @@ const Invoice = () => {
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
                       placeholder="Size"
-                        
+
                     />
                   </div>
                   {/* Quantity */}
@@ -526,7 +536,7 @@ const Invoice = () => {
                       value={item.lineQty}
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
-                        
+
                     />
                   </div>
                   {/* Unit Price */}
@@ -538,7 +548,7 @@ const Invoice = () => {
                       value={item.unitPrice}
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
-                        
+
                     />
                   </div>
                   {/* Tax */}
@@ -612,7 +622,7 @@ const Invoice = () => {
                 <label className="block mb-2 ">Subtotal:</label>
                 <input
                   type="number"
-                  value={subtotal}
+                  value={subtotal.toFixed(2)}
                   name="subtotal"
                   onChange={handleChange}
                   readOnly
@@ -625,7 +635,7 @@ const Invoice = () => {
                 <div className="flex w-1/2 items-center">
                   <input
                     type="number"
-                    value={totalTax}
+                    value={totalTax.toFixed(2)}
                     name="totalTax"
                     readOnly
                     onChange={handleChange}
@@ -638,7 +648,7 @@ const Invoice = () => {
                 <input
                   type="number"
                   name="grandTotal"
-                  value={grandTotal}
+                  value={grandTotal.toFixed(2)}
                   onChange={handleChange}
                   readOnly
                   className=" rounded px-2 py-1 w-1/2"
@@ -657,17 +667,17 @@ const Invoice = () => {
 
             <button
               onClick={handlePrint}
+              type="button" 
               className=" bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded mx-3"
             >
               Print
             </button>
             {responseMessage && (
               <span
-                className={`mt-4 ${
-                  responseMessage.startsWith("Error")
+                className={`mt-4 ${responseMessage.startsWith("Error")
                     ? "text-red-500"
                     : "text-green-500"
-                }`}
+                  }`}
               >
                 {responseMessage}
               </span>
