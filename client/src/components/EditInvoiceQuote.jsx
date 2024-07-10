@@ -386,10 +386,10 @@ const EditInvoiceQuote = ({ id }) => {
       <form
         className="relative flex flex-col px-2 md:flex-row"
         onSubmit={handleSubmit}            >
-        <div className="print-no-py .print-no-my my-6 flex-1 space-y-2  rounded-md bg-white p-4 shadow-sm sm:space-y-4 md:p-6">
+        <div className="print-shadow-none print-no-py .print-no-my my-6 flex-1 space-y-2  rounded-md bg-white p-4 shadow-sm sm:space-y-4 md:p-6">
 
           {/* row 1 compnay info and invoice infor */}
-          <div className='flex justify-between w-full border-b'>
+          <div className='print-border-none flex justify-between w-full border-b'>
 
             <div >
               <Company />
@@ -477,7 +477,7 @@ const EditInvoiceQuote = ({ id }) => {
           </div>
 
           {/* row 2, billing adress and shipping adress  city statecounty email adress */}
-          <div className='flex justify-between px-5 border-b'>
+          <div className='print-border-none flex justify-between px-5 border-b'>
 
 
 
@@ -615,7 +615,7 @@ const EditInvoiceQuote = ({ id }) => {
               Items
             </h3>
           </div>
-          <div className='flex justify-between px-5 border-b '>
+          <div className='print-border-none flex justify-between px-5 border-b '>
 
 
             <div className="mt-4 print-no-my">
@@ -758,7 +758,7 @@ const EditInvoiceQuote = ({ id }) => {
 
 
           {/* row 4 message,  sub total,  tax, grand total  */}
-          <div className="flex justify-between gap-5 items-start px-5 border-b">
+          <div className="print-border-none flex justify-between gap-5 items-start px-5 border-b">
             <div className="print-text-12px mt-4 w-full sm:w-[500px] ">
               <textarea
                 name="note"

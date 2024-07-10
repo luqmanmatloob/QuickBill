@@ -17,6 +17,7 @@ const Upload = () => {
     setLoading(true)
     if (!file) {
       alert('No file selected');
+      setLoading(false)
       return;
     }
 
