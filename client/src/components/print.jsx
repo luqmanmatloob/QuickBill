@@ -32,7 +32,7 @@ const Print = ({ id }) => {
 
   return (
     <div className='bg-blue-100 min-h-screen p-10 overflow-auto'>
-      <div className='text-2xl text-red-600'>Invoices</div>
+      <div className='text-2xl text-red-600'>Component under development</div>
     </div>
   );
 };
