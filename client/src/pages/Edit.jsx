@@ -9,9 +9,9 @@ const Edit = () => {
     console.log(id)
 
     return (<>
-<h2 className='bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent flex justify-center text-2xl p-5 m-2 mt-3 font-semibold'>
-  EDIT
-</h2>
+        <h2 className='bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent flex justify-center text-2xl p-5 m-2 mt-3 font-semibold'>
+            EDIT
+        </h2>
 
         <div className='bg-gray-100'>
 
@@ -24,7 +24,7 @@ const Edit = () => {
 
         </div>
 
-</>
+    </>
 
     )
 }

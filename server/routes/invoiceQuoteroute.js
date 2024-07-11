@@ -7,6 +7,7 @@ const {
     getAllInvoicesQuotes,
     getInvoicesByUniqueKeys,
     deleteMultipleInvoices,
+    getByUniqueKeys,
     
 
 } = require('../controllers/invoiceQuoterouteController');
@@ -41,6 +42,9 @@ router.delete('/deleteMultipleInvoices', deleteMultipleInvoices);
 
 // Delete an invoice or quote by ID
 router.delete('/:id', deleteInvoiceQuote);
+
+router.post('/getByUniqueKeys', getByUniqueKeys )
+
 
 
 

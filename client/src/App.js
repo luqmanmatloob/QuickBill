@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import UploadPage from './pages/Upload';
 import Setting from './pages/Settings'; 
 import Edit from './pages/Edit'
+import PrintPage from './pages/PrintPage'
 import InvoiceQuotesListPage from './pages/InvoiceQuotesListPage'
 
 
@@ -18,6 +19,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/uploadPage" element={<UploadPage />} />
           <Route path="/edit/:id" element={<Edit />} /> 
+          <Route path="/print/:id" element={<PrintPage />} /> 
           <Route path="/setting" element={<Setting />} />
           <Route path="/InvoiceQuotesListPage" element={<InvoiceQuotesListPage />} />
         </Routes>
