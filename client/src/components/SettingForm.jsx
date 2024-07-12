@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 const SettingForm = () => {
   const [loading, setLoading] = useState(true);
   const [settings, setSettings] = useState({
@@ -12,6 +11,8 @@ const SettingForm = () => {
     url: ''
   });
   const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+
 
   useEffect(() => {
     // Fetch current settings when the component mounts
@@ -35,6 +36,9 @@ const SettingForm = () => {
         country: data.country || '',
         url: data.url || ''
       });
+
+
+
       setLoading(false)
 
     } catch (error) {
@@ -64,10 +68,10 @@ const SettingForm = () => {
   };
 
   return (
-    <div 
-    className="max-w-lg mx-auto bg-white rounded-lg shadow-2xl p-8 my-5 border-b-slate-300 border-solid border-2 border-r-[#6539c0] border-l-[#6539c0]" 
+    <div
+      className="max-w-lg mx-auto bg-white rounded-lg shadow-2xl p-8 my-5 border-b-slate-300 border-solid border-2 border-r-[#6539c0] border-l-[#6539c0]"
     >
-       {loading && (
+      {loading && (
         <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
           Loading...
         </div>
@@ -121,12 +125,12 @@ const SettingForm = () => {
 
             </label>
           </div>
-        
 
 
 
-        
-        
+
+
+
           <div className='flex flex-col gap-6'>
 
             <label>
@@ -176,3 +180,4 @@ const SettingForm = () => {
 };
 
 export default SettingForm;
+

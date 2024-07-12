@@ -8,6 +8,7 @@ import Setting from './pages/Settings';
 import Edit from './pages/Edit'
 import PrintPage from './pages/PrintPage'
 import InvoiceQuotesListPage from './pages/InvoiceQuotesListPage'
+import TestPage from './pages/TestPage'
 
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/print/:id" element={<PrintPage />} /> 
           <Route path="/setting" element={<Setting />} />
           <Route path="/InvoiceQuotesListPage" element={<InvoiceQuotesListPage />} />
+          <Route path="/test" element={<TestPage />} />
         </Routes>
         <Footer />
       </div>

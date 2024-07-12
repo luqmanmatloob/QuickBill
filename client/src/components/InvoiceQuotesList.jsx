@@ -7,10 +7,19 @@ const InvoiceQuotesList = () => {
     const [invoicesQuotes, setInvoicesQuotes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedInvoices, setSelectedInvoices] = useState([]);
+    const [bulkPrint, setBulkPrint] = useState(false);
 
 
+    const handleBulkPrint = () => {
+        if (bulkPrint) {
+          setBulkPrint(false);
+        } else {
+          setBulkPrint(true);
+        }
+      };
 
-    useEffect(() => {
+
+      useEffect(() => {
         fetchInvoicesQuotes();
     }, []);
 
@@ -68,6 +77,8 @@ const InvoiceQuotesList = () => {
     };
 
 
+
+
     return (
         <div className="
         container p-6 mx-auto bg-white rounded-lg shadow-2xl  my-5 border-b-slate-300 border-solid border-2 border-r-[#6539c0] border-l-[#6539c0]"
@@ -80,8 +91,13 @@ const InvoiceQuotesList = () => {
                         Sort
                     </button>
                     <Link to={`/print/${selectedInvoices}`} target='_blank' className=" bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded mx-3">
-                        Bulk Print
-                    </Link>
+                        Print
+                    </Link>  
+{/* 
+                    <button onClick={handleBulkPrint}>print2</button>
+                    <p>{bulkPrint}</p>
+                    {bulkPrint && <Print id={id}/>} */}
+
                 </div>
             </div>
             {loading && (
