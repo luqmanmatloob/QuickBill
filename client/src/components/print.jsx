@@ -195,7 +195,7 @@ const Print = ({ id }) => {
     const pdfUrl = doc.output('bloburl');
     console.log('Generated PDF URL:', pdfUrl);
 
-    window.open('', '_self').close();
+    // window.open('', '_self').close();
     window.open(pdfUrl, '_blank');
   };
 
