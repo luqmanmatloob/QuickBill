@@ -6,6 +6,7 @@ const Print = ({ id }) => {
   const [gettingsetting, setgettingsetting] = useState(false);
   const [gettinginvoices, setgettinginvoices] = useState(false);
   const [generatingpdf, setgeneratingpdf] = useState(false);
+  const [success, setsuccess] = useState(false);
   const [invoices, setInvoices] = useState([]);
   const [settings, setSettings] = useState({
     companyName: '',
@@ -38,7 +39,7 @@ const Print = ({ id }) => {
 
 
 
-  
+
   const fetchSettings = async () => {
     try {
       setgettingsetting(true)
@@ -209,6 +210,7 @@ const Print = ({ id }) => {
     const pdfUrl = doc.output('bloburl');
     console.log('Generated PDF URL:', pdfUrl);
     setgeneratingpdf(false)
+    setsuccess(true)
 
     // window.open('', '_self').close();
     window.open(pdfUrl, '_blank');
@@ -221,21 +223,29 @@ const Print = ({ id }) => {
       <div className='bg-white rounded-lg shadow-2xl p-8 border-r-[#6539c0] border-l-[#6539c0] border-solid border-2 min-h-[70vh]'>
         <p className="my-4 bg-green-300 text-green-800 py-2 px-4 rounded text-center"> Please Make sure Pop ups are allowed</p>
 
-        {gettingsetting &&  (
-        <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
-          Loading Info...
-        </div>
-      )}
-        {gettinginvoices &&  (
-        <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
-          Loading Invoices & Quotes ...
-        </div>
-      )}
-        {generatingpdf &&  (
-        <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
-          generating PDF...
-        </div>
-      )}
+        {gettingsetting && (
+          <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+            Loading Info...
+          </div>
+        )}
+
+        {gettinginvoices && (
+          <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+            Loading Invoices & Quotes ...
+          </div>
+        )}
+
+        {generatingpdf && (
+          <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+            generating PDF...
+          </div>
+        )}
+
+        {success && (
+          <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+            PDF for Print Generated Successfully
+          </div>
+        )}
 
 
       </div>

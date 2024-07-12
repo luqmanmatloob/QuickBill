@@ -7,19 +7,19 @@ const InvoiceQuotesList = () => {
     const [invoicesQuotes, setInvoicesQuotes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedInvoices, setSelectedInvoices] = useState([]);
-    const [bulkPrint, setBulkPrint] = useState(false);
+    const [printBtn, setPrintBtn] = useState(false);
 
 
-    const handleBulkPrint = () => {
-        if (bulkPrint) {
-          setBulkPrint(false);
+
+    useEffect(() => {
+        if (selectedInvoices.length > 0) {
+            setPrintBtn(true);
         } else {
-          setBulkPrint(true);
+            setPrintBtn(false);
         }
-      };
+    }, [selectedInvoices]);
 
-
-      useEffect(() => {
+    useEffect(() => {
         fetchInvoicesQuotes();
     }, []);
 
@@ -90,13 +90,19 @@ const InvoiceQuotesList = () => {
                     <button className='bg-[#6539c0] hover:bg-purple-500 text-white px-6 py-[7px] rounded hidden'>
                         Sort
                     </button>
-                    <Link to={`/print/${selectedInvoices}`} target='_blank' className=" bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded mx-3">
-                        Print
-                    </Link>  
-{/* 
-                    <button onClick={handleBulkPrint}>print2</button>
-                    <p>{bulkPrint}</p>
-                    {bulkPrint && <Print id={id}/>} */}
+
+                    {printBtn &&
+                        (<Link to={`/print/${selectedInvoices}`} target='_blank' className=" bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded mx-3">
+                            Print
+                        </Link>)
+                    }
+
+                    {!printBtn &&
+                        (<Link className=" bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded mx-3">
+                            Plesse Select to Print
+                        </Link>)
+                    }
+
 
                 </div>
             </div>
