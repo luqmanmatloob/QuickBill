@@ -168,9 +168,10 @@ const Print = ({ id }) => {
       // Table Headers
       doc.setFontSize(12);
       doc.text('Product Name', 15, startY);
-      doc.text('Quantity', 110, startY);
-      doc.text('Unit Price', 130, startY);
-      doc.text('Line Total', 160, startY);
+      doc.text('Quantity', 100, startY);
+      doc.text('Price', 123, startY);
+      doc.text('Tax', 140, startY);
+      doc.text('Total', 160, startY);
       startY += 10;
 
       // Table Content
@@ -178,28 +179,37 @@ const Print = ({ id }) => {
         const unitPrice = parseFloat(item.unitPrice) || 0;
         const lineQty = parseInt(item.lineQty) || 0;
         const lineTotal = unitPrice * lineQty;
-        const tax = parseFloat(item.tax) || 0;
+        let tax = parseFloat(item.tax) || 0;
+        tax= lineQty*tax;
         const taxExempt = item.taxExempt;
-        const taxAmount = taxExempt ? 0 : (lineTotal * tax) / 100;
+         tax =(taxExempt ? 0 : tax);
 
         subtotal += lineTotal;
-        totalTax += taxAmount;
-        GrandTotal = subtotal + totalTax;
+        totalTax += tax;
 
         const yPosition = startY + itemIndex * 10;
         doc.text(`${item.productName}`, 15, yPosition);
-        doc.text(`${item.lineQty}`, 110, yPosition);
-        doc.text(`${item.unitPrice}`, 130, yPosition);
+        doc.text(`${item.lineQty}`, 103, yPosition);
+        doc.text(`${item.unitPrice}`, 124, yPosition);
+        doc.text(`${item.tax}`, 141, yPosition);
         doc.text(`${item.lineTotal}`, 160, yPosition);
       });
+
+       GrandTotal = subtotal + totalTax;
 
       // Totals
       const totalsY = startY + invoice.items.length * 10 + 10;
 
       doc.setFontSize(12);
-      doc.text(`Subtotal:      ${subtotal.toFixed(2)}`, 130, totalsY);
-      doc.text(`Tax:           ${totalTax.toFixed(2)}`, 130, totalsY + 5);
-      doc.text(`Grand Total:   ${GrandTotal.toFixed(2)}`, 130, totalsY + 10);
+      doc.text(`Subtotal:`, 120, totalsY);
+      doc.text(`Total Tax:`, 120, totalsY + 5);
+      doc.text(`Grand Total:`, 120, totalsY + 10);
+
+
+      doc.setFontSize(12);
+      doc.text(`${subtotal.toFixed(2)}`, 155, totalsY);
+      doc.text(`${totalTax.toFixed(2)}`, 155, totalsY + 5);
+      doc.text(`${GrandTotal.toFixed(2)}`, 155, totalsY + 10);
 
       // Footer Note
       doc.setFontSize(10);

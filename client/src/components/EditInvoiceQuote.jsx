@@ -219,9 +219,9 @@ const EditInvoiceQuote = ({ id }) => {
       const lineQty = parseInt(updatedItems[index].lineQty) || 0;
       const tax = parseFloat(updatedItems[index].tax) || 0;
       const taxExempt = updatedItems[index].taxExempt;
-      const lineTotal = lineQty * unitPrice;
-      const taxAmount = taxExempt ? 0 : (lineTotal * tax) / 100;
-      updatedItems[index].lineTotal = lineTotal + taxAmount;
+      let lineTotal = lineQty * unitPrice;
+       lineTotal = taxExempt ? lineTotal : (lineTotal + tax*lineQty);
+      updatedItems[index].lineTotal = lineTotal;
     }
 
     const updatedFormData = { ...formData, items: updatedItems };
@@ -229,31 +229,6 @@ const EditInvoiceQuote = ({ id }) => {
   };
 
 
-  // const calculateTotals = () => {
-  //   let subtotal = 0;
-  //   let totalTax = 0;
-  //   formData.items.forEach((item) => {
-  //     const unitPrice = parseFloat(item.unitPrice) || 0;
-  //     const lineQty = parseInt(item.lineQty) || 0;
-  //     const lineTotal = unitPrice * lineQty;
-  //     const tax = parseFloat(item.tax) || 0;
-  //     const taxExempt = item.taxExempt;
-  //     const taxAmount = taxExempt ? 0 : (lineTotal * tax) / 100;
-
-  //     subtotal += lineTotal;
-  //     totalTax += taxAmount;
-  //   });
-  //   setSubtotal(subtotal);
-  //   setTotalTax(totalTax);
-  //   setGrandTotal(subtotal + totalTax);
-
-  //   const computedOrderTotal = grandTotal;
-  //   console.log(`grandtotal ${grandTotal}`)
-  //   console.log(`computedordertotal ${computedOrderTotal}`)
-  //   const updatedFormData = { ...formData, orderTotal: computedOrderTotal };
-  //   setFormData(updatedFormData);
-
-  // };
 
   const calculateTotals = () => {
     let subtotal = 0;
@@ -264,7 +239,7 @@ const EditInvoiceQuote = ({ id }) => {
       const lineTotal = unitPrice * lineQty;
       const tax = parseFloat(item.tax) || 0;
       const taxExempt = item.taxExempt;
-      const taxAmount = taxExempt ? 0 : (lineTotal * tax) / 100;
+      const taxAmount = taxExempt ? 0 : (lineQty * tax) ;
 
       subtotal += lineTotal;
       totalTax += taxAmount;
@@ -620,15 +595,15 @@ const EditInvoiceQuote = ({ id }) => {
 
             <div className="mt-4 print-no-my">
               <div className="print-no-my print-text-12px grid grid-cols-9 gap-4 mb-4">
-                <p>Product </p>
-                <p>Color:
-                </p>
-                <p>Size:
+                <p className='col-span-2'>Product </p>
+                {/* <p>Color:
+                </p> */}
+                <p className="pl-2">Size:
                 </p>
                 <p>Quantity:
                 </p>
                 <p>Unit Price:</p>
-                <p>{'Tax (%):'}</p>
+                <p className="pl-4">{'Tax:'}</p>
                 <p>Tax Exempt:</p>
                 <p>Total:</p>
 
@@ -637,7 +612,7 @@ const EditInvoiceQuote = ({ id }) => {
               {formData.items.map((item, index) => (
                 <div key={index} className="grid grid-cols-9 gap-4">
                   {/* Product Name */}
-                  <div>
+                  <div className='col-span-2'>
                     {/* <label className="block mb-2">Product Name:</label> */}
                     <input
                       type="text"
@@ -650,9 +625,9 @@ const EditInvoiceQuote = ({ id }) => {
                     />
                   </div>
                   {/* Color */}
-                  <div>
+                  {/* <div> */}
                     {/* <label className="block mb-2">Color:</label> */}
-                    <input
+                    {/* <input
                       type="text"
                       name={`items[${index}].color`}
                       value={item.color}
@@ -660,8 +635,8 @@ const EditInvoiceQuote = ({ id }) => {
                       className="rounded px-2 py-1 w-full"
                       placeholder='Color'
 
-                    />
-                  </div>
+                    /> */}
+                  {/* </div> */}
                   {/* Size */}
                   <div>
                     {/* <label className="block mb-2">Size:</label> */}
@@ -700,7 +675,7 @@ const EditInvoiceQuote = ({ id }) => {
                     />
                   </div>
                   {/* Tax */}
-                  <div>
+                  <div className='pl-3'>
                     {/* <label className="block mb-2">Tax (%):</label> */}
                     <input
                       type="number"

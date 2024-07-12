@@ -127,9 +127,9 @@ const Invoice = () => {
       const lineQty = parseInt(updatedItems[index].lineQty) || 0;
       const tax = parseFloat(updatedItems[index].tax) || 0;
       const taxExempt = updatedItems[index].taxExempt;
-      const lineTotal = lineQty * unitPrice;
-      const taxAmount = taxExempt ? 0 : (lineTotal * tax) / 100;
-      updatedItems[index].lineTotal = lineTotal + taxAmount;
+      let lineTotal = lineQty * unitPrice;
+       lineTotal = taxExempt ? lineTotal : (lineTotal + tax*lineQty);
+      updatedItems[index].lineTotal = lineTotal;
     }
 
     const updatedFormData = { ...formData, items: updatedItems };
@@ -145,7 +145,7 @@ const Invoice = () => {
       const lineTotal = unitPrice * lineQty;
       const tax = parseFloat(item.tax) || 0;
       const taxExempt = item.taxExempt;
-      const taxAmount = taxExempt ? 0 : (lineTotal * tax) / 100;
+      const taxAmount = taxExempt ? 0 : (lineQty * tax);
 
       subtotal += lineTotal;
       totalTax += taxAmount;
@@ -476,12 +476,12 @@ const Invoice = () => {
           <div className="print-border-none flex justify-between px-5 border-b ">
             <div className="mt-4 print-no-my">
               <div className="print-no-my print-text-12px grid grid-cols-9 gap-4 mb-4 ">
-                <p>Product </p>
-                <p>Color</p>
-                <p>Size</p>
+                <p className="col-span-2" >Product </p>
+                {/* <p>Color</p> */}
+                <p className="pl-2">Size</p>
                 <p>Quantity:</p>
                 <p>Unit Price</p>
-                <p>{"Tax (%)"}</p>
+                <p className="pl-4">{"Tax"}</p>
                 <p>{`Tax Exempt`}</p>
                 <p>Total:</p>
               </div>
@@ -489,7 +489,7 @@ const Invoice = () => {
               {formData.items.map((item, index) => (
                 <div key={index} className="grid grid-cols-9 gap-4">
                   {/* Product Name */}
-                  <div>
+                  <div className="col-span-2">
                     {/* <label className="block mb-2">Product Name:</label> */}
                     <input
                       type="text"
@@ -502,9 +502,9 @@ const Invoice = () => {
                     />
                   </div>
                   {/* Color */}
-                  <div>
+                  {/* <div> */}
                     {/* <label className="block mb-2">Color:</label> */}
-                    <input
+                    {/* <input
                       type="text"
                       name={`items[${index}].color`}
                       value={item.color}
@@ -513,7 +513,7 @@ const Invoice = () => {
                       placeholder="Color"
 
                     />
-                  </div>
+                  </div> */}
                   {/* Size */}
                   <div>
                     {/* <label className="block mb-2">Size:</label> */}
@@ -528,7 +528,7 @@ const Invoice = () => {
                     />
                   </div>
                   {/* Quantity */}
-                  <div>
+                  <div >
                     {/* <label className="block mb-2">Quantity:</label> */}
                     <input
                       type="number"
@@ -552,7 +552,7 @@ const Invoice = () => {
                     />
                   </div>
                   {/* Tax */}
-                  <div>
+                  <div className="pl-4">
                     {/* <label className="block mb-2">Tax (%):</label> */}
                     <input
                       type="number"
@@ -563,7 +563,7 @@ const Invoice = () => {
                     />
                   </div>
                   {/* Tax Exempt */}
-                  <div>
+                  <div className="pl-3">
                     {/* <label className="block mb-2">Tax Exempt:</label> */}
                     <input
                       type="checkbox"
@@ -631,7 +631,7 @@ const Invoice = () => {
               </div>
 
               <div className=" flex justify-end items-center gap-3">
-                <label className="block mb-2 ">{`Total Tax (%):`}</label>
+                <label className="block mb-2 ">{`Total Tax:`}</label>
                 <div className="flex w-1/2 items-center">
                   <input
                     type="number"
