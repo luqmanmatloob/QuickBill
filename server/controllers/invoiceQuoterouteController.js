@@ -30,7 +30,7 @@ exports.createInvoiceQuote = async (req, res) => {
         const { 
             type, orderNumber, note, dateOrdered, dateDue, orderTotal, items,
             billingCity, billingAddress, billingState, billingEmailAddress,
-            shippingAddress, shippingCity, shippingMethod, shippingState, shippingPostcode
+            shippingAddress, shippingCity, shippingMethod,paymentMethod, shippingState, shippingPostcode,payments
         } = req.body;
 
         if (!type || !['invoice', 'quote'].includes(type)) {
@@ -45,6 +45,7 @@ exports.createInvoiceQuote = async (req, res) => {
             dateDue,
             orderTotal,
             shippingMethod,
+            paymentMethod,
             billingCity,
             billingAddress,
             billingState,
@@ -53,7 +54,8 @@ exports.createInvoiceQuote = async (req, res) => {
             shippingCity,
             shippingState,
             shippingPostcode,
-            items
+            items,
+            payments
         });
 
         await newInvoiceOrQuote.save();

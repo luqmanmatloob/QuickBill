@@ -220,7 +220,7 @@ const EditInvoiceQuote = ({ id }) => {
       const tax = parseFloat(updatedItems[index].tax) || 0;
       const taxExempt = updatedItems[index].taxExempt;
       let lineTotal = lineQty * unitPrice;
-       lineTotal = taxExempt ? lineTotal : (lineTotal + tax*lineQty);
+      lineTotal = taxExempt ? lineTotal : (lineTotal + tax * lineQty);
       updatedItems[index].lineTotal = lineTotal;
     }
 
@@ -239,7 +239,7 @@ const EditInvoiceQuote = ({ id }) => {
       const lineTotal = unitPrice * lineQty;
       const tax = parseFloat(item.tax) || 0;
       const taxExempt = item.taxExempt;
-      const taxAmount = taxExempt ? 0 : (lineQty * tax) ;
+      const taxAmount = taxExempt ? 0 : (lineQty * tax);
 
       subtotal += lineTotal;
       totalTax += taxAmount;
@@ -376,7 +376,7 @@ const EditInvoiceQuote = ({ id }) => {
                   value={formData.type}
                   onChange={handleChange}
                   className="text-xl font-semibold borde rounded py-1 w-[97%]"
-                  >
+                >
                   {/* <option value="">Select</option> */}
                   <option value="invoice">Invoice</option>
                   <option value="quote">Quote</option>
@@ -600,7 +600,7 @@ const EditInvoiceQuote = ({ id }) => {
                 </p> */}
                 <p className="pl-2">Size:
                 </p>
-                <p>Quantity:
+                <p>Qty:
                 </p>
                 <p>Unit Price:</p>
                 <p className="pl-4">{'Tax:'}</p>
@@ -626,8 +626,8 @@ const EditInvoiceQuote = ({ id }) => {
                   </div>
                   {/* Color */}
                   {/* <div> */}
-                    {/* <label className="block mb-2">Color:</label> */}
-                    {/* <input
+                  {/* <label className="block mb-2">Color:</label> */}
+                  {/* <input
                       type="text"
                       name={`items[${index}].color`}
                       value={item.color}
@@ -793,7 +793,7 @@ const EditInvoiceQuote = ({ id }) => {
 
             <button
               onClick={handlePrint}
-              type="button" 
+              type="button"
               className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mx-3"
             >
               Print

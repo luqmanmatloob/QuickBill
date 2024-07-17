@@ -99,7 +99,7 @@ const InvoiceQuotesList = () => {
 
                     {!printBtn &&
                         (<Link className=" bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded mx-3">
-                            Plesse Select to Print
+                            Please Select to Print
                         </Link>)
                     }
 

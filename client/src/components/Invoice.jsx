@@ -5,6 +5,7 @@ import Company from "./Company";
 
 const Invoice = () => {
 
+
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -26,6 +27,7 @@ const Invoice = () => {
     shippingAddress: "",
     shippingCity: "",
     shippingMethod: "",
+    paymentMethod: "",
     shippingAddress: "",
     shippingState: "",
     shippingPostcod: "",
@@ -69,14 +71,34 @@ const Invoice = () => {
         designPrice: 0,
       },
     ],
+    payments:
+      [
+        {
+          amount: "",
+          date: "",
+          reference: "", //for any credit card or banking information
+          note: "",
+          otherType: "", //text area for any other type of paymen
+          paymentMethod: "", // Payment method specific to each payment
+          type: "" //{ type: String, enum: ['deposit', 'on_delivery', 'other'], default: 'other' } // Add type field
+
+        },
+      ],
     note: "You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.",
   });
+
+
+
+
+
 
   const [subtotal, setSubtotal] = useState(0);
   const [totalTax, setTotalTax] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
   const [responseMessage, setResponseMessage] = useState("");
   const [invoiceNoLbl, setinvoiceNoLbl] = useState('Invoice No')
+  const [editPayments, setEditPayments] = useState(false)
+  const [totalPayments, setTotalPayments] = useState(1)
 
 
   useEffect(() => {
@@ -108,6 +130,26 @@ const Invoice = () => {
     setFormData(updatedFormData);
   };
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const handleItemChange = (index, e) => {
     const { name, value, type, checked } = e.target;
     const updatedItems = [...formData.items];
@@ -128,13 +170,95 @@ const Invoice = () => {
       const tax = parseFloat(updatedItems[index].tax) || 0;
       const taxExempt = updatedItems[index].taxExempt;
       let lineTotal = lineQty * unitPrice;
-       lineTotal = taxExempt ? lineTotal : (lineTotal + tax*lineQty);
+      lineTotal = taxExempt ? lineTotal : (lineTotal + tax * lineQty);
       updatedItems[index].lineTotal = lineTotal;
     }
 
     const updatedFormData = { ...formData, items: updatedItems };
     setFormData(updatedFormData);
   };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const handlePaymentChange = (index, e) => {
+    const { name, value } = e.target;
+    const updatedPayments = [...formData.payments];
+    const key = name.replace(`payments[${index}].`, "");
+
+    updatedPayments[index] = {
+      ...updatedPayments[index],
+      [key]: value
+    };
+
+    const updatedFormData = { ...formData, payments: updatedPayments };
+    setFormData(updatedFormData);
+    console.log(updatedFormData)
+  };
+
+  const addPayment = () => {
+    const newPayment = {
+      amount: '',
+      date: '',
+      method: '',
+      reference: '',
+      note: '',
+      otherType: '',
+      paymentMethod: '',
+      type: ''
+    };
+    const updatedPayments = [...formData.payments, newPayment];
+    setFormData({ ...formData, payments: updatedPayments });
+    setTotalPayments(totalPayments + 1)
+
+  };
+
+  const removePayment = (index) => {
+    const updatedPayments = [...formData.payments];
+    updatedPayments.splice(index, 1);
+    setFormData({ ...formData, payments: updatedPayments });
+    setTotalPayments(totalPayments - 1)
+
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   const calculateTotals = () => {
     let subtotal = 0;
@@ -281,7 +405,7 @@ const Invoice = () => {
               </div>
 
               <div className="flex min-w-[100px] items-center ">
-                <label className="min-w-24 ">Order_Date: </label>
+                <label className="min-w-24 ">Order Date: </label>
                 <input
                   type="date"
                   name="dateOrdered"
@@ -293,7 +417,7 @@ const Invoice = () => {
                 />
               </div>
               <div className="flex min-w-[100px] items-center ">
-                <label className="min-w-24 ">Due_Date: </label>
+                <label className="min-w-24 ">Due Date: </label>
                 <input
                   type="date"
                   name="dateDue"
@@ -324,6 +448,20 @@ const Invoice = () => {
                   name="orderNumber"
                   value={formData.orderNumber}
                   placeholder={invoiceNoLbl}
+                  onChange={handleChange}
+                  className="px-2 py-1 w-full"
+                  required
+
+                />
+              </div>
+              <div className="flex min-w-[100px] items-center ">
+                <label className="min-w-24 ">Payment:</label>{" "}
+                {/*Order Number*/}
+                <input
+                  type="text"
+                  name="paymentMethod"
+                  value={formData.paymentMethod}
+                  placeholder="payment Method"
                   onChange={handleChange}
                   className="px-2 py-1 w-full"
 
@@ -479,7 +617,7 @@ const Invoice = () => {
                 <p className="col-span-2" >Product </p>
                 {/* <p>Color</p> */}
                 <p className="pl-2">Size</p>
-                <p>Quantity:</p>
+                <p>Qty:</p>
                 <p>Unit Price</p>
                 <p className="pl-4">{"Tax"}</p>
                 <p>{`Tax Exempt`}</p>
@@ -498,13 +636,14 @@ const Invoice = () => {
                       onChange={(e) => handleItemChange(index, e)}
                       className="rounded px-2 py-1 w-full"
                       placeholder="Name"
+                      required
 
                     />
                   </div>
                   {/* Color */}
                   {/* <div> */}
-                    {/* <label className="block mb-2">Color:</label> */}
-                    {/* <input
+                  {/* <label className="block mb-2">Color:</label> */}
+                  {/* <input
                       type="text"
                       name={`items[${index}].color`}
                       value={item.color}
@@ -654,8 +793,227 @@ const Invoice = () => {
                   className=" rounded px-2 py-1 w-1/2"
                 />
               </div>
+              <div className="flex justify-end items-center gap-3">
+                <label className="block mb-2 ">Payments:</label>
+                <input
+                  type="number"
+                  name="grandTotal"
+                  value={totalPayments}
+                  onChange={handleChange}
+                  readOnly
+                  className=" rounded px-2 py-1 w-1/2"
+                />
+
+              </div>
+              <div className="flex justify-center pr-10 mb-5">
+                <button type="button"
+                  className="text-blue-500 underline"
+                  onClick={() => { setEditPayments(true) }}>
+                  Edit payment Plan
+                </button>
+
+              </div>
             </div>
           </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+          {editPayments &&
+
+            (
+              <div
+                className="fixed z-50 top-3 right-0 left-0 bottom-6 bg-white rounded-lg shadow-2xl p-10  border-b-slate-300 border-solid border-2 border-r-[#6539c0] border-l-[#6539c0] overflow-auto m-52"
+                style={{ boxShadow: `0 25px 50px 600px rgba(0, 0, 0, 0.50)`, }}
+              >
+
+                <button type="button"
+                  className="fixed top-10 right-60 bg-red-500 rounded-md px-3 py-1 font-semibold text-lg text-white"
+                  onClick={() => { setEditPayments(false) }}>
+                  X
+                </button>
+                <div className="print-no-my print-text-12px grid grid-cols-9 gap-4 mb-4">
+
+
+                </div>
+
+                {formData.payments.map((payment, index) => (
+                  <div key={index} className=" flex justify-between border-b-4 py-2">
+
+                    <div className="flex gap-5">
+                      <div className="flex flex-col gap-2 pt-1">
+                        <label>Amount</label>
+                        <label>Payment Date</label>
+                        {/* <label>Reference</label> */}
+                        <label>PaymentMethod</label>
+
+
+                      </div>
+
+                      <div>
+                        <div className=''>
+                          <input
+                            type="number"
+                            name={`payments[${index}].amount`}
+                            value={payment.amount}
+                            onChange={(e) => handlePaymentChange(index, e)}
+                            className="rounded px-2 py-1 w-full"
+                            placeholder='Amount'
+                          />
+                        </div>
+                        {/* Date */}
+                        <div className='flex items-center justify-center'>
+                          <input
+                            type="date"
+                            name={`payments[${index}].date`}
+                            value={payment.date}
+                            onChange={(e) => handlePaymentChange(index, e)}
+                            className="rounded px-2 py-1 w-full"
+                            placeholder='Date'
+                          />
+                        </div>
+                        {/* Reference */}
+                        {/* <div className='flex items-center justify-center'>
+                          <input
+                            type="text"
+                            name={`payments[${index}].reference`}
+                            value={payment.reference}
+                            onChange={(e) => handlePaymentChange(index, e)}
+                            className="rounded px-2 py-1 w-full"
+                            placeholder='Reference'
+                          />
+                        </div> */}
+                        {/* Note */}
+
+                        <div className='flex items-center justify-center'>
+                          <input
+                            type="text"
+                            name={`payments[${index}].paymentMethod`}
+                            value={payment.paymentMethod}
+                            onChange={(e) => handlePaymentChange(index, e)}
+                            className="rounded px-2 py-1 w-full"
+                            placeholder='Payment Method'
+                          />
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div className="flex gap-5">
+                      <div className="flex flex-col gap-2 pt-1">
+                        <label>Type</label>
+                        <label>Other Type</label>
+                        <label>Note</label>
+
+
+
+                      </div>
+
+                      <div>
+
+                        {/* <div className='flex items-center justify-center'>
+                          <input
+                            type="text"
+                            name={`payments[${index}].type`}
+                            value={payment.type}
+                            onChange={(e) => handlePaymentChange(index, e)}
+                            className="rounded px-2 py-1 w-full"
+                            placeholder='Type'
+                          />
+                        </div> */}
+
+                        <div className="mb-2">
+                          <select
+                            name={`payments[${index}].type`}
+                            value={payment.type}
+                            onChange={(e) => handlePaymentChange(index, e)}
+                            className=""
+                          >
+                            <option value="deposit">Deposit</option>
+                            <option value="on delivery">On Delivery</option>
+                            <option value="other">Other</option>
+                          </select>
+                        </div>
+
+                        <div className='flex items-center justify-center'>
+                          <input
+                            type="text"
+                            name={`payments[${index}].otherType`}
+                            value={payment.otherType}
+                            onChange={(e) => handlePaymentChange(index, e)}
+                            className="rounded px-2 py-1 w-full"
+                            placeholder='Other Type'
+                          />
+                        </div>
+                        <div className='flex items-center justify-center'>
+                          <textarea
+                            // type="text"
+                            name={`payments[${index}].note`}
+                            value={payment.note}
+                            onChange={(e) => handlePaymentChange(index, e)}
+                            className="rounded px-2 py-1 w-full border-2"
+                          // placeholder='Note'
+                          ></textarea>
+                        </div>
+                        <div className="flex justify-center">
+                          <button
+                            type="button"
+                            onClick={() => removePayment(index)}
+                            className="no-print bg-red-500 hover:bg-red-600 m-1 text-white px-4 py-1 rounded "
+                          >
+                            X
+                          </button>
+
+
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  onClick={addPayment}
+                  className="no-print my-3 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"
+                >
+                  Add Payment
+                </button>
+              </div>
+            )}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
           <div className="no-print print-no-py print-no-my pt-10 px-5">
             <button
@@ -667,7 +1025,7 @@ const Invoice = () => {
 
             <button
               onClick={handlePrint}
-              type="button" 
+              type="button"
               className=" bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded mx-3"
             >
               Print
@@ -675,8 +1033,8 @@ const Invoice = () => {
             {responseMessage && (
               <span
                 className={`mt-4 ${responseMessage.startsWith("Error")
-                    ? "text-red-500"
-                    : "text-green-500"
+                  ? "text-red-500"
+                  : "text-green-500"
                   }`}
               >
                 {responseMessage}
