@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import LoadingSkeleton2 from '../LoadingSkeletons/LoadingSkeleton2';
+import LoadingSkeleton2 from './LoadingSkeletons/LoadingSkeleton2';
 
 const Company = () => {
   const [loading, setLoading] = useState(true);
