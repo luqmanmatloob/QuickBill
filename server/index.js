@@ -31,7 +31,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Routes
 app.use('/api/settings', settingRoute);
 app.use('/api/invoicequote', invoiceQuoteRoute);
-app.use('/api/customerroute', customerRoute);
+app.use('/api/customer', customerRoute);
 
 // Start server
 app.listen(PORT, () => {

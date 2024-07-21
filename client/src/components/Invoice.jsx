@@ -728,7 +728,7 @@ const Invoice = () => {
                       <button
                         type="button"
                         onClick={() => removeItem(index)}
-                        className="no-print text-red-400 hover:bg-red-6 border-[1px] border-red-400 m-1 font-semibold px-4 py-1 rounded"
+                        className="no-print text-red-400 hover:bg-red-6 border-[1px] hover:font-extrabold border-red-400 m-1 font-semibold px-4 py-1 rounded"
                       >
                         X
                       </button>
@@ -839,7 +839,7 @@ const Invoice = () => {
                 >
 
                   <button type="button"
-                    className="fixed top-10 right-60 bg-red-500 rounded-md px-3 py-1 font-semibold text-lg text-white"
+                    className="fixed top-10 right-60 bg-red-500  rounded-md px-3 py-1 font-semibold text-lg text-white"
                     onClick={() => { setEditPayments(false) }}>
                     X
                   </button>

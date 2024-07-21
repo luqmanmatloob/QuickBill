@@ -8,7 +8,11 @@ exports.createCustomer = async (req, res) => {
     await customer.save();
     res.status(201).send(customer);
   } catch (error) {
-    res.status(400).send(error);
+    console.error('Error creating customer:', error); // Log the error for debugging
+    res.status(400).send({
+      message: 'Failed to create customer',
+      error: error.message, // Send a more descriptive error message
+    });
   }
 };
 

@@ -51,9 +51,6 @@ const Sidebar = () => {
                     </NavLink>
                 </li>
 
-                <div className='min-h-[50vh]'>
-
-                </div>
 
             </ul>
         </div>

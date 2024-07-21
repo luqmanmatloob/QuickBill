@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import LoadingSkeleton2 from '../LoadingSkeletons/LoadingSkeleton2';
 
 const Company = () => {
   const [loading, setLoading] = useState(true);
@@ -47,15 +48,26 @@ const Company = () => {
   return (
     <div className="p-4 print-no-py print-no-my">
       {loading && (
-        <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
-          Loading...
+        // <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+        //   Loading...
+        // </div>
+        <div className='min-w-[300px]'>
+          <LoadingSkeleton2 />
         </div>
       )}
       <h2 className="text-[1.75rem] font-bold mb-4 text-blue-400">{settings.companyName}</h2>
       <div className="flex flex-col space-y-2 print-text-10px">
-        <p>{settings.companyName} - {settings.phoneNumber}</p>
-        <p> {settings.address}</p>
-        <p>{settings.city}, {settings.state}</p>
+
+
+        {!loading && (
+          <>
+            <p>{settings.companyName} - {settings.phoneNumber}</p>
+            <p> {settings.address}</p>
+            <p>{settings.city}, {settings.state}</p>
+          </>
+
+        )}
+
         <p>{settings.country}</p>
         {/* <p><a href={settings.url} target='_blank' className="text-blue-500">{settings.url}</a></p> */}
         <p className="">{settings.url}</p>
