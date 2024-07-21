@@ -223,83 +223,86 @@ const Upload = () => {
 
 
   return (
-    <div className="m-10 mb-[70vh]">
-      <div className='flex items-center justify-center max-w-3xl mx-auto mt-8 p-4 bg-white shadow-xl  rounded-md border-t-[#6539c0] border-b-[#6539c0] border-2 py-8'>
-        <input
-          type="file"
-          accept=".csv"
-          onChange={handleFileChange}
-          className=""
-        />
-        <button
-          onClick={handleParseAndSubmit}
-          className="bg-gradient-to-r from-purple-600 to-blue-500 hover:text-black text-white font-bold py-2 px-8 rounded ml-4"
-        >
-          OK
-        </button>
-      </div>
+    <div className="ml-56 mt-28">
 
-      <div className="mt-20 shadow-2xl p-5 border-r-[#6539c0] border-l-[#6539c0] border-2">
-        <div className='flex items-center justify-between mb-5 '>
-          <h1 className="text-3xl font-bold">Invoices/Quotes</h1>
-          <div >
-            <button onClick={cancel} className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-3">
-              Cancel
-            </button>
-            <button onClick={handleSave} className="bg-[#6539c0] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-              Save All
-            </button>
-          </div>
+      <div className="m-10 mb-[70vh]">
+        <div className='flex items-center justify-center max-w-3xl mx-auto mt-8 p-4 bg-white shadow-xl  rounded-md border-2 py-8 border-[#f1f1f1] border-t-[#c2d6e7] border-b-[#c2d6e7]'>
+          <input
+            type="file"
+            accept=".csv"
+            onChange={handleFileChange}
+            className=""
+          />
+          <button
+            onClick={handleParseAndSubmit}
+            className="bg-gradient-to-r from-purple-600 to-blue-500 hover:text-black text-white font-bold py-2 px-8 rounded ml-4"
+          >
+            OK
+          </button>
         </div>
-        {success && (
-          <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
-            {success}
+
+        <div className="mt-20 shadow-2xl p-5  border-2 border-[#f1f1f1] border-r-[#c5d9eb] border-l-[#c5d9eb] rounded-md">
+          <div className='flex items-center justify-between mb-5 '>
+            <h1 className="text-3xl font-bold">Invoices/Quotes</h1>
+            <div >
+              <button onClick={cancel} className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-3">
+                Cancel
+              </button>
+              <button onClick={handleSave} className="bg-[#6539c0] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ">
+                Save All
+              </button>
+            </div>
           </div>
-        )}
-        
-        {loading && (
-          <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
-            Processing ...
-          </div>
-        )}
+          {success && (
+            <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+              {success}
+            </div>
+          )}
 
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-gray-200 border border-gray-300 ">
-            <thead className='rounded-lg'>
-              <tr className='bg-gray-300 rounded-md py-20'>
-                <th className="py-2 px-4 border-b">Unique Key</th>
-                <th className="py-2 px-4 border-b">Order Number</th>
-                <th className="py-2 px-4 border-b">Date Ordered</th>
-                <th className="py-2 px-4 border-b">Date Due</th>
-                <th className="py-2 px-4 border-b">Order Total</th>
-                <th className="py-2 px-4 border-b">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {invoicesQuotes.map((invoice, index) => (
-                <tr key={invoice.uniqueKey} className={`bg-white text-center ${index % 2 === 0 ? '' : 'bg-[#f1f1f1]'}`}>
-                  <td className="py-2 px-4 border-b">{invoice.uniqueKey}</td>
-                  <td className="py-2 px-4 border-b">{invoice.orderNumber}</td>
-                  <td className="py-2 px-4 border-b">{formatDate(invoice.dateOrdered)}</td>
-                  <td className="py-2 px-4 border-b">{formatDate(invoice.dateDue)}</td>
-                  <td className="py-2 px-4 border-b">${invoice.orderTotal.toFixed(2)}</td>
-                  <td className="py-2 px-4 border-b">
-                    <button
-                      onClick={() => handleDelete(invoice.uniqueKey)}
-                      className="bg-red-500 hover:bg-red-700 text-white font-md py-1 my-1 px-4 rounded"
-                    >
-                      Delete
-                    </button>
+          {loading && (
+            <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+              Processing ...
+            </div>
+          )}
 
-
-                    <Link to={`/Edit/${invoice.uniqueKey}`} target="_blank" className="bg-green-500 hover:bg-green-700 text-white font-md py-1 my-1 px-4 rounded ml-2">Edit</Link>
-
-                  </td>
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-gray-200 border border-gray-300 ">
+              <thead className='rounded-lg'>
+                <tr className='bg-gray-300 rounded-md py-20'>
+                  {/* <th className="py-2 px-4 border-b">Unique Key</th> */}
+                  <th className="py-2 px-4 border-b">Order Number</th>
+                  <th className="py-2 px-4 border-b">Date Ordered</th>
+                  <th className="py-2 px-4 border-b">Date Due</th>
+                  <th className="py-2 px-4 border-b">Order Total</th>
+                  <th className="py-2 px-4 border-b">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {invoicesQuotes.map((invoice, index) => (
+                  <tr key={invoice.uniqueKey} className={`bg-white text-center ${index % 2 === 0 ? '' : 'bg-[#f1f1f1]'}`}>
+                    {/* <td className="py-2 px-4 border-b">{invoice.uniqueKey}</td> */}
+                    <td className="py-2 px-4 border-b">{invoice.orderNumber}</td>
+                    <td className="py-2 px-4 border-b">{formatDate(invoice.dateOrdered)}</td>
+                    <td className="py-2 px-4 border-b">{formatDate(invoice.dateDue)}</td>
+                    <td className="py-2 px-4 border-b">${invoice.orderTotal.toFixed(2)}</td>
+                    <td className="py-2 px-4 border-b">
+                      <button
+                        onClick={() => handleDelete(invoice.uniqueKey)}
+                        className="bg-red-500 hover:bg-red-700 text-white font-md py-1 my-1 px-4 rounded"
+                      >
+                        Delete
+                      </button>
 
+
+                      <Link to={`/Edit/${invoice.uniqueKey}`} target="_blank" className="bg-green-500 hover:bg-green-700 text-white font-md py-1 my-1 px-4 rounded ml-2">Edit</Link>
+
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+          </div>
         </div>
       </div>
     </div>

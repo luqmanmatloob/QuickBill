@@ -68,113 +68,116 @@ const SettingForm = () => {
   };
 
   return (
-    <div
-      className="max-w-lg mx-auto bg-white rounded-lg shadow-2xl p-8 my-5 border-b-slate-300 border-solid border-2 border-r-[#6539c0] border-l-[#6539c0]"
-    >
-      {loading && (
-        <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
-          Loading...
-        </div>
-      )}
-      <h2 className="text-2xl font-semibold mb-6">Settings</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="flex gap-10 flex-wrap">
+    <div className="ml-56 mt-28">
 
-
-
-          <div className='flex flex-col gap-6'>
-            <label>
-              <span className="text-gray-700">Company Name:</span>
-              <input
-                type="text"
-                name="companyName"
-                value={settings.companyName}
-                onChange={handleChange}
-                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
-              />
-            </label>
-            <label>
-              <span className="text-gray-700">Phone Number:</span>
-              <input
-                type="text"
-                name="phoneNumber"
-                value={settings.phoneNumber}
-                onChange={handleChange}
-                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
-              />
-            </label>
-            <label>
-              <span className="text-gray-700">Address:</span>
-              <input
-                type="text"
-                name="address"
-                value={settings.address}
-                onChange={handleChange}
-                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
-              />
-            </label>
-            <label>
-              <span className="text-gray-700">City:</span>
-              <input
-                type="text"
-                name="city"
-                value={settings.city}
-                onChange={handleChange}
-                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
-              />
-
-            </label>
+      <div
+        className="max-w-lg mx-auto bg-white rounded-lg shadow-2xl p-8 my-5 border-b-slate-300 border-solid border-2  border-[#f1f1f1] border-r-[#d1e4f5] border-l-[#d1e4f5]"
+      >
+        {loading && (
+          <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+            Loading...
           </div>
+        )}
+        <h2 className="text-2xl font-semibold mb-6">Settings</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="flex gap-10 flex-wrap">
+
+
+
+            <div className='flex flex-col gap-6'>
+              <label>
+                <span className="text-gray-700">Company Name:</span>
+                <input
+                  type="text"
+                  name="companyName"
+                  value={settings.companyName}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+                />
+              </label>
+              <label>
+                <span className="text-gray-700">Phone Number:</span>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  value={settings.phoneNumber}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+                />
+              </label>
+              <label>
+                <span className="text-gray-700">Address:</span>
+                <input
+                  type="text"
+                  name="address"
+                  value={settings.address}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+                />
+              </label>
+              <label>
+                <span className="text-gray-700">City:</span>
+                <input
+                  type="text"
+                  name="city"
+                  value={settings.city}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+                />
+
+              </label>
+            </div>
 
 
 
 
 
 
-          <div className='flex flex-col gap-6'>
+            <div className='flex flex-col gap-6'>
 
-            <label>
-              <span className="text-gray-700">State:</span>
-              <input
-                type="text"
-                name="state"
-                value={settings.state}
-                onChange={handleChange}
-                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
-              />
-            </label>
-            <label>
-              <span className="text-gray-700">Country:</span>
-              <input
-                type="text"
-                name="country"
-                value={settings.country}
-                onChange={handleChange}
-                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
-              />
-            </label>
-            <label>
-              <span className="text-gray-700">URL:</span>
-              <input
-                type="text"
-                name="url"
-                value={settings.url}
-                onChange={handleChange}
-                className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
-              />
-            </label>
+              <label>
+                <span className="text-gray-700">State:</span>
+                <input
+                  type="text"
+                  name="state"
+                  value={settings.state}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+                />
+              </label>
+              <label>
+                <span className="text-gray-700">Country:</span>
+                <input
+                  type="text"
+                  name="country"
+                  value={settings.country}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+                />
+              </label>
+              <label>
+                <span className="text-gray-700">URL:</span>
+                <input
+                  type="text"
+                  name="url"
+                  value={settings.url}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+                />
+              </label>
+            </div>
+            <div className="mt- w-full">
+              <button
+                type="submit"
+                className=" min-w-full px-4 py-2 bg-gradient-to-r from-blue-300 to-blue-500  active:text-black  text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+              >
+                Update
+              </button>
+            </div>
+
           </div>
-          <div className="mt- w-full">
-            <button
-              type="submit"
-              className=" min-w-full px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-500  text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-            >
-              Update
-            </button>
-          </div>
-
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };
