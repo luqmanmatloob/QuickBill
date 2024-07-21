@@ -51,7 +51,7 @@ const Company = () => {
           Loading...
         </div>
       )}
-      <h2 className="text-[1.75rem] font-bold mb-4 text-[#6539c0]">{settings.companyName}</h2>
+      <h2 className="text-[1.75rem] font-bold mb-4 text-blue-400">{settings.companyName}</h2>
       <div className="flex flex-col space-y-2 print-text-10px">
         <p>{settings.companyName} - {settings.phoneNumber}</p>
         <p> {settings.address}</p>

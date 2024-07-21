@@ -1,14 +1,21 @@
 /* index.css */
 
 /* Tailwind CSS base, components, and utilities */
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  background-color: #f4f5f6;
+  background-color: #ffffff;
 }
 
+.font-Josefin-Sans{
+
+  font-family: 'Josefin Sans', sans-serif;
+  }
 
 
 
@@ -65,4 +72,34 @@ input[type="number"] {
 
   }
   
+}
+
+
+
+
+
+
+
+
+/* Webkit browsers (Chrome, Safari) */
+.custom-scrollbar {
+  /* scrollbar-width: thin;  */
+  scrollbar-color: #d5e4f1 #ffffff; /* Firefox */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  /* width: 8px; */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f4f5f6; /* Background color of the scrollbar track */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #3952ac; /* Color of the scrollbar handle */
+  border-radius: 4px; /* Optional: rounded corners for the scrollbar handle */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #2a3f7f; /* Darker color on hover */
 }

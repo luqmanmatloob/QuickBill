@@ -9,6 +9,7 @@ require('dotenv').config();
 // Import routes
 const settingRoute = require('./routes/settingRoute');
 const invoiceQuoteRoute = require('./routes/invoiceQuoteroute');
+const customerRoute = require('./routes/customerRoute');
 
 
 // Initialize Express app
@@ -30,6 +31,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Routes
 app.use('/api/settings', settingRoute);
 app.use('/api/invoicequote', invoiceQuoteRoute);
+app.use('/api/customerroute', customerRoute);
 
 // Start server
 app.listen(PORT, () => {

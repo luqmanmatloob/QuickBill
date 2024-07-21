@@ -379,7 +379,8 @@ const Invoice = () => {
   };
 
   return (
-    <div ref={componentRef} className="print-border-none print-no-shadow print-no-py .print-no-my py-6 mx-auto bg-white rounded-lg shadow-2xl p-8 border-r-[#6539c0] border-l-[#6539c0] border-solid border-2">
+    <div className="ml-32 mt-16">
+    <div ref={componentRef} className="print-border-none print-no-shadow print-no-py .print-no-my py-6 mx-auto bg-white rounded-lg shadow-xl p-8 border-r-[#d1e4f5] border-l-[#d1e4f5] border-solid border-2 min-w-[1000px]">
       <form
         className="print-border-none relative flex flex-col px-2 md:flex-row"
         onSubmit={handleSubmit}
@@ -1043,6 +1044,7 @@ const Invoice = () => {
           </div>
         </div>
       </form>
+    </div>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/layout/Header';
+import Sidebar from './components/layout/Sidebar';
 import Footer from './components/layout/Footer';
 import Home from './pages/Home';
 import UploadPage from './pages/Upload';
@@ -9,6 +10,7 @@ import Edit from './pages/Edit'
 import PrintPage from './pages/PrintPage'
 import InvoiceQuotesListPage from './pages/InvoiceQuotesListPage'
 import TestPage from './pages/TestPage'
+import CustomerPage from './pages/CustomerPage';
 
 
 const App = () => {
@@ -16,6 +18,7 @@ const App = () => {
     <Router>
       <div>
         <Header />
+        <Sidebar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/uploadPage" element={<UploadPage />} />
@@ -24,6 +27,7 @@ const App = () => {
           <Route path="/setting" element={<Setting />} />
           <Route path="/InvoiceQuotesListPage" element={<InvoiceQuotesListPage />} />
           <Route path="/test" element={<TestPage />} />
+          <Route path="/customer" element={<CustomerPage />} />
         </Routes>
         <Footer />
       </div>

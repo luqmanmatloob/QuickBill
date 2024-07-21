@@ -1,38 +1,36 @@
-import React from 'react';
-import jsPDF from 'jspdf';
+import React, { useState } from 'react';
 
-const GeneratePdf = () => {
-  const generatePdf = () => {
-    const doc = new jsPDF();
+function Test() {
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
 
-    // Set background color for the entire page
-    doc.setFillColor(240, 240, 240); // Light gray color
-    doc.rect(0, 0, doc.internal.pageSize.getWidth(), doc.internal.pageSize.getHeight(), 'F');
-
-    // Add text with custom styling
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(20);
-    doc.setTextColor(0, 0, 255); // Blue color
-    doc.text("Hello World!", 20, 30);
-
-    // Add another line of text with different styling
-    doc.setFont("helvetica", "italic");
-    doc.setFontSize(16);
-    doc.setTextColor(255, 0, 0); // Red color
-    doc.text("This is a PDF created with jsPDF.", 20, 50);
-
-    // Save the document and open in a new tab
-    const pdfBlob = doc.output('blob');
-    const url = URL.createObjectURL(pdfBlob);
-    window.open(url);
+  const toggleSidebar = () => {
+    setIsSidebarVisible(!isSidebarVisible);
   };
 
   return (
-    <div>
-      <button onClick={generatePdf}>Generate PDF</button>
+    <div className="flex h-screen mt-56">
+      <div className={`${isSidebarVisible ? 'block' : 'hidden'} fixed bg-blue-500 w-64 h-full p-4`}>
+        <button
+          onClick={toggleSidebar}
+          className="bg-white text-blue-500 p-2 rounded"
+        >
+          Toggle Sidebar
+        </button>
+        <p className="text-white">Sidebar Content</p>
+      </div>
+      <div
+        className={`flex-grow ml-${isSidebarVisible ? '64' : '0'} transition-all duration-300 bg-green-500 p-4`}
+      >
+        <button
+          onClick={toggleSidebar}
+          className="bg-white text-green-500 p-2 rounded mb-4"
+        >
+          Toggle Sidebar
+        </button>
+        <p className="text-white">Main Content</p>
+      </div>
     </div>
   );
-};
+}
 
-export default GeneratePdf;
-
+export default Test;
