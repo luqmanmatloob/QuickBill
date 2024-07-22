@@ -430,27 +430,47 @@ const CustomerManagement = () => {
             </li> */}
 
             <ul className="divide-y divide-gray-200">
+
+              <div className='sticky top-20 flex bg-[#F5FAFF] px-3 py- border-blue-300 border-2 rounded-md'>
+                <div className={showCustomerDetails ? 'hidden' : 'visible'}>
+
+                  <button
+                    onClick={toggleCustomerDetails}
+                    className="no-print my-2 bg-transparent border-[1px] border-blue-500  hover:bg-blue-200 hover:text-black  text-blue-700 font-semibold px-4 py- rounded"
+                    >
+                    Detailed View
+                  </button>
+                </div>
+                <div className={showCustomerDetails ? 'visible' : 'hidden'}>
+
+                  <button type="button"
+                    className="no-print my-2 bg-transparent border-[1px] border-blue-500  hover:bg-blue-200 hover:text-black  text-blue-700 font-semibold px-4 py- rounded"
+
+                    onClick={toggleCustomerDetails}>
+                    List View
+                  </button>
+                </div>
+              </div>
+
               {customers.map((customer) => (
-                <li key={customer._id} className="py-4 flex gap-5 items-center justify-between">
-                  <div className='flex gap-5'>
-                    <div className="font-semibold">{customer.primaryContactFirstName} {customer.primaryContactLastName}</div>
-                    <div className="text-gray-600">{customer.primaryContactEmail}</div>
-                    <div className="text-gray-600">{customer.billingAddress1}</div>
-                    <div className={showCustomerDetails ? 'flex' : 'hidden'}>
+                <li key={customer._id} className={`py-4 flex gap-5 items-center justify-between ${showCustomerDetails ? 'flex-col' : 'flex'} `}>
+
+                  <div >
+
+                    <div className={`${showCustomerDetails ? 'hidden' : 'visible'} flex gap-5`}>
+                      <div className="font-semibold">{customer.primaryContactFirstName} {customer.primaryContactLastName}</div>
+                      <div className="text-gray-600">{customer.primaryContactEmail}</div>
+                      <div className="text-gray-600">{customer.billingAddress1}</div>
+                    </div>
+
+                    <div className={showCustomerDetails ? 'visible' : 'hidden'}>
 
 
                       <div
-                        className="fixed z- ml-60 top-28 right-20 left-0 bottom-14 bg-white rounded-lg shadow-2xl p-10  border-b-slate-300 border-solid border-2 border-r-[#6539c0] border-l-[#6539c0] overflow-auto"
-                        style={{ boxShadow: `0 25px 50px 600px rgba(0, 0, 0, 0.10)`, }}
+                        className="mt-5 bottom-14 bg-white rounded-lg p-10  border-b-slate-300 border-solid border- border-r-blue-300 border-l-blue-300 overflow-auto"
                       >
 
-                        <button type="button"
-                          // className=" bg-red-500  rounded-md px-3 py-1 font-semibold text-lg text-white"
-                          className="absolute top-5 right-5 text-red-400 hover:bg-red-6 border-[1px] hover:font-extrabold border-red-400 m-1 font-semibold px-4 py-1 rounded"
 
-                          onClick={toggleCustomerDetails}>
-                          X
-                        </button>
 
                         <div className='flex gap-32 justify- items-center my-5'>
 
@@ -458,7 +478,7 @@ const CustomerManagement = () => {
                             <div className="text-black font-semibold text-xl uppercase mb-2">Contact </div>
                             <div className="text-gray-600">{customer.primaryContactFirstName} {customer.primaryContactLastName}</div>
                             <div className="text-gray-600">{customer.primaryContactEmail}</div>
-                            <div className="text-gray-600">e{customer.primaryContactPhone}</div>
+                            <div className="text-gray-600">{customer.primaryContactPhone}</div>
 
                           </div>
 
@@ -504,6 +524,7 @@ const CustomerManagement = () => {
                       </div>
                     </div>
                   </div>
+
                   <div>
                     <button
                       onClick={() => {
@@ -543,6 +564,7 @@ const CustomerManagement = () => {
                     >
                       Edit
                     </button>
+
                     <button
                       onClick={() => deleteCustomer(customer._id)}
                       className=" text-gray-900 border-gray-900 border-[1px]  hover:red hover:border-red-400 hover:text-red-500 m-1 font-bold px-4 py-1 rounded"
@@ -550,15 +572,9 @@ const CustomerManagement = () => {
                     >
                       Delete
                     </button>
-
-                    <button
-                      onClick={toggleCustomerDetails}
-                      className="bg-blue-400 hover:bg-blue-500 text-white font-bold py-1 px-3 ml-2 rounded mr-2"
-                    >
-                      Details
-                    </button>
-
                   </div>
+
+
                 </li>
               ))}
             </ul>
