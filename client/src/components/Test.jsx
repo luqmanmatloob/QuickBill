@@ -1,60 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-function Test() {
-  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5000';
 
-  const toggleSidebar = () => {
-    setIsSidebarVisible(!isSidebarVisible);
-  };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   const updatedFormData = { ...formData, [name]: value };
-  //   setFormData(updatedFormData);
-  // };
-
-
-
+const Test = () => {
   return (
-    // <input
-    //   type="date"
-    //   name="dateOrdered"
-    //   placeholder="Order Date"
-    //   value={formData.dateOrdered}
-    //   onChange={handleChange}
-    //   className="px-2 py-1 my-1 w-full"
-
-    // />
-    <div></div>
+    <div className="ml-60 mt-24">
+     
+    </div>
   );
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+};
 
 export default Test;

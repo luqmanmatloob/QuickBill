@@ -64,3 +64,30 @@ exports.deleteCustomerById = async (req, res) => {
     res.status(500).send(error);
   }
 };
+
+
+
+
+// Get customer names (primaryContactFirstName, primaryContactLastName, uniqueKey)
+exports.getCustomerNames = async (req, res) => {
+  try {
+    const customers = await Customer.find({}, 'primaryContactFirstName primaryContactLastName uniqueKey');
+    res.json(customers);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching customer names', error: err });
+  }
+};
+
+// Get customer details by uniqueKey
+exports.getCustomerDetails = async (req, res) => {
+  try {
+    const customer = await Customer.findOne({ uniqueKey: req.params.uniqueKey });
+    if (customer) {
+      res.json(customer);
+    } else {
+      res.status(404).json({ message: 'Customer not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching customer details', error: err });
+  }
+};

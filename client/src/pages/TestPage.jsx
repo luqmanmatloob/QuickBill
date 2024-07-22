@@ -9,8 +9,6 @@ const TestPage = () => {
 
         <h1>test componment page</h1>
       <Test />
-      <div className='min-h-10 bg-black'>__</div>
-      <CustomerManagement />
     </div>
   )
 }

@@ -2,6 +2,10 @@ import React from "react";
 import { useState, useEffect, useRef } from "react";
 import { useReactToPrint } from 'react-to-print';
 import Company from "./Company";
+import { RiArrowDropDownLine } from "react-icons/ri";
+import { FaPlus } from "react-icons/fa6";
+
+
 
 const Invoice = () => {
 
@@ -87,11 +91,6 @@ const Invoice = () => {
     note: "You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.",
   });
 
-
-
-
-
-
   const [subtotal, setSubtotal] = useState(0);
   const [totalTax, setTotalTax] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
@@ -99,6 +98,132 @@ const Invoice = () => {
   const [invoiceNoLbl, setinvoiceNoLbl] = useState('Invoice No')
   const [editPayments, setEditPayments] = useState(false)
   const [totalPayments, setTotalPayments] = useState(1)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const [customers, setCustomers] = useState([]);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
+  // Fetch customer names on component mount
+  useEffect(() => {
+    fetch(`${BASE_URL}/api/customer/names`)
+      .then(response => response.json())
+      .then(data => {
+        if (Array.isArray(data)) {
+          setCustomers(data);
+        } else {
+          console.error('Expected an array but got:', data);
+        }
+      })
+      .catch(error => console.error('Error fetching customer names:', error));
+  }, []);
+
+
+
+
+  const populateCustomer = (uniqueKey) => {
+    fetch(`${BASE_URL}/api/customer/details/${uniqueKey}`)
+      .then(response => response.json())
+      .then(data => {
+        // Extract relevant shipping and billing details from the customer data
+        const {
+          primaryContactFirstName,
+          primaryContactLastName,
+          primaryContactEmail,
+          primaryContactPhone,
+          billingAddress1,
+          billingAddress2,
+          billingCity,
+          billingState,
+          billingCountry,
+          billingPostal,
+          shippingName,
+          shippingAddress1,
+          shippingAddress2,
+          shippingCity,
+          shippingState,
+          shippingCountry,
+          shippingPostal,
+          shippingPhone,
+          shippingDeliveryInstructions
+        } = data;
+
+        // Update the formData with the extracted details
+        setFormData(prevFormData => ({
+          ...prevFormData,
+          billingCity,
+          billingAddress: `${billingAddress1} ${billingAddress2}`,
+          billingState,
+          billingEmailAddress: primaryContactEmail,
+          shippingAddress: `${shippingAddress1} ${shippingAddress2}`,
+          shippingCity,
+          shippingState,
+          shippingPostcode: shippingPostal,
+          // Populate other fields if necessary
+        }));
+
+        // Close the popup after updating the form data
+        setIsPopupOpen(false);
+      })
+      .catch(error => console.error('Error fetching customer details:', error));
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   useEffect(() => {
@@ -131,25 +256,6 @@ const Invoice = () => {
   };
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const handleItemChange = (index, e) => {
     const { name, value, type, checked } = e.target;
     const updatedItems = [...formData.items];
@@ -177,18 +283,6 @@ const Invoice = () => {
     const updatedFormData = { ...formData, items: updatedItems };
     setFormData(updatedFormData);
   };
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -231,33 +325,6 @@ const Invoice = () => {
     setTotalPayments(totalPayments - 1)
 
   };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   const calculateTotals = () => {
@@ -484,10 +551,80 @@ const Invoice = () => {
               </div>
             </div>
 
+
+            <button
+              onClick={() => setIsPopupOpen(true)}
+              type="button"
+              className="text-blue-500 font-bold hover:underline flex items-center ml-8"
+            >
+              Customers
+              <RiArrowDropDownLine style={{ fontSize: '24px', marginTop: '4px' }} />
+
+            </button>
+
+            <div className="ml-60 mt-24 ">
+
+              {isPopupOpen && (
+                <div className="fixed top-16 bottom-5 z-30  overflow-auto border-blue-300 border-2 my-4 shadow-black shadow-2xl w-1/3 bg-white flex justify-center rounded-xl"
+                  style={{ boxShadow: `0 25px 50px 600px rgba(0, 0, 0, 0.25)`, }}
+                >
+                  <div className="  bg-white px-6 py-12 pb-20 rounded-lg w-full text-center">
+
+                    <button
+                      className="hover:bg-red-50 border-red-600 text-red-600 border-2 font-semibold px-3 py-1 rounded mb-4 absolute top-3 right-3"
+                      onClick={() => setIsPopupOpen(false)}
+                      type="button"
+                    >
+                      X
+                    </button>
+                    <h2 className="text-2xl mb-4">Customers</h2>
+                    <ul className="text-left">
+                      {Array.isArray(customers) && customers.length > 0 ? (
+                        customers.map(customer => (
+                          <li key={customer.uniqueKey} className="flex justify-between gap-5 items-center mb-2 border-b-2 border-blue-200 pb-3">
+                            {customer.primaryContactFirstName} {customer.primaryContactLastName}
+                            <button
+                              onClick={() => populateCustomer(customer.uniqueKey)}
+                              type="button"
+                              className="hover:bg-green-50 border-blue-400 text-blue-500 border-2 px-3  text-lg rounded font-semibold py-1 "
+                            >
+                              <FaPlus />
+                            </button>
+
+                          </li>
+                        ))
+                      ) : (
+                        <li>No customers found</li>
+                      )}
+                      <div className="min-h-12"></div>
+                    </ul>
+                  </div>
+                </div>
+              )}
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             {/* row 2, billing adress and shipping adress  city statecounty email adress */}
             <div className="print-border-none flex justify-between px-5 border-b">
               <div>
-                <p className="print-text-12px p-2 text-lg font-semibold">Billing Address</p>
+                <p className="print-text-12px p-2 pt-0 text-lg font-semibold">Billing Address</p>
                 <div className="flex min-w-[100px] items-center ">
                   <input
                     type="text"
