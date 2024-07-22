@@ -93,15 +93,19 @@ const InvoiceQuotesList = () => {
                         </button>
 
                         {printBtn &&
-                            (<Link to={`/print/${selectedInvoices}`} target='_blank' className=" bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded mx-3">
+                            (<Link to={`/print/${selectedInvoices}`} target='_blank' 
+                                className="no-print my-3 mr-2 bg-transparent border-[2px] border-blue-500  hover:bg-blue-100 hover:text-black  text-blue-700 font-bold px-[20px] py-[5px] rounded"
+                                >
                                 Print
                             </Link>)
                         }
 
                         {!printBtn &&
-                            (<Link className=" bg-red-500 hover:bg-red-600 text-white font-semibold px-6 py-2 rounded mx-3">
+                            (<p 
+                                className=" text-red-600 hover:red m-1 my-4 font-semibold px-4 py-1 rounded"
+                                >
                                 Please Select to Print
-                            </Link>)
+                            </p>)
                         }
 
 
@@ -136,7 +140,10 @@ const InvoiceQuotesList = () => {
                             <th className="border border-gray-300 px-4 py-2">Order Number </th>
                             <th className="border border-gray-300 px-4 py-2">Type</th>
                             <th className="border border-gray-300 px-4 py-2">Date Ordered</th>
-                            {/* <th className="border border-gray-300 px-4 py-2">Date Due</th> */}
+                            <th className="border border-gray-300 px-4 py-2">Date Due</th>
+                            <th className="border border-gray-300 px-4 py-2">Date Due</th>
+                            <th className="border border-gray-300 px-4 py-2">Billing</th>
+                            <th className="border border-gray-300 px-4 py-2">Shipping</th>
                             <th className="border border-gray-300 px-4 py-2">Order Total</th>
                             <th className="border border-gray-300 px-4 py-2">Edit</th>
                             <th className="border border-gray-300 px-4 py-2">Delete</th>
@@ -157,7 +164,10 @@ const InvoiceQuotesList = () => {
                                 <td className="border border-gray-300 px-4 py-2">{invoiceQuote.orderNumber}</td>
                                 <td className="border border-gray-300 px-4 py-2">{invoiceQuote.type}</td>
                                 <td className="border border-gray-300 px-4 py-2">{formatDate(invoiceQuote.dateOrdered)}</td>
-                                {/* <td className="border border-gray-300 px-4 py-2">{formatDate(invoiceQuote.dateDue)}</td> */}
+                                <td className="border border-gray-300 px-4 py-2">{formatDate(invoiceQuote.dateOrdered)}</td>
+                                <td className="border border-gray-300 px-4 py-2">{formatDate(invoiceQuote.dateDue)}</td>
+                                <td className="border border-gray-300 px-4 py-2">{invoiceQuote.billingAddress}, {invoiceQuote.billingCity} </td>
+                                <td className="border border-gray-300 px-4 py-2">{invoiceQuote.shippingAddress}, {invoiceQuote.shippingCity} </td>
                                 <td className="border border-gray-300 px-4 py-2">{invoiceQuote.orderTotal}</td>
                                 <td className="border border-gray-300 px-4 py-2"><Link to={`/Edit/${invoiceQuote.uniqueKey}`} className="text-blue-500 hover:underline mr-4">Edit</Link></td>
                                 <td className="border border-gray-300 px-4 py-2"><button onClick={() => handleDelete(invoiceQuote.uniqueKey)} className="text-red-500 hover:underline">Delete</button></td>

@@ -235,20 +235,24 @@ const Upload = () => {
           />
           <button
             onClick={handleParseAndSubmit}
-            className="bg-gradient-to-r from-purple-600 to-blue-500 hover:text-black text-white font-bold py-2 px-8 rounded ml-4"
-          >
+            className=" py-2 bg-gradient-to-r from-blue-300 to-blue-200 border-2 border-blue-300 active:text-black  text-black font-bold rounded-md hover:scale-105 px-8 hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+            >
             OK
           </button>
         </div>
 
         <div className="mt-20 shadow-2xl p-5  border-2 border-[#f1f1f1] border-r-[#c5d9eb] border-l-[#c5d9eb] rounded-md">
           <div className='flex items-center justify-between mb-5 '>
-            <h1 className="text-3xl font-bold">Invoices/Quotes</h1>
+            <h1 className="text-3xl font-bold font-Josefin-Sans text-[#3952ac]">Invoices/Quotes</h1>
             <div >
-              <button onClick={cancel} className="bg-red-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mx-3">
+              <button onClick={cancel}
+                className=" text-red-600 border-red-500 border-[1px] hover:red hover:bg-red-100 hover:text-red-500 m-1 font-bold px-4 py-1 rounded"
+              >
                 Cancel
               </button>
-              <button onClick={handleSave} className="bg-[#6539c0] hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ">
+              <button onClick={handleSave}
+                className="no-print my-3 bg-transparent border-[1px] border-blue-500  hover:bg-blue-100 hover:text-black  text-blue-700 font-bold px-[20px] py-[5px] rounded"
+              >
                 Save All
               </button>
             </div>
@@ -266,13 +270,15 @@ const Upload = () => {
           )}
 
           <div className="overflow-x-auto">
-            <table className="min-w-full bg-gray-200 border border-gray-300 ">
+            <table className="min-w-full  border border-blue-200 ">
               <thead className='rounded-lg'>
-                <tr className='bg-gray-300 rounded-md py-20'>
+                <tr className='bg-blue-50 rounded-md py-20'>
                   {/* <th className="py-2 px-4 border-b">Unique Key</th> */}
                   <th className="py-2 px-4 border-b">Order Number</th>
                   <th className="py-2 px-4 border-b">Date Ordered</th>
                   <th className="py-2 px-4 border-b">Date Due</th>
+                  <th className="py-2 px-4 border-b">Billing</th>
+                  <th className="py-2 px-4 border-b">Shipping</th>
                   <th className="py-2 px-4 border-b">Order Total</th>
                   <th className="py-2 px-4 border-b">Actions</th>
                 </tr>
@@ -284,18 +290,24 @@ const Upload = () => {
                     <td className="py-2 px-4 border-b">{invoice.orderNumber}</td>
                     <td className="py-2 px-4 border-b">{formatDate(invoice.dateOrdered)}</td>
                     <td className="py-2 px-4 border-b">{formatDate(invoice.dateDue)}</td>
+                    <td className="py-2 px-4 border-b">{invoice.billingAddress}, {invoice.billingCity}</td>
+                    <td className="py-2 px-4 border-b">{invoice.shippingAddress}, {invoice.shippingCity}</td>
                     <td className="py-2 px-4 border-b">${invoice.orderTotal.toFixed(2)}</td>
                     <td className="py-2 px-4 border-b">
-                      <button
-                        onClick={() => handleDelete(invoice.uniqueKey)}
-                        className="bg-red-500 hover:bg-red-700 text-white font-md py-1 my-1 px-4 rounded"
-                      >
-                        Delete
-                      </button>
+                      <div className='flex items-center justify-center flex-wrap'>
+                        <button
+                          onClick={() => handleDelete(invoice.uniqueKey)}
+                          className=" text-red-600 border-red-500 border-[1px] hover:red hover:bg-red-100 hover:text-red-500 m-1 font-bold px-4 py-1 rounded"
+                        >
+                          Delete
+                        </button>
 
 
-                      <Link to={`/Edit/${invoice.uniqueKey}`} target="_blank" className="bg-green-500 hover:bg-green-700 text-white font-md py-1 my-1 px-4 rounded ml-2">Edit</Link>
-
+                        <Link to={`/Edit/${invoice.uniqueKey}`} target="_blank"
+                          className="no-print my-3 bg-transparent border-[1px] border-blue-500  hover:bg-blue-100 hover:text-black  text-blue-700 font-bold px-[20px] py-[5px] rounded"
+                        > Edit
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 ))}
