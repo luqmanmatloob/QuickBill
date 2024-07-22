@@ -191,7 +191,8 @@ const SettingForm = () => {
             <div className="mt- w-full">
               <button
                 type="submit"
-                className=" min-w-full px-4 py-2 bg-gradient-to-r from-blue-300 to-blue-500  active:text-black  text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+                className="min-w-full px-4 py-2 bg-gradient-to-l from-blue-300 to-blue-200 border-2 border-blue-300 active:text-black  text-gray-800 font-bold rounded-md hover:scale-105 hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+
               >
                 Update
               </button>

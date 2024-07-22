@@ -398,17 +398,19 @@ const CustomerManagement = () => {
         </div>
 
         <div className='flex justify-end mr-6'>
-          <button
-            onClick={saveCustomer}
-            className="bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded mr-2"
-          >
-            {editMode ? 'Update' : 'Add'} Customer
-          </button>
+
           <button onClick={clearBtn}
-            className="border-blue-500 border-2 hover:bg-blue-300 text-black font-bold py-2 px-4 rounded mr-2"
+            className="border-blue-500 border-2 text-blue-500 hover:bg-blue-50 font-bold py- px-4 rounded-md mr-1"
 
           >
             Clear
+          </button>
+          <button
+            onClick={saveCustomer}
+            className="px-2 mx-2 py-2 bg-gradient-to-l from-blue-300 to-blue-200 border-2 border-blue-300 active:text-black  text-gray-800 font-semibold rounded-md hover:scale-105 hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+
+          >
+            {editMode ? 'Update' : 'Add'} Customer
           </button>
         </div>
 
@@ -431,13 +433,13 @@ const CustomerManagement = () => {
 
             <ul className="divide-y divide-gray-200">
 
-              <div className='sticky top-20 flex bg-[#F5FAFF] px-3 py- border-blue-300 border-2 rounded-md'>
+              <div className='sticky top-20 flex bg-[#F5FAFF] px-7 py- border-blue-100 border-2 rounded-md'>
                 <div className={showCustomerDetails ? 'hidden' : 'visible'}>
 
                   <button
                     onClick={toggleCustomerDetails}
                     className="no-print my-2 bg-transparent border-[1px] border-blue-500  hover:bg-blue-200 hover:text-black  text-blue-700 font-semibold px-4 py- rounded"
-                    >
+                  >
                     Detailed View
                   </button>
                 </div>
