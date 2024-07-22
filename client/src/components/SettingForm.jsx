@@ -1,4 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import LoadingSkeleton2 from './LoadingSkeletons/LoadingSkeleton2';
+
+
+
+
+
 const SettingForm = () => {
   const [loading, setLoading] = useState(true);
   const [settings, setSettings] = useState({
@@ -73,15 +79,29 @@ const SettingForm = () => {
       <div
         className="max-w-lg mx-auto bg-white rounded-lg shadow-2xl p-8 my-5 border-b-slate-300 border-solid border-2  border-[#f1f1f1] border-r-[#d1e4f5] border-l-[#d1e4f5]"
       >
-        {loading && (
-          <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
-            Loading...
-          </div>
-        )}
+       
         <h2 className="text-2xl font-semibold mb-6">Settings</h2>
         <form onSubmit={handleSubmit}>
           <div className="flex gap-10 flex-wrap">
 
+
+            {loading && (
+        <div className='min-w-[500px]'>
+
+               {/* <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+                 Loading...
+               </div> */}
+
+              <LoadingSkeleton2 />
+              <LoadingSkeleton2 />
+              
+              </div>
+
+            )}
+
+
+            {!loading && (
+            <div className='flex gap-14'>
 
 
             <div className='flex flex-col gap-6'>
@@ -126,11 +146,8 @@ const SettingForm = () => {
                 />
 
               </label>
+
             </div>
-
-
-
-
 
 
             <div className='flex flex-col gap-6'>
@@ -166,6 +183,11 @@ const SettingForm = () => {
                 />
               </label>
             </div>
+            
+            </div>
+
+          )}
+
             <div className="mt- w-full">
               <button
                 type="submit"
