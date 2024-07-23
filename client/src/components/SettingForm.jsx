@@ -14,7 +14,8 @@ const SettingForm = () => {
     city: '',
     state: '',
     country: '',
-    url: ''
+    url: '',
+    taxRate: '8.5'
   });
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -40,10 +41,9 @@ const SettingForm = () => {
         city: data.city || '',
         state: data.state || '',
         country: data.country || '',
-        url: data.url || ''
+        url: data.url || '',
+        taxRate: data.taxRate || ''
       });
-
-
 
       setLoading(false)
 
@@ -178,6 +178,16 @@ const SettingForm = () => {
                   type="text"
                   name="url"
                   value={settings.url}
+                  onChange={handleChange}
+                  className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
+                />
+              </label>
+              <label>
+                <span className="text-gray-700">Tax Rate:</span>
+                <input
+                  type="number"
+                  name="taxRate"
+                  value={settings.taxRate}
                   onChange={handleChange}
                   className="mt-1 p-2 block w-full border rounded-md shadow-sm focus:outline-none focus:border-blue-500"
                 />

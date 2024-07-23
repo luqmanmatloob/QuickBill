@@ -1,7 +1,9 @@
 import React from "react";
+import Company from "./Company";
+
 import { useState, useEffect, useRef } from "react";
 import { useReactToPrint } from 'react-to-print';
-import Company from "./Company";
+
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa6";
 
@@ -9,13 +11,13 @@ import { FaPlus } from "react-icons/fa6";
 
 const Invoice = () => {
 
-
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
   });
 
 
+  const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const [formData, setFormData] = useState({
     type: "invoice",
@@ -23,7 +25,6 @@ const Invoice = () => {
     dateOrdered: "",
     dateDue: "",
     orderTotal: 0,
-
     billingCity: "",
     billingAddress: "",
     billingState: "",
@@ -35,6 +36,9 @@ const Invoice = () => {
     shippingAddress: "",
     shippingState: "",
     shippingPostcod: "",
+    paymentPaid: "",
+    paymentDue: "",
+
 
     items: [
       {
@@ -84,7 +88,7 @@ const Invoice = () => {
           note: "",
           otherType: "", //text area for any other type of paymen
           paymentMethod: "", // Payment method specific to each payment
-          type: "" //{ type: String, enum: ['deposit', 'on_delivery', 'other'], default: 'other' } // Add type field
+          type: "other" //{ type: String, enum: ['deposit', 'on_delivery', 'other'], default: 'other' } // Add type field
 
         },
       ],
@@ -98,32 +102,30 @@ const Invoice = () => {
   const [invoiceNoLbl, setinvoiceNoLbl] = useState('Invoice No')
   const [editPayments, setEditPayments] = useState(false)
   const [totalPayments, setTotalPayments] = useState(1)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   const [customers, setCustomers] = useState([]);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [taxRate, setTaxRate] = useState();
+
+
+
+  // ##############################################
+
+
+  // to toggle invoice and quote in dropdown
+  useEffect(() => {
+    if (formData.type === 'invoice') {
+      setinvoiceNoLbl('Invoice No');
+    } else if (formData.type === 'quote') {
+      setinvoiceNoLbl('Quote No');
+    }
+  }, [formData.type]);
+
+
+  // fetching settings to get taxrate on component mount
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
 
   // Fetch customer names on component mount
   useEffect(() => {
@@ -140,8 +142,39 @@ const Invoice = () => {
   }, []);
 
 
+  useEffect(() => {
+    calculateTotals();
+  }, [formData.items, grandTotal]);
 
 
+
+  // ##############################################
+
+
+
+  // function to fetch settings for taxrate
+  const fetchSettings = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/api/settings`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch settings');
+      }
+      const data = await response.json();
+      setTaxRate(data.taxRate);
+      console.log(taxRate)
+      console.log(data)
+
+
+    } catch (error) {
+      console.error('Error fetching settings:', error);
+    }
+
+
+  };
+
+
+
+  // function to fetch and populate billing and shipping when user clicks on customer name
   const populateCustomer = (uniqueKey) => {
     fetch(`${BASE_URL}/api/customer/details/${uniqueKey}`)
       .then(response => response.json())
@@ -191,70 +224,25 @@ const Invoice = () => {
 
 
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const updatedFormData = { ...formData, [name]: value };
+    setFormData(updatedFormData);
+    console.log(formData)
+  };
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  useEffect(() => {
-    if (formData.type === 'invoice') {
-      setinvoiceNoLbl('Invoice No');
-    } else if (formData.type === 'quote') {
-      setinvoiceNoLbl('Quote No');
-    }
-  }, [formData.type]);
-
-
-
-  useEffect(() => {
-    calculateTotals();
-  }, [formData.items, grandTotal]);
-
-
-
+  // funciton to remove and item
   const removeItem = (index) => {
     const updatedItems = [...formData.items];
     updatedItems.splice(index, 1);
     const updatedFormData = { ...formData, items: updatedItems };
     setFormData(updatedFormData);
   };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    const updatedFormData = { ...formData, [name]: value };
-    setFormData(updatedFormData);
-  };
-
 
   const handleItemChange = (index, e) => {
     const { name, value, type, checked } = e.target;
@@ -283,6 +271,82 @@ const Invoice = () => {
     const updatedFormData = { ...formData, items: updatedItems };
     setFormData(updatedFormData);
   };
+
+  const addItem = () => {
+    const newItems = [
+      ...formData.items,
+      {
+        orderNumber: "",
+        productName: "",
+        productCode: "",
+        size: "",
+        color: "",
+        lineQty: 1,
+        decorationProcess: "",
+        unitPrice: 0,
+        lineTotal: 0,
+        tax: taxRate,
+        taxExempt: false,
+        orderShippingTotal: 0,
+        poNumber: "",
+        supplierPoNumber: "",
+        productionStaffAccount: "",
+        storeName: "",
+        company: "",
+        billingFirstName: "",
+        billingLastName: "",
+        billingEmailAddress: "",
+        billingAddress: "",
+        billingCity: "",
+        billingState: "",
+        billingPostcode: "",
+        billingPhoneNo: "",
+        shippingFirstName: "",
+        shippingLastName: "",
+        shippingAddress: "",
+        shippingCity: "",
+        shippingState: "",
+        shippingPostcode: "",
+        shippingPhoneNo: "",
+        shippingMethod: "",
+        designName: "",
+        designPrice: 0,
+      },
+    ];
+
+    const updatedFormData = { ...formData, items: newItems };
+    setFormData(updatedFormData);
+  };
+
+
+
+
+  const calculateTotals = () => {
+    let subtotal = 0;
+    let totalTax = 0;
+    formData.items.forEach((item) => {
+      const unitPrice = parseFloat(item.unitPrice) || 0;
+      const lineQty = parseInt(item.lineQty) || 0;
+      const lineTotal = unitPrice * lineQty;
+      const tax = parseFloat(item.tax) || 0;
+      const taxExempt = item.taxExempt;
+      const taxAmount = taxExempt ? 0 : (lineQty * tax);
+
+      subtotal += lineTotal;
+      totalTax += taxAmount;
+    });
+    setSubtotal(subtotal);
+    setTotalTax(totalTax);
+    setGrandTotal(subtotal + totalTax);
+
+    const computedOrderTotal = grandTotal;
+    // console.log(`grandtotal ${grandTotal}`)
+    // console.log(`computedordertotal ${computedOrderTotal}`)
+
+    const updatedFormData = { ...formData, orderTotal: computedOrderTotal };
+    setFormData(updatedFormData);
+  };
+
 
 
 
@@ -327,91 +391,9 @@ const Invoice = () => {
   };
 
 
-  const calculateTotals = () => {
-    let subtotal = 0;
-    let totalTax = 0;
-    formData.items.forEach((item) => {
-      const unitPrice = parseFloat(item.unitPrice) || 0;
-      const lineQty = parseInt(item.lineQty) || 0;
-      const lineTotal = unitPrice * lineQty;
-      const tax = parseFloat(item.tax) || 0;
-      const taxExempt = item.taxExempt;
-      const taxAmount = taxExempt ? 0 : (lineQty * tax);
-
-      subtotal += lineTotal;
-      totalTax += taxAmount;
-    });
-    setSubtotal(subtotal);
-    setTotalTax(totalTax);
-    setGrandTotal(subtotal + totalTax);
-
-    const computedOrderTotal = grandTotal;
-    // console.log(`grandtotal ${grandTotal}`)
-    // console.log(`computedordertotal ${computedOrderTotal}`)
-
-    const updatedFormData = { ...formData, orderTotal: computedOrderTotal };
-    setFormData(updatedFormData);
-  };
-
-  const addItem = () => {
-    const newItems = [
-      ...formData.items,
-      {
-        orderNumber: "",
-        productName: "",
-        productCode: "",
-        size: "",
-        color: "",
-        lineQty: 1,
-        decorationProcess: "",
-        unitPrice: 0,
-        lineTotal: 0,
-        tax: 0,
-        taxExempt: false,
-        orderShippingTotal: 0,
-        poNumber: "",
-        supplierPoNumber: "",
-        productionStaffAccount: "",
-        storeName: "",
-        company: "",
-        billingFirstName: "",
-        billingLastName: "",
-        billingEmailAddress: "",
-        billingAddress: "",
-        billingCity: "",
-        billingState: "",
-        billingPostcode: "",
-        billingPhoneNo: "",
-        shippingFirstName: "",
-        shippingLastName: "",
-        shippingAddress: "",
-        shippingCity: "",
-        shippingState: "",
-        shippingPostcode: "",
-        shippingPhoneNo: "",
-        shippingMethod: "",
-        designName: "",
-        designPrice: 0,
-      },
-    ];
-
-    const updatedFormData = { ...formData, items: newItems };
-    setFormData(updatedFormData);
-  };
-
-  const BASE_URL = process.env.REACT_APP_BASE_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // const computedOrderTotal = grandTotal;
-    // console.log(`grandtotal ${grandTotal}`)
-    // console.log(`computedordertotal ${computedOrderTotal}`)
-
-    // const updatedFormData = { ...formData, orderTotal: computedOrderTotal };
-    // setFormData(updatedFormData);
-
-    // console.log(formData)
 
     try {
       const response = await fetch(
@@ -445,6 +427,9 @@ const Invoice = () => {
     }
   };
 
+
+
+
   return (
     <div className="ml-32 mt-16">
       <div ref={componentRef} className="print-border-none print-no-shadow print-no-py .print-no-my py-6 mx-auto bg-white rounded-lg shadow-xl p-8 border-[#f1f1f1] border-r-[#d1e4f5] border-l-[#d1e4f5] border-solid border-2 min-w-[1000px]">
@@ -453,6 +438,8 @@ const Invoice = () => {
           onSubmit={handleSubmit}
         >
           <div className="print-shadow-none print-border-none print-no-py .print-no-my my-6 flex-1 space-y-2  rounded-md bg-white p-4 shadow-sm sm:space-y-4 md:p-6">
+
+
             {/* row 1 compnay info and invoice infor */}
             <div className="print-border-none print-border-none flex justify-between w-full border-b">
               <div>
@@ -551,7 +538,7 @@ const Invoice = () => {
               </div>
             </div>
 
-
+            {/* show customer name list pop up button */}
             <button
               onClick={() => setIsPopupOpen(true)}
               type="button"
@@ -561,7 +548,7 @@ const Invoice = () => {
               <RiArrowDropDownLine style={{ fontSize: '24px', marginTop: '4px' }} />
 
             </button>
-
+            {/* customers name dropdown list pop up */}
             <div className="ml-60 mt-24 ">
 
               {isPopupOpen && (
@@ -604,22 +591,6 @@ const Invoice = () => {
 
 
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             {/* row 2, billing adress and shipping adress  city statecounty email adress */}
             <div className="print-border-none flex justify-between px-5 border-b">
@@ -749,8 +720,11 @@ const Invoice = () => {
               </h3>
             </div>
 
+            {/* items */}
             <div className="print-border-none flex justify-between px-5 border-b ">
               <div className="mt-4 print-no-my">
+
+                {/* item table header */}
                 <div className="print-no-my print-text-12px grid grid-cols-9 gap-4 mb-4 ">
                   <p className="col-span-2" >Product </p>
                   {/* <p>Color</p> */}
@@ -762,6 +736,7 @@ const Invoice = () => {
                   <p>Total:</p>
                 </div>
 
+                {/* items */}
                 {formData.items.map((item, index) => (
                   <div key={index} className="grid grid-cols-9 gap-4">
                     {/* Product Name */}
@@ -883,6 +858,7 @@ const Invoice = () => {
               </div>
             </div>
 
+
             {/* row 4 message,  sub total,  tax, grand total  */}
             <div className="print-border-none flex justify-between gap-5 items-start px-5 border-b">
               <div className="print-text-12px mt-4 w-full sm:w-[500px] ">
@@ -931,8 +907,31 @@ const Invoice = () => {
                     className=" rounded px-2 py-1 w-1/2"
                   />
                 </div>
+               
                 <div className="flex justify-end items-center gap-3">
-                  <label className="block mb-2 ">Payments:</label>
+                  <label className="block mb-2 ">Payment Paid:</label>
+                  <input
+                    type="number"
+                    name="paymentPaid"
+                    value={formData.paymentPaid}
+                    onChange={handleChange}
+                    
+                  />
+                </div>
+                <div className="flex justify-end items-center gap-3">
+                  <label className="block mb-2 ">Balance Due:</label>
+                  <input
+                    type="number"
+                    name="paymentDue"
+                    value={grandTotal-formData.paymentPaid}
+                    // onChange={paymentDueHandleChange}
+                    readOnly
+                    className=" rounded px-2 py-1 w-1/2"
+                  />
+                </div>
+
+                <div className="flex justify-start items-center gap-3 border-t-2 mt-5 ">
+                  <label className="block mb-2 ">Installments:</label>
                   <input
                     type="number"
                     name="grandTotal"
@@ -941,31 +940,22 @@ const Invoice = () => {
                     readOnly
                     className=" rounded px-2 py-1 w-1/2"
                   />
-
                 </div>
-                <div className="flex justify-center pr-10 mb-5">
+
+                <div className="flex justify-start pr-10 mb-5 ">
                   <button type="button"
                     className="text-blue-500 underline"
                     onClick={() => { setEditPayments(true) }}>
-                    Edit payment Plan
+                    Add Payment Installment Plan
                   </button>
-
                 </div>
+
               </div>
             </div>
 
 
 
-
-
-
-
-
-
-
-
-
-
+            {/* add payments plan/installments popup */}
 
             {editPayments &&
 
@@ -1124,32 +1114,10 @@ const Invoice = () => {
                     onClick={addPayment}
                     className="no-print my-3 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"
                   >
-                    Add Payment
+                    Add Payment Installment
                   </button>
                 </div>
               )}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1179,6 +1147,9 @@ const Invoice = () => {
                 </span>
               )}
             </div>
+
+
+
           </div>
         </form>
       </div>

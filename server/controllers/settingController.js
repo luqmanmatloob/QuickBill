@@ -3,7 +3,7 @@ const Setting = require('../models/settingModel');
 // Controller function for updating or creating settings
 const updateSettings = async (req, res) => {
   // Extracting data from the request body
-  const { companyName, phoneNumber, address, city, state, country, url } = req.body;
+  const { companyName, phoneNumber, address, city, state, country, url, taxRate } = req.body;
   
   try {
     // Check if a setting document exists in the collection
@@ -21,6 +21,7 @@ const updateSettings = async (req, res) => {
       setting.state = state;
       setting.country = country;
       setting.url = url;
+      setting.taxRate = taxRate;
     }
     
     // Saving the setting to the database

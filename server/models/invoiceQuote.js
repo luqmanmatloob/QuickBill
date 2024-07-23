@@ -58,6 +58,7 @@ const invoiceOrQuoteSchema = new mongoose.Schema({
     shippingPostcode : String,
     shippingMethod: String,
     paymentMethod: String,
+    paymentPaid: Number, 
     paymentDue: Number, 
     payments: [{
         amount: Number,
