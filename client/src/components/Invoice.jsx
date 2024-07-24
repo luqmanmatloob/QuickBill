@@ -25,10 +25,14 @@ const Invoice = () => {
     dateOrdered: "",
     dateDue: "",
     orderTotal: 0,
+    billingFirstName: "",
+    billingLastName: "",
     billingCity: "",
     billingAddress: "",
     billingState: "",
     billingEmailAddress: "",
+    shippingFirstName: "",
+    shippingLastName: "",
     shippingAddress: "",
     shippingCity: "",
     shippingMethod: "",
@@ -205,6 +209,8 @@ const Invoice = () => {
         // Update the formData with the extracted details
         setFormData(prevFormData => ({
           ...prevFormData,
+          billingFirstName: `${primaryContactFirstName}`,
+          billingLastName: `${primaryContactLastName}`,  
           billingCity,
           billingAddress: `${billingAddress1} ${billingAddress2}`,
           billingState,
@@ -419,7 +425,7 @@ const Invoice = () => {
       }, 1000);
     } catch (error) {
       console.error("Error submitting invoice:", error);
-      setResponseMessage("Error");
+      setResponseMessage(`Error, It could be becuase of duplicate Invoice number`);
 
       setTimeout(() => {
         setResponseMessage("");

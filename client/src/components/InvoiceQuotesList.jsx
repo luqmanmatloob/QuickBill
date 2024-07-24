@@ -8,8 +8,12 @@ const InvoiceQuotesList = () => {
     const [loading, setLoading] = useState(true);
     const [selectedInvoices, setSelectedInvoices] = useState([]);
     const [printBtn, setPrintBtn] = useState(false);
-
-
+    const [filters, setFilters] = useState({
+        billingFirstName: '',
+        billingLastName: '',
+        orderNumber: '',
+        dateOrdered: '',
+    });
 
     useEffect(() => {
         if (selectedInvoices.length > 0) {
@@ -21,18 +25,19 @@ const InvoiceQuotesList = () => {
 
     useEffect(() => {
         fetchInvoicesQuotes();
-    }, []);
+    }, [filters]);
 
     const fetchInvoicesQuotes = async () => {
         try {
-            const response = await fetch(`${BASE_URL}/api/invoicequote/allInvoicesQuotes`);
+            const queryParams = new URLSearchParams(filters).toString();
+            const response = await fetch(`${BASE_URL}/api/invoicequote/allInvoicesQuotes?${queryParams}`);
 
             if (!response.ok) {
                 throw new Error('Failed to fetch data');
             }
             const data = await response.json();
-            console.log(data)
-            setLoading(false)
+            console.log(data);
+            setLoading(false);
             const reversedData = data.data.reverse();
             setInvoicesQuotes(reversedData);
         } catch (error) {
@@ -40,10 +45,9 @@ const InvoiceQuotesList = () => {
         }
     };
 
-    // Function to format date into readable format
-    const formatDate = (dateString) => {
-        const options = { year: 'numeric', month: 'short', day: 'numeric' };
-        return new Date(dateString).toLocaleDateString(undefined, options);
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        setFilters({ ...filters, [name]: value });
     };
 
     const handleDelete = async (uniqueKey) => {
@@ -67,62 +71,85 @@ const InvoiceQuotesList = () => {
             console.error('Error deleting invoice/quote:', error);
         }
     };
+
     const handleSelectInvoice = (uniqueKey) => {
         if (selectedInvoices.includes(uniqueKey)) {
             setSelectedInvoices(selectedInvoices.filter(key => key !== uniqueKey));
-            console.log(selectedInvoices)
         } else {
             setSelectedInvoices([...selectedInvoices, uniqueKey]);
         }
     };
 
-
-
+    const formatDate = (dateString) => {
+        const options = { year: 'numeric', month: 'short', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    };
 
     return (
         <div className="ml-60 mr-5 mt-32">
-            <div className="
-        container p-6 mx-auto bg-white rounded-lg shadow-2xl  my-5 border-b-slate-300 border-solid border-2 border-[#f1f1f1] border-r-[#d1e4f5] border-l-[#d1e4f5]"
-            >
-                <div className='flex justify-between items-center mb-5'>
+            <div className="container p-6 mx-auto bg-white rounded-lg shadow-2xl my-5 border-b-slate-300 border-solid border-2 border-[#f1f1f1] border-r-[#d1e4f5] border-l-[#d1e4f5]">
+                <div className="flex justify-between items-center mb-5">
                     <h1 className="text-3xl font-bold mb-4">All Invoices/Quotes</h1>
-
-                    <div className='flex justify-between items-center       '>
-                        <button className='bg-[#6539c0] hover:bg-purple-500 text-white px-6 py-[7px] rounded hidden'>
+                    <div className="flex justify-between items-center">
+                        <button className="bg-[#6539c0] hover:bg-purple-500 text-white px-6 py-[7px] rounded hidden">
                             Sort
                         </button>
-
-                        {printBtn &&
-                            (<Link to={`/print/${selectedInvoices}`} target='_blank' 
-                                className="no-print my-3 mr-2 bg-transparent border-[2px] border-blue-500  hover:bg-blue-100 hover:text-black  text-blue-700 font-bold px-[20px] py-[5px] rounded"
-                                >
+                        {printBtn && (
+                            <Link to={`/print/${selectedInvoices}`} target="_blank" className="no-print my-3 mr-2 bg-transparent border-[2px] border-blue-500 hover:bg-blue-100 hover:text-black text-blue-700 font-bold px-[20px] py-[5px] rounded">
                                 Print
-                            </Link>)
-                        }
-
-                        {!printBtn &&
-                            (<p 
-                                className=" text-red-600 hover:red m-1 my-4 font-semibold px-4 py-1 rounded"
-                                >
+                            </Link>
+                        )}
+                        {!printBtn && (
+                            <p className="text-red-600 hover:red m-1 my-4 font-semibold px-4 py-1 rounded">
                                 Please Select to Print
-                            </p>)
-                        }
-
-
+                            </p>
+                        )}
                     </div>
                 </div>
+
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        name="billingFirstName"
+                        placeholder="Filter by Billing First Name"
+                        value={filters.billingFirstName}
+                        onChange={handleFilterChange}
+                        className="border border-gray-300 px-4 py-2 rounded mr-2"
+                    />
+                    <input
+                        type="text"
+                        name="billingLastName"
+                        placeholder="Filter by Billing Last Name"
+                        value={filters.billingLastName}
+                        onChange={handleFilterChange}
+                        className="border border-gray-300 px-4 py-2 rounded mr-2"
+                    />
+                    <input
+                        type="text"
+                        name="orderNumber"
+                        placeholder="Filter by Order Number"
+                        value={filters.orderNumber}
+                        onChange={handleFilterChange}
+                        className="border border-gray-300 px-4 py-2 rounded mr-2"
+                    />
+                    {/* <input
+                        type="date"
+                        name="dateOrdered"
+                        value={filters.dateOrdered}
+                        onChange={handleFilterChange}
+                        className="border border-gray-300 px-4 py-2 rounded"
+                    /> */}
+                </div>
+
                 {loading && (
                     <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
                         Loading Invoices ...
                     </div>
                 )}
 
-
-
-
-                <table className="table-auto w-full border-collapse border border-gray-300 ">
+                <table className="table-auto w-full border-collapse border border-gray-300">
                     <thead>
-                        <tr className=" bg-gray-300">
+                        <tr className="bg-gray-300">
                             <th className="border border-gray-300 px-4 py-2">
                                 <input
                                     type="checkbox"
@@ -136,11 +163,9 @@ const InvoiceQuotesList = () => {
                                     checked={selectedInvoices.length === invoicesQuotes.length}
                                 />
                             </th>
-                            {/* <th className="border border-gray-300 px-4 py-2">Unique Key</th> */}
-                            <th className="border border-gray-300 px-4 py-2">Order Number </th>
+                            <th className="border border-gray-300 px-4 py-2">Order Number</th>
                             <th className="border border-gray-300 px-4 py-2">Type</th>
                             <th className="border border-gray-300 px-4 py-2">Date Ordered</th>
-                            <th className="border border-gray-300 px-4 py-2">Date Due</th>
                             <th className="border border-gray-300 px-4 py-2">Date Due</th>
                             <th className="border border-gray-300 px-4 py-2">Billing</th>
                             <th className="border border-gray-300 px-4 py-2">Shipping</th>
@@ -159,24 +184,24 @@ const InvoiceQuotesList = () => {
                                         checked={selectedInvoices.includes(invoiceQuote.uniqueKey)}
                                     />
                                 </td>
-
-                                {/* <td className="border border-gray-300 px-4 py-2">{invoiceQuote.uniqueKey}</td> */}
                                 <td className="border border-gray-300 px-4 py-2">{invoiceQuote.orderNumber}</td>
                                 <td className="border border-gray-300 px-4 py-2">{invoiceQuote.type}</td>
                                 <td className="border border-gray-300 px-4 py-2">{formatDate(invoiceQuote.dateOrdered)}</td>
-                                <td className="border border-gray-300 px-4 py-2">{formatDate(invoiceQuote.dateOrdered)}</td>
                                 <td className="border border-gray-300 px-4 py-2">{formatDate(invoiceQuote.dateDue)}</td>
-                                <td className="border border-gray-300 px-4 py-2">{invoiceQuote.billingAddress}, {invoiceQuote.billingCity} </td>
-                                <td className="border border-gray-300 px-4 py-2">{invoiceQuote.shippingAddress}, {invoiceQuote.shippingCity} </td>
+                                <td className="border border-gray-300 px-4 py-2">{invoiceQuote.billingAddress}, {invoiceQuote.billingCity}</td>
+                                <td className="border border-gray-300 px-4 py-2">{invoiceQuote.shippingAddress}, {invoiceQuote.shippingCity}</td>
                                 <td className="border border-gray-300 px-4 py-2">{invoiceQuote.orderTotal}</td>
-                                <td className="border border-gray-300 px-4 py-2"><Link to={`/Edit/${invoiceQuote.uniqueKey}`} className="text-blue-500 hover:underline mr-4">Edit</Link></td>
-                                <td className="border border-gray-300 px-4 py-2"><button onClick={() => handleDelete(invoiceQuote.uniqueKey)} className="text-red-500 hover:underline">Delete</button></td>
-
+                                <td className="border border-gray-300 px-4 py-2">
+                                    <Link to={`/Edit/${invoiceQuote.uniqueKey}`} className="text-blue-500 hover:underline mr-4">Edit</Link>
+                                </td>
+                                <td className="border border-gray-300 px-4 py-2">
+                                    <button onClick={() => handleDelete(invoiceQuote.uniqueKey)} className="text-red-500 hover:underline">Delete</button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-                <div className='mb-[60vh]'></div>
+                <div className="mb-[60vh]"></div>
             </div>
         </div>
     );

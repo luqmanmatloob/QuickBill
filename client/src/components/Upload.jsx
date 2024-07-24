@@ -128,7 +128,10 @@ const Upload = () => {
       setLoading(false)
     } catch (error) {
       console.error('Error during processing:', error);
-      alert('Failed to process the file and submit invoices');
+      alert('Failed to process the file and submit invoices, It could be because of duplicate invoices');
+      setLoading(false)
+
+
     }
   };
 
@@ -217,7 +220,7 @@ const Upload = () => {
       setInvoicesQuotes([]);
     } catch (error) {
       console.error('Error deleting all uploaded invoices:', error);
-      alert('Failed to delete all uploaded invoices');
+      alert('Failed ');
     }
   };
 
