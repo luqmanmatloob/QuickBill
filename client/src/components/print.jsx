@@ -218,7 +218,7 @@ const Print = ({ id }) => {
 
       doc.text('Product', 15, startY);
       doc.text('Color', 75, startY);
-      doc.text('Size/qty', 90, startY);
+      doc.text('Size/QTY', 90, startY);
       doc.text('Unit Price', 125, startY);
       doc.text('Tax', 145, startY);
       doc.text('Qty', 158, startY);
@@ -259,7 +259,7 @@ const Print = ({ id }) => {
         doc.text(`$${item.unitPrice}`, 125, yPosition);
         doc.text(`$${item.tax}`, 145, yPosition);
         doc.text(`${item.lineQty}`, 158, yPosition);
-        doc.text(`${item.lineTotal}`, 170, yPosition);
+        doc.text(`$${item.lineTotal}`, 170, yPosition);
 
         doc.setTextColor(200, 204, 203); //   border grey 
         doc.setFontSize(15);
@@ -286,12 +286,11 @@ const Print = ({ id }) => {
       doc.text(`Balance Due:`, 140, totalsY + 40);
 
 
-      doc.text(`${subtotal.toFixed(2)}`, 165, totalsY);
-      doc.text(`${totalTax.toFixed(2)}`, 165, totalsY + 10);
-      doc.text(`${GrandTotal.toFixed(2)}`, 165, totalsY + 20);
-
-      doc.text(`${invoice.paymentPaid || ''}`, 165, totalsY + 30);
-      doc.text(`${GrandTotal-invoice.paymentPaid || ''}`, 165, totalsY + 40);
+      doc.text(`$${subtotal.toFixed(2)}`, 165, totalsY);
+      doc.text(`$${totalTax.toFixed(2)}`, 165, totalsY + 10);
+      doc.text(`$${GrandTotal.toFixed(2)}`, 165, totalsY + 20);
+      doc.text(`$${invoice.paymentPaid || ''}`, 165, totalsY + 30);
+      doc.text(`$${GrandTotal-invoice.paymentPaid || 0}`, 165, totalsY + 40);
 
       doc.setFontSize(7);
       doc.setFont('Helvetica', 'normal');
@@ -299,21 +298,35 @@ const Print = ({ id }) => {
       doc.text(`(All prices are shown in USD)`, 140, totalsY + 50);
 
 
+      doc.setFont('Helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(105, 105, 105); //   grey 
+
+      doc.text(`Note: ${invoice.note}`,15, totalsY+5, { maxWidth: 75 });
 
       // Footer Note
       doc.setFontSize(10);
       doc.setFont('Helvetica', 'bold');
-      doc.text(`Payment Method:`, 15, totalsY, { maxWidth: 90 });
+      doc.text(`Payment Method:`, 15, totalsY+20, { maxWidth: 90 });
       doc.setFont('Helvetica', 'normal');
 
-      doc.text(`${invoice.paymentMethod || ''}`, 15, totalsY+5, { maxWidth: 90 });
+      doc.text(`${invoice.paymentMethod || ''}`, 15, totalsY+30, { maxWidth: 90 });
 
 
       doc.setFont('Helvetica', 'normal');
       doc.setFontSize(8);
       doc.setTextColor(105, 105, 105); //   grey 
 
-      doc.text(`Note: ${invoice.note  || 'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.'}`, 15, totalsY+20, { maxWidth: 75 });
+
+      doc.setTextColor(200, 204, 203); //   border grey 
+      doc.setFontSize(17);
+      doc.text(`__________________________`, 15, totalsY+45);
+      doc.setTextColor(0, 0, 0); //  black
+      doc.setFont('Helvetica', 'normal');
+      doc.setFontSize(7);
+      doc.setTextColor(80, 80, 80); //   Items grey 
+
+      doc.text(`'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.}`, 15, totalsY+50, { maxWidth: 85 });
     });
 
     // Open the PDF in a new tab
@@ -366,3 +379,4 @@ const Print = ({ id }) => {
 };
 
 export default Print;
+  

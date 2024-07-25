@@ -103,7 +103,7 @@ const EditInvoiceQuote = ({ id }) => {
 
                 },
             ],
-        note: "You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.",
+        note: "Note here",
     });
 
     const [subtotal, setSubtotal] = useState(0);

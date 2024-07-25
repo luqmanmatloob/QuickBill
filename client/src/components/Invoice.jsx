@@ -20,6 +20,19 @@ const Invoice = () => {
 
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
+
+  const [subtotal, setSubtotal] = useState(0);
+  const [totalTax, setTotalTax] = useState(0);
+  const [grandTotal, setGrandTotal] = useState(0);
+  const [responseMessage, setResponseMessage] = useState("");
+  const [invoiceNoLbl, setinvoiceNoLbl] = useState('Invoice No')
+  const [editPayments, setEditPayments] = useState(false)
+  const [totalPayments, setTotalPayments] = useState(1)
+  const [customers, setCustomers] = useState([]);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [taxRate, setTaxRate] = useState();
+  const [uniqueKey, setUniqueKey] = useState();
+
   const [formData, setFormData] = useState({
     type: "invoice",
     orderNumber: "",
@@ -97,21 +110,8 @@ const Invoice = () => {
 
         },
       ],
-    note: "You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.",
-  });
-
-  const [subtotal, setSubtotal] = useState(0);
-  const [totalTax, setTotalTax] = useState(0);
-  const [grandTotal, setGrandTotal] = useState(0);
-  const [responseMessage, setResponseMessage] = useState("");
-  const [invoiceNoLbl, setinvoiceNoLbl] = useState('Invoice No')
-  const [editPayments, setEditPayments] = useState(false)
-  const [totalPayments, setTotalPayments] = useState(1)
-  const [customers, setCustomers] = useState([]);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const [taxRate, setTaxRate] = useState();
-  const [uniqueKey, setUniqueKey] = useState();
-
+      note: "Note here",
+    });
 
 
   // ##############################################
@@ -167,8 +167,6 @@ const Invoice = () => {
       }
       const data = await response.json();
       setTaxRate(data.taxRate);
-      console.log(taxRate)
-      console.log(data)
 
 
     } catch (error) {
@@ -241,9 +239,6 @@ const Invoice = () => {
 
 
 
-
-
-
   // funciton to remove and item
   const removeItem = (index) => {
     const updatedItems = [...formData.items];
@@ -252,33 +247,73 @@ const Invoice = () => {
     setFormData(updatedFormData);
   };
 
+
+
   const handleItemChange = (index, e) => {
     const { name, value, type, checked } = e.target;
     const updatedItems = [...formData.items];
     // Remove the 'items[index].' part from the name
     const key = name.replace(`items[${index}].`, "");
-
+  
     // Handle checkbox separately
     if (type === "checkbox") {
       updatedItems[index] = { ...updatedItems[index], [key]: checked };
     } else {
       updatedItems[index] = { ...updatedItems[index], [key]: value };
     }
-
+  
     // Auto-calculate lineTotal if unitPrice, lineQty, or tax changes
-    if (["unitPrice", "lineQty", "tax", "taxExempt"].includes(key)) {
+    if (["unitPrice", "lineQty", "taxExempt"].includes(key)) {
       const unitPrice = parseFloat(updatedItems[index].unitPrice) || 0;
       const lineQty = parseInt(updatedItems[index].lineQty) || 0;
-      const tax = parseFloat(updatedItems[index].tax) || 0;
+  
+      // Calculate tax
+      const tax = unitPrice * lineQty * (taxRate / 100);
+        updatedItems[index].tax = tax;
+        updatedItems[index].tax = tax;
+
       const taxExempt = updatedItems[index].taxExempt;
       let lineTotal = lineQty * unitPrice;
-      lineTotal = taxExempt ? lineTotal : (lineTotal + tax * lineQty);
+      lineTotal = taxExempt ? lineTotal : (lineTotal + tax);
       updatedItems[index].lineTotal = lineTotal;
-    }
 
+
+
+    }
+  
     const updatedFormData = { ...formData, items: updatedItems };
     setFormData(updatedFormData);
   };
+  
+
+
+  const calculateTotals = () => {
+    let subtotal = 0;
+    let totalTax = 0;
+    formData.items.forEach((item) => {
+      const unitPrice = parseFloat(item.unitPrice) || 0;
+      const lineQty = parseInt(item.lineQty) || 0;
+      const lineTotal = unitPrice * lineQty;
+      const tax = parseFloat(item.tax) || 0;
+      const taxExempt = item.taxExempt;
+      const taxAmount = taxExempt ? 0 : (tax);
+
+      subtotal += lineTotal;
+      totalTax += taxAmount;
+    });
+    setSubtotal(subtotal);
+    setTotalTax(totalTax);
+    setGrandTotal(subtotal + totalTax);
+
+    const computedOrderTotal = grandTotal;
+    // console.log(`grandtotal ${grandTotal}`)
+    // console.log(`computedordertotal ${computedOrderTotal}`)
+
+    const updatedFormData = { ...formData, orderTotal: computedOrderTotal };
+    setFormData(updatedFormData);
+  };
+
+
 
   const addItem = () => {
     const newItems = [
@@ -293,7 +328,7 @@ const Invoice = () => {
         decorationProcess: "",
         unitPrice: 0,
         lineTotal: 0,
-        tax: taxRate,
+        tax: 0,
         taxExempt: false,
         orderShippingTotal: 0,
         poNumber: "",
@@ -325,37 +360,6 @@ const Invoice = () => {
     const updatedFormData = { ...formData, items: newItems };
     setFormData(updatedFormData);
   };
-
-
-
-
-  const calculateTotals = () => {
-    let subtotal = 0;
-    let totalTax = 0;
-    formData.items.forEach((item) => {
-      const unitPrice = parseFloat(item.unitPrice) || 0;
-      const lineQty = parseInt(item.lineQty) || 0;
-      const lineTotal = unitPrice * lineQty;
-      const tax = parseFloat(item.tax) || 0;
-      const taxExempt = item.taxExempt;
-      const taxAmount = taxExempt ? 0 : (lineQty * tax);
-
-      subtotal += lineTotal;
-      totalTax += taxAmount;
-    });
-    setSubtotal(subtotal);
-    setTotalTax(totalTax);
-    setGrandTotal(subtotal + totalTax);
-
-    const computedOrderTotal = grandTotal;
-    // console.log(`grandtotal ${grandTotal}`)
-    // console.log(`computedordertotal ${computedOrderTotal}`)
-
-    const updatedFormData = { ...formData, orderTotal: computedOrderTotal };
-    setFormData(updatedFormData);
-  };
-
-
 
 
   const handlePaymentChange = (index, e) => {
@@ -502,13 +506,13 @@ const Invoice = () => {
 
 
   return (
-    <div className="ml-32 mt-16">
-      <div ref={componentRef} className="print-border-none print-no-shadow print-no-py .print-no-my py-6 mx-auto bg-white rounded-lg shadow-xl p-8 border-[#f1f1f1] border-r-[#d1e4f5] border-l-[#d1e4f5] border-solid border-2 min-w-[1000px]">
+    <div className="ml-28 mt-16">
+      <div ref={componentRef} className="print-border-none print-no-shadow print-no-py .print-no-my py-6 mx-auto bg-white rounded-lg shadow-xl p-8 border-[#f1f1f1] border-r-[#d1e4f5] border-l-[#d1e4f5] border-solid border-2 min-w-[1010px]">
         <form
           className="print-border-none relative flex flex-col px-2 md:flex-row"
           onSubmit={handleSubmit}
         >
-          <div className="print-shadow-none print-border-none print-no-py .print-no-my my-6 flex-1 space-y-2  rounded-md bg-white p-4 shadow-sm sm:space-y-4 md:p-6">
+          <div className="print-shadow-none print-border-none print-no-py .print-no-my my-6 flex-1 space-y-2  rounded-md bg-white py-4 shadow-sm sm:space-y-4 md:p-6">
 
 
             {/* row 1 compnay info and invoice infor */}
@@ -792,11 +796,11 @@ const Invoice = () => {
             </div>
 
             {/* items */}
-            <div className="print-border-none flex justify-between px-5 border-b text-sm">
+            <div className="print-border-none flex justify-between px- border-b text-sm">
               <div className="mt-4 print-no-my">
 
                 {/* item table header */}
-                <div className="print-no-my print-text-12px grid grid-cols-9 gap-4 mb-4 text-sm font-semibold ">
+                <div className="print-no-my print-text-12px grid grid-cols-10 gap-4 mb-4 text-sm font-semibold ">
                   <p className="col-span-2" >Product </p>
                    <p>Color</p>
                   <p className="pl-2">Size/Qty</p>
@@ -810,7 +814,7 @@ const Invoice = () => {
 
                 {/* items */}
                 {formData.items.map((item, index) => (
-                  <div key={index} className="grid grid-cols-9 gap-4">
+                  <div key={index} className="grid grid-cols-10 gap-4">
                     {/* Product Name */}
                     <div className="col-span-2">
                       {/* <label className="block mb-2">Product Name:</label> */}
@@ -869,7 +873,7 @@ const Invoice = () => {
                       {/* <label className="block mb-2">Tax (%):</label> */}
                       <input
                         type="number"
-                        name={`items[${index}].tax || taxrate`}
+                        name={`items[${index}].tax`}
                         value={item.tax}
                         onChange={(e) => handleItemChange(index, e)}
                         className="rounded px-2 py-1 w-full"
