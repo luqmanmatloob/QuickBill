@@ -229,6 +229,10 @@ exports.updateInvoiceQuote = async (req, res) => {
     shippingCity,
     shippingState,
     shippingPostcode,
+    paymentMethod,
+    paymentPaid,
+    paymentDue,
+    payments,
   } = req.body;
 
   try {
@@ -263,6 +267,11 @@ exports.updateInvoiceQuote = async (req, res) => {
     existingInvoiceOrQuote.shippingCity = shippingCity;
     existingInvoiceOrQuote.shippingState = shippingState;
     existingInvoiceOrQuote.shippingPostcode = shippingPostcode;
+    existingInvoiceOrQuote.paymentMethod = paymentMethod;
+    existingInvoiceOrQuote.paymentPaid = paymentPaid;
+    existingInvoiceOrQuote.paymentDue = paymentDue;
+    payments.payments = payments;
+
     existingInvoiceOrQuote.items = items; // Update items array
 
     // Save the updated document
