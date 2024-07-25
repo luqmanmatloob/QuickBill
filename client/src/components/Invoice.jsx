@@ -6,6 +6,8 @@ import { useReactToPrint } from 'react-to-print';
 
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa6";
+import { Link } from 'react-router-dom';
+
 
 
 
@@ -109,6 +111,7 @@ const Invoice = () => {
   const [customers, setCustomers] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [taxRate, setTaxRate] = useState();
+  const [uniqueKey, setUniqueKey] = useState();
 
 
 
@@ -210,7 +213,7 @@ const Invoice = () => {
         setFormData(prevFormData => ({
           ...prevFormData,
           billingFirstName: `${primaryContactFirstName}`,
-          billingLastName: `${primaryContactLastName}`,  
+          billingLastName: `${primaryContactLastName}`,
           billingCity,
           billingAddress: `${billingAddress1} ${billingAddress2}`,
           billingState,
@@ -398,6 +401,65 @@ const Invoice = () => {
 
 
 
+
+  let key
+  const handlePrintClick = async (e) => {
+    e.preventDefault();
+    if (!key) {
+
+      try {
+        const response = await fetch(
+          `${BASE_URL}/api/invoicequote/createInvoiceQuote`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+
+        const data = await response.json();
+
+        console.log("Invoice submitted successfully:", data);
+
+        setResponseMessage(`Invoice submitted successfully.`);
+        key = data.uniqueKey
+        setUniqueKey(data.uniqueKey)
+        console.log(uniqueKey)
+
+
+        setTimeout(() => {
+          setResponseMessage("");
+        }, 1000);
+      } catch (error) {
+        console.error("Error submitting invoice:", error);
+        setResponseMessage(`Error, check duplicate number`);
+
+        setTimeout(() => {
+          setResponseMessage("");
+        }, 1000);
+
+      }
+
+
+
+    }
+
+    if (key) {
+      window.open(`/print/${key}`, '_blank');
+      window.location.reload();
+    } else {
+      console.log('Unique key is undefined. Cannot proceed to print page.');
+    }
+
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -420,9 +482,13 @@ const Invoice = () => {
       const data = await response.json();
       console.log("Invoice submitted successfully:", data);
       setResponseMessage(`Invoice submitted successfully.`);
+      setUniqueKey(data.uniqueKey)
+      console.log(uniqueKey)
       setTimeout(() => {
         setResponseMessage("");
       }, 1000);
+      window.location.reload();
+
     } catch (error) {
       console.error("Error submitting invoice:", error);
       setResponseMessage(`Error, It could be becuase of duplicate Invoice number`);
@@ -913,7 +979,7 @@ const Invoice = () => {
                     className=" rounded px-2 py-1 w-1/2"
                   />
                 </div>
-               
+
                 <div className="flex justify-end items-center gap-3">
                   <label className="block mb-2 ">Payment Paid:</label>
                   <input
@@ -921,7 +987,7 @@ const Invoice = () => {
                     name="paymentPaid"
                     value={formData.paymentPaid}
                     onChange={handleChange}
-                    
+
                   />
                 </div>
                 <div className="flex justify-end items-center gap-3">
@@ -929,7 +995,7 @@ const Invoice = () => {
                   <input
                     type="number"
                     name="paymentDue"
-                    value={grandTotal-formData.paymentPaid}
+                    value={grandTotal - formData.paymentPaid}
                     // onChange={paymentDueHandleChange}
                     readOnly
                     className=" rounded px-2 py-1 w-1/2"
@@ -1130,18 +1196,34 @@ const Invoice = () => {
             <div className="no-print print-no-py print-no-my pt-10 px-5">
               <button
                 type="submit"
-                className=" bg-[#6539c0] hover:bg-purple-500 text-white px-6 py-2  rounded"
+                className=" bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded mx-3"
+
               >
                 Save
               </button>
 
-              <button
+              {/* old print using react-to-print */}
+              {/* <button
                 onClick={handlePrint}
                 type="button"
-                className=" bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded mx-3"
+                className=" bg-[#6539c0] hover:bg-purple-500 text-white px-6 py-2  rounded"
+
+              >
+                Print
+              </button> */}
+
+              {/* new print using using pdf */}
+              <button
+                type="button"
+                onClick={handlePrintClick}
+                className=" my-3 mr-2 bg-transparent border-[2px] border-blue-500 hover:bg-blue-100 hover:text-black text-blue-700 font-bold px-[20px] py-[5px] rounded"
               >
                 Print
               </button>
+
+
+
+
               {responseMessage && (
                 <span
                   className={`mt-4 ${responseMessage.startsWith("Error")

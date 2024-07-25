@@ -84,6 +84,7 @@ const CustomerManagement = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(newCustomer),
+
         });
       } else {
         response = await fetch(`${BASE_URL}/api/customer`, {
@@ -98,7 +99,9 @@ const CustomerManagement = () => {
         throw new Error('Failed to save customer');
       }
       setEditMode(false);
+      clearBtn();
       fetchCustomers(); // Refresh customer list
+
     } catch (error) {
       console.error('Error saving customer:', error);
     }
@@ -106,6 +109,11 @@ const CustomerManagement = () => {
 
   // Delete customer
   const deleteCustomer = async (customerId) => {
+    const isConfirmed = window.confirm(`Are you sure you want to delete this item?`);
+    if (!isConfirmed) {
+        return; // If the user cancels, do nothing
+    }
+
     try {
       const response = await fetch(`${BASE_URL}/api/customer/${customerId}`, {
         method: 'DELETE',

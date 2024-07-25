@@ -95,7 +95,9 @@ const InvoiceQuotesList = () => {
                             Sort
                         </button>
                         {printBtn && (
-                            <Link to={`/print/${selectedInvoices}`} target="_blank" className="no-print my-3 mr-2 bg-transparent border-[2px] border-blue-500 hover:bg-blue-100 hover:text-black text-blue-700 font-bold px-[20px] py-[5px] rounded">
+                            <Link to={`/print/${selectedInvoices}`} target="_blank" 
+                            className=" my-3 mr-2 bg-transparent border-[2px] border-blue-500 hover:bg-blue-100 hover:text-black text-blue-700 font-bold px-[20px] py-[5px] rounded"
+                            >
                                 Print
                             </Link>
                         )}
@@ -142,7 +144,7 @@ const InvoiceQuotesList = () => {
                 </div>
 
                 {loading && (
-                    <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+                    <div className="my-4 bg-blue-200 text-green-800 py-2 px-4 rounded">
                         Loading Invoices ...
                     </div>
                 )}

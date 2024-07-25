@@ -229,36 +229,38 @@ const Print = ({ id }) => {
 
 
   return (
+    <div className="ml-40 mt-16">
     <div className='mx-auto max-w-5xl py-12'>
-      <div className='bg-white rounded-lg shadow-2xl p-8 border-r-[#6539c0] border-l-[#6539c0] border-solid border-2 min-h-[70vh]'>
-        <p className="my-4 bg-green-300 text-green-800 py-2 px-4 rounded text-center"> Please Make sure Pop ups are allowed</p>
+      <div className='bg-white rounded-lg shadow-xl p-8 border-r-blue-100 border-l-blue-100 border-solid border-2 min-h-[70vh]'>
+        <p className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded text-center"> Please Make sure Pop ups are allowed</p>
 
         {gettingsetting && (
-          <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+          <div className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded">
             Loading Info...
           </div>
         )}
 
         {gettinginvoices && (
-          <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+          <div className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded">
             Loading Invoices & Quotes ...
           </div>
         )}
 
         {generatingpdf && (
-          <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+          <div className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded">
             generating PDF...
           </div>
         )}
 
         {success && (
-          <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
+          <div className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded">
             PDF for Print Generated Successfully
           </div>
         )}
 
 
       </div>
+    </div>
     </div>
   );
 };
