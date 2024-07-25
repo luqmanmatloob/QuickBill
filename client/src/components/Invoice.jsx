@@ -6,7 +6,6 @@ import { useReactToPrint } from 'react-to-print';
 
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { FaPlus } from "react-icons/fa6";
-import { Link } from 'react-router-dom';
 
 
 
@@ -215,10 +214,10 @@ const Invoice = () => {
           billingFirstName: `${primaryContactFirstName}`,
           billingLastName: `${primaryContactLastName}`,
           billingCity,
-          billingAddress: `${billingAddress1} ${billingAddress2}`,
+          billingAddress: `${billingAddress1}`,
           billingState,
           billingEmailAddress: primaryContactEmail,
-          shippingAddress: `${shippingAddress1} ${shippingAddress2}`,
+          shippingAddress: `${shippingAddress1}`,
           shippingCity,
           shippingState,
           shippingPostcode: shippingPostal,
@@ -793,19 +792,20 @@ const Invoice = () => {
             </div>
 
             {/* items */}
-            <div className="print-border-none flex justify-between px-5 border-b ">
+            <div className="print-border-none flex justify-between px-5 border-b text-sm">
               <div className="mt-4 print-no-my">
 
                 {/* item table header */}
-                <div className="print-no-my print-text-12px grid grid-cols-9 gap-4 mb-4 ">
+                <div className="print-no-my print-text-12px grid grid-cols-9 gap-4 mb-4 text-sm font-semibold ">
                   <p className="col-span-2" >Product </p>
-                  {/* <p>Color</p> */}
-                  <p className="pl-2">Size</p>
+                   <p>Color</p>
+                  <p className="pl-2">Size/Qty</p>
+                  <p>Unit Price $</p>
+                  <p className="pl-4">{"Tax $"}</p>
                   <p>Qty:</p>
-                  <p>Unit Price</p>
-                  <p className="pl-4">{"Tax"}</p>
-                  <p>{`Tax Exempt`}</p>
                   <p>Total:</p>
+                  <p>Tax Exempt</p>
+
                 </div>
 
                 {/* items */}
@@ -826,9 +826,9 @@ const Invoice = () => {
                       />
                     </div>
                     {/* Color */}
-                    {/* <div> */}
-                    {/* <label className="block mb-2">Color:</label> */}
-                    {/* <input
+                    <div> 
+                    {/* <label className="block mb-2">Color:</label>  */}
+                    <input
                       type="text"
                       name={`items[${index}].color`}
                       value={item.color}
@@ -837,7 +837,7 @@ const Invoice = () => {
                       placeholder="Color"
 
                     />
-                  </div> */}
+                  </div> 
                     {/* Size */}
                     <div>
                       {/* <label className="block mb-2">Size:</label> */}
@@ -847,22 +847,11 @@ const Invoice = () => {
                         value={item.size}
                         onChange={(e) => handleItemChange(index, e)}
                         className="rounded px-2 py-1 w-full"
-                        placeholder="Size"
+                        placeholder="Size/Qty"
 
                       />
                     </div>
-                    {/* Quantity */}
-                    <div >
-                      {/* <label className="block mb-2">Quantity:</label> */}
-                      <input
-                        type="number"
-                        name={`items[${index}].lineQty`}
-                        value={item.lineQty}
-                        onChange={(e) => handleItemChange(index, e)}
-                        className="rounded px-2 py-1 w-full"
-
-                      />
-                    </div>
+                   
                     {/* Unit Price */}
                     <div>
                       {/* <label className="block mb-2">Unit Price:</label> */}
@@ -886,17 +875,20 @@ const Invoice = () => {
                         className="rounded px-2 py-1 w-full"
                       />
                     </div>
-                    {/* Tax Exempt */}
-                    <div className="pl-3">
-                      {/* <label className="block mb-2">Tax Exempt:</label> */}
+                   
+                     {/* Quantity */}
+                     <div >
+                      {/* <label className="block mb-2">Quantity:</label> */}
                       <input
-                        type="checkbox"
-                        name={`items[${index}].taxExempt`}
-                        checked={item.taxExempt}
+                        type="number"
+                        name={`items[${index}].lineQty`}
+                        value={item.lineQty}
                         onChange={(e) => handleItemChange(index, e)}
-                        className="rounded px-2 py-1"
+                        className="rounded px-2 py-1 w-full"
+
                       />
                     </div>
+                    
                     {/* Total (Auto Calculated) */}
                     <div>
                       {/* <label className="block mb-2">Total:</label> */}
@@ -906,6 +898,17 @@ const Invoice = () => {
                         value={item.lineTotal}
                         readOnly
                         className="rounded px-2 py-1 w-full"
+                      />
+                    </div>
+                     {/* Tax Exempt */}
+                     <div className="pl-3">
+                      {/* <label className="block mb-2">Tax Exempt:</label> */}
+                      <input
+                        type="checkbox"
+                        name={`items[${index}].taxExempt`}
+                        checked={item.taxExempt}
+                        onChange={(e) => handleItemChange(index, e)}
+                        className="rounded px-2 py-1"
                       />
                     </div>
                     <div className="flex items-center">
@@ -1052,7 +1055,7 @@ const Invoice = () => {
 
                       <div className="flex gap-5">
                         <div className="flex flex-col gap-2 pt-1">
-                          <label>Amount</label>
+                          <label>Amount</label> 
                           <label>Payment Date</label>
                           {/* <label>Reference</label> */}
                           <label>PaymentMethod</label>

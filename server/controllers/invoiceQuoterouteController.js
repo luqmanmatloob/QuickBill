@@ -42,6 +42,9 @@ const parseDate = (dateString, fallbackDate = new Date()) => {
         shippingState,
         shippingPostcode,
         payments,
+        paymentPaid, 
+        paymentDue, 
+    
       } = req.body;
 
       if (!type || !["invoice", "quote"].includes(type)) {
@@ -85,6 +88,9 @@ const parseDate = (dateString, fallbackDate = new Date()) => {
         shippingPostcode,
         items,
         payments,
+        paymentPaid, 
+        paymentDue, 
+
       });
 
       await newInvoiceOrQuote.save();
