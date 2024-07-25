@@ -255,7 +255,7 @@ const Print = ({ id }) => {
         const yPosition = startY + itemIndex * 10;
         doc.text(`${item.productName}`, 15, yPosition);
         doc.text(`${item.color}`, 75, yPosition);
-        doc.text(`${item.size}`, 90, yPosition);
+        doc.text(`${item.size}`, 90, yPosition,{ maxWidth: 30 });
         doc.text(`$${item.unitPrice}`, 125, yPosition);
         doc.text(`$${item.tax}`, 145, yPosition);
         doc.text(`${item.lineQty}`, 158, yPosition);
@@ -290,8 +290,8 @@ const Print = ({ id }) => {
       doc.text(`${totalTax.toFixed(2)}`, 165, totalsY + 10);
       doc.text(`${GrandTotal.toFixed(2)}`, 165, totalsY + 20);
 
-      doc.text(`${invoice.paymentPaid}`, 165, totalsY + 30);
-      doc.text(`${GrandTotal-invoice.paymentPaid}`, 165, totalsY + 40);
+      doc.text(`${invoice.paymentPaid || ''}`, 165, totalsY + 30);
+      doc.text(`${GrandTotal-invoice.paymentPaid || ''}`, 165, totalsY + 40);
 
       doc.setFontSize(7);
       doc.setFont('Helvetica', 'normal');
@@ -306,14 +306,14 @@ const Print = ({ id }) => {
       doc.text(`Payment Method:`, 15, totalsY, { maxWidth: 90 });
       doc.setFont('Helvetica', 'normal');
 
-      doc.text(`${invoice.paymentMethod}`, 15, totalsY+5, { maxWidth: 90 });
+      doc.text(`${invoice.paymentMethod || ''}`, 15, totalsY+5, { maxWidth: 90 });
 
 
       doc.setFont('Helvetica', 'normal');
       doc.setFontSize(8);
       doc.setTextColor(105, 105, 105); //   grey 
 
-      doc.text(`Note: ${invoice.note}`, 15, totalsY+20, { maxWidth: 75 });
+      doc.text(`Note: ${invoice.note  || 'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.'}`, 15, totalsY+20, { maxWidth: 75 });
     });
 
     // Open the PDF in a new tab

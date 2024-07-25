@@ -8,6 +8,7 @@ const Upload = () => {
   const [uploadedInvoices, setUploadedInvoices] = useState([]);
   const [invoicesQuotes, setInvoicesQuotes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [creatingInvoiceNumber, setCreatingInvoiceNumber] = useState(false);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -50,6 +51,7 @@ const Upload = () => {
       const uploadedUniqueKeys = [];
 
       for (let i = 0; i < parsedData.length; i++) {
+        setCreatingInvoiceNumber(i)
         const items = parsedData[i].map(row => ({
           productName: row['Product Name'] || '',
           productCode: row['Product Code'] || '',
@@ -191,6 +193,8 @@ const Upload = () => {
     // Clear success message after 3 seconds
     setTimeout(() => {
       setSuccess('');
+      window.location.reload();
+
     }, 3000); // Show success message for 3 seconds
   };
 
@@ -268,7 +272,7 @@ const Upload = () => {
 
           {loading && (
             <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
-              Processing ...
+            {  ` Processing invoice number ${creatingInvoiceNumber} ... `}
             </div>
           )}
 

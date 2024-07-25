@@ -568,10 +568,11 @@ const EditInvoiceQuote = ({ id }) => {
                     onSubmit={handleSubmit}
                 >
                     <div className="print-shadow-none print-border-none print-no-py .print-no-my my-6 flex-1 space-y-2  rounded-md bg-white p-4 shadow-sm sm:space-y-4 md:p-6">
-
+<div className="text-center uppercase font-semibold text-blue-300">Edit/Update Mode</div>
 
                         {/* row 1 compnay info and invoice infor */}
                         <div className="print-border-none print-border-none flex justify-between w-full border-b">
+                            
                             <div>
                                 <Company />
                             </div>
@@ -881,7 +882,6 @@ const EditInvoiceQuote = ({ id }) => {
                                                 className="rounded px-2 py-1 w-full"
                                                 placeholder="Name"
                                                 required
-
                                             />
                                         </div>
                                         {/* Color */}

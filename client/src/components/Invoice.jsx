@@ -869,7 +869,7 @@ const Invoice = () => {
                       {/* <label className="block mb-2">Tax (%):</label> */}
                       <input
                         type="number"
-                        name={`items[${index}].tax`}
+                        name={`items[${index}].tax || taxrate`}
                         value={item.tax}
                         onChange={(e) => handleItemChange(index, e)}
                         className="rounded px-2 py-1 w-full"
@@ -988,7 +988,7 @@ const Invoice = () => {
                   <input
                     type="number"
                     name="paymentPaid"
-                    value={formData.paymentPaid}
+                    value={formData.paymentPaid || grandTotal}
                     onChange={handleChange}
 
                   />
@@ -998,7 +998,7 @@ const Invoice = () => {
                   <input
                     type="number"
                     name="paymentDue"
-                    value={grandTotal - formData.paymentPaid}
+                    value={(grandTotal - formData.paymentPaid).toFixed(2)}
                     // onChange={paymentDueHandleChange}
                     readOnly
                     className=" rounded px-2 py-1 w-1/2"
