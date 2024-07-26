@@ -58,7 +58,7 @@ const Invoice = () => {
     paymentDue: "",
     paymentTerms: "",
     paymentDates: "",
-    
+
     items: [
       {
         orderNumber: "",
@@ -216,6 +216,7 @@ const Invoice = () => {
           billingAddress: `${billingAddress1}`,
           billingState,
           billingEmailAddress: primaryContactEmail,
+          shippingFirstName: shippingName,
           shippingAddress: `${shippingAddress1}`,
           shippingCity,
           shippingState,
@@ -298,7 +299,7 @@ const Invoice = () => {
       const tax = parseFloat(item.tax) || 0;
       const taxExempt = item.taxExempt;
       const taxAmount = taxExempt ? 0 : (tax);
-      if (taxExempt){item.tax=0}
+      if (taxExempt) { item.tax = 0 }
 
 
 
@@ -450,8 +451,8 @@ const Invoice = () => {
       window.alert("Invoice number is not valid");
       return;
     }
-  
-    
+
+
     e.preventDefault();
     if (!key) {
 
@@ -509,7 +510,7 @@ const Invoice = () => {
 
 
   const handleSubmit = async (e) => {
-  
+
 
     e.preventDefault();
 
@@ -718,6 +719,30 @@ const Invoice = () => {
             <div className="print-border-none flex justify-between px-5 border-b">
               <div>
                 <p className="print-text-12px p-2 pt-0 text-lg font-semibold">Billing Address</p>
+
+                <div className="flex min-w-[100px] items-center ">
+                  <input
+                    type="text"
+                    name="billingFirstName"
+                    value={formData.billingFirstName}
+                    placeholder="Billing"
+                    onChange={handleChange}
+                    className="px-2 py-1 w-1/3"
+
+                  />
+                  <input
+                    type="text"
+                    name="billingLastName"
+                    value={formData.billingLastName}
+                    placeholder="Name"
+                    onChange={handleChange}
+                    className="px-2 py-1 w-full"
+
+                  />
+
+                </div>
+
+
                 <div className="flex min-w-[100px] items-center ">
                   <input
                     type="text"
@@ -777,6 +802,20 @@ const Invoice = () => {
 
               <div>
                 <p className="print-text-12px p-2 text-lg font-semibold">Shipping Address</p>
+
+                <div className="flex min-w-[100px] items-center ">
+                  <input
+                    type="text"
+                    name="shippingFirstName"
+                    value={formData.shippingFirstName}
+                    placeholder="Shipping Name"
+                    onChange={handleChange}
+                    className="px-2 py-1 w-full"
+
+                  />
+
+                </div>
+
                 <div className="flex min-w-[100px] items-center ">
                   <input
                     type="text"
@@ -988,7 +1027,7 @@ const Invoice = () => {
             {/* row 4 note,  sub total,  tax, grand total  */}
             <div className="print-border-none px-5 border-b flex justify-between ">
               <div className="flex flex-col print-text-12px mt-4 w-[80%]">
-              <label className="font-semibold text-black mt-3 px-2">Notes</label>
+                <label className="font-semibold text-black mt-3 px-2">Notes</label>
                 <textarea
                   name="note"
                   value={formData.note}
@@ -1007,7 +1046,7 @@ const Invoice = () => {
 
                 />
                 <div className=" ">
-                <label className="font-semibold text-black mt-3 px-2">Payment Date</label>
+                  <label className="font-semibold text-black mt-3 px-2">Payment Date</label>
                   <input
                     type="text"
                     name="billingAddress"

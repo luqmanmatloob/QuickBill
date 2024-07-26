@@ -177,6 +177,9 @@ const EditInvoiceQuote = ({ id }) => {
                     paymentDue: data.paymentDue || 0,
                     paymentTerms: data.paymentTerms || '',
                     paymentDates: data.paymentDates || '',
+                    billingFirstName: data.billingFirstName || '',
+                    billingLastName: data.billingLastName || '',
+                    shippingFirstName: data.shippingFirstName || '',
 
                     // payments:  data.payments ,   
 
@@ -355,6 +358,7 @@ const EditInvoiceQuote = ({ id }) => {
                     billingAddress: `${billingAddress1}`,
                     billingState,
                     billingEmailAddress: primaryContactEmail,
+                    shippingFirstName: shippingName,
                     shippingAddress: `${shippingAddress1}`,
                     shippingCity,
                     shippingState,
@@ -437,8 +441,8 @@ const EditInvoiceQuote = ({ id }) => {
             const tax = parseFloat(item.tax) || 0;
             const taxExempt = item.taxExempt;
             const taxAmount = taxExempt ? 0 : (tax);
-            
-             if (taxExempt){item.tax=0}
+
+            if (taxExempt) { item.tax = 0 }
 
             subtotal += lineTotal;
             totalTax += taxAmount;
@@ -782,35 +786,38 @@ const EditInvoiceQuote = ({ id }) => {
 
                         </div>
 
+
                         {/* row 2, billing adress and shipping adress  city statecounty email adress */}
                         <div className="print-border-none flex justify-between px-5 border-b">
                             <div>
                                 <p className="print-text-12px p-2 pt-0 text-lg font-semibold">Billing Address</p>
-                                {/* <div className="flex min-w-[100px] items-center ">
+                                <div className="flex min-w-[100px] items-center ">
                                     <input
                                         type="text"
-                                        name="billingAddress"
+                                        name="billingFirstName"
                                         value={formData.billingFirstName}
-                                        placeholder="first name"
+                                        placeholder="Billing"
+                                        onChange={handleChange}
+                                        className="px-2 py-1 w-1/3"
+
+                                    />
+                                    <input
+                                        type="text"
+                                        name="billingLastName"
+                                        value={formData.billingLastName}
+                                        placeholder="Name"
                                         onChange={handleChange}
                                         className="px-2 py-1 w-full"
 
                                     />
 
                                 </div>
+
                                 <div className="flex min-w-[100px] items-center ">
 
-                                    <input
-                                        type="text"
-                                        name="billingAddress"
-                                        value={formData.billingLastName}
-                                        placeholder="lastname"
-                                        onChange={handleChange}
-                                        className="px-2 py-1 w-full"
 
-                                    />
 
-                                </div> */}
+                                </div>
                                 <div className="flex min-w-[100px] items-center ">
                                     <input
                                         type="text"
@@ -869,20 +876,20 @@ const EditInvoiceQuote = ({ id }) => {
                             </div>
 
                             <div>
-                                {/* <p className="print-text-12px p-2 text-lg font-semibold">Shipping Address</p>
+                                <p className="print-text-12px p-2 text-lg font-semibold">Shipping Address</p>
                                 <div className="flex min-w-[100px] items-center ">
                                     <input
                                         type="text"
                                         name="shippingFirstName"
                                         value={formData.shippingFirstName}
-                                        placeholder="First Name"
+                                        placeholder="Shipping Name"
                                         onChange={handleChange}
                                         className="px-2 py-1 w-full"
 
                                     />
 
                                 </div>
-                                <div className="flex min-w-[100px] items-center ">
+                                {/* <div className="flex min-w-[100px] items-center ">
 
 
                                     <input
