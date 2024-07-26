@@ -175,9 +175,10 @@ const Print = ({ id }) => {
       doc.setTextColor(105, 105, 105); //   grey 
 
 
-      doc.text(`${invoice.billingAddress}`, 15, 70);
-      doc.text(`${invoice.billingCity}, ${invoice.billingState}`, 15, 75);
-      doc.text(`${invoice.billingEmailAddress}`, 15, 80);
+      doc.text(`${invoice.billingFirstName} ${invoice.billingLastName}`, 15, 70);
+      doc.text(`${invoice.billingAddress}`, 15, 75);
+      doc.text(`${invoice.billingCity}, ${invoice.billingState}`, 15, 80);
+      doc.text(`${invoice.billingEmailAddress}`, 15, 85);
 
 
 
@@ -191,9 +192,10 @@ const Print = ({ id }) => {
       doc.setFontSize(7);
       doc.setTextColor(105, 105, 105); //   grey 
 
-      doc.text(`${invoice.shippingAddress}`, 115, 70);
-      doc.text(`${invoice.shippingCity}, ${invoice.shippingState}`, 115, 75);
-      doc.text(`${invoice.shippingPostcode}`, 115, 80);
+      doc.text(`${invoice.shippingFirstName}`, 115, 70);
+      doc.text(`${invoice.shippingAddress}`, 115, 75);
+      doc.text(`${invoice.shippingCity}, ${invoice.shippingState}`, 115, 80);
+      doc.text(`${invoice.shippingPostcode}`, 115, 85);
 
       doc.setTextColor(0, 0, 0); //  black
 
