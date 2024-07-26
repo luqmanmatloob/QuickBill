@@ -257,7 +257,7 @@ const Print = ({ id }) => {
         doc.text(`${item.color}`, 75, yPosition);
         doc.text(`${item.size}`, 90, yPosition,{ maxWidth: 30 });
         doc.text(`$${item.unitPrice}`, 125, yPosition);
-        doc.text(`$${item.tax}`, 145, yPosition);
+        doc.text(`$${item.tax.toFixed(1)}`, 145, yPosition);
         doc.text(`${item.lineQty}`, 158, yPosition);
         doc.text(`$${item.lineTotal}`, 170, yPosition);
 

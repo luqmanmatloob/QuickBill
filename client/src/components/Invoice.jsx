@@ -56,6 +56,8 @@ const Invoice = () => {
     shippingPostcod: "",
     paymentPaid: "",
     paymentDue: "",
+    paymentTerms: "",
+    paymentDates: "",
 
 
     items: [
@@ -100,18 +102,18 @@ const Invoice = () => {
     payments:
       [
         {
-          amount: "",
-          date: "",
-          reference: "", //for any credit card or banking information
-          note: "",
-          otherType: "", //text area for any other type of paymen
-          paymentMethod: "", // Payment method specific to each payment
-          type: "other" //{ type: String, enum: ['deposit', 'on_delivery', 'other'], default: 'other' } // Add type field
+          datePaid: "",
+          outstandingOrderBalance: 0,
+          orderPaymentAmount: 0,
+          totalPaymentAmount: 0,
+          refundedAmount: 0,
+          paymentMethod: "",
+          paymentStatus: "", //paid or not
 
         },
       ],
-      note: "Note here",
-    });
+    note: "Note here",
+  });
 
 
   // ##############################################
@@ -254,23 +256,23 @@ const Invoice = () => {
     const updatedItems = [...formData.items];
     // Remove the 'items[index].' part from the name
     const key = name.replace(`items[${index}].`, "");
-  
+
     // Handle checkbox separately
     if (type === "checkbox") {
       updatedItems[index] = { ...updatedItems[index], [key]: checked };
     } else {
       updatedItems[index] = { ...updatedItems[index], [key]: value };
     }
-  
+
     // Auto-calculate lineTotal if unitPrice, lineQty, or tax changes
     if (["unitPrice", "lineQty", "taxExempt"].includes(key)) {
       const unitPrice = parseFloat(updatedItems[index].unitPrice) || 0;
       const lineQty = parseInt(updatedItems[index].lineQty) || 0;
-  
+
       // Calculate tax
       const tax = unitPrice * lineQty * (taxRate / 100);
-        updatedItems[index].tax = tax;
-        updatedItems[index].tax = tax;
+      updatedItems[index].tax = tax;
+      updatedItems[index].tax = tax;
 
       const taxExempt = updatedItems[index].taxExempt;
       let lineTotal = lineQty * unitPrice;
@@ -280,11 +282,11 @@ const Invoice = () => {
 
 
     }
-  
+
     const updatedFormData = { ...formData, items: updatedItems };
     setFormData(updatedFormData);
   };
-  
+
 
 
   const calculateTotals = () => {
@@ -361,6 +363,42 @@ const Invoice = () => {
     setFormData(updatedFormData);
   };
 
+  useEffect(() => {
+    let totalPaymentPaid = 0;
+    let paymentDates = "";
+    let paymentMethod = "";
+
+    formData.payments.forEach((payment, index) => {
+      totalPaymentPaid += Number(payment.orderPaymentAmount); // Convert to number
+
+      // Convert date to American format (MM/DD/YYYY)
+      const date = new Date(payment.datePaid);
+      if (!isNaN(date)) {
+        const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()}`;
+        paymentDates += `${formattedDate}, `;
+      }
+
+      paymentMethod += `${payment.paymentMethod}, `;
+    });
+
+    // Remove trailing comma and space
+    paymentDates = paymentDates.slice(0, -2);
+    paymentMethod = paymentMethod.slice(0, -2);
+
+    setFormData(prevFormData => ({
+      ...prevFormData,
+      paymentPaid: totalPaymentPaid,
+      paymentDates: paymentDates,
+      paymentMethod: paymentMethod
+    }));
+
+    console.log(formData.paymentDates);
+    console.log(formData.paymentMethod);
+    console.log(formData.paymentPaid);
+  }, [editPayments]);
+
+
+
 
   const handlePaymentChange = (index, e) => {
     const { name, value } = e.target;
@@ -371,6 +409,7 @@ const Invoice = () => {
       ...updatedPayments[index],
       [key]: value
     };
+
 
     const updatedFormData = { ...formData, payments: updatedPayments };
     setFormData(updatedFormData);
@@ -390,7 +429,6 @@ const Invoice = () => {
     };
     const updatedPayments = [...formData.payments, newPayment];
     setFormData({ ...formData, payments: updatedPayments });
-    setTotalPayments(totalPayments + 1)
 
   };
 
@@ -398,7 +436,6 @@ const Invoice = () => {
     const updatedPayments = [...formData.payments];
     updatedPayments.splice(index, 1);
     setFormData({ ...formData, payments: updatedPayments });
-    setTotalPayments(totalPayments - 1)
 
   };
 
@@ -802,7 +839,7 @@ const Invoice = () => {
                 {/* item table header */}
                 <div className="print-no-my print-text-12px grid grid-cols-10 gap-4 mb-4 text-sm font-semibold ">
                   <p className="col-span-2" >Product </p>
-                   <p>Color</p>
+                  <p>Color</p>
                   <p className="pl-2">Size/Qty</p>
                   <p>Unit Price $</p>
                   <p className="pl-4">{"Tax $"}</p>
@@ -830,18 +867,18 @@ const Invoice = () => {
                       />
                     </div>
                     {/* Color */}
-                    <div> 
-                    {/* <label className="block mb-2">Color:</label>  */}
-                    <input
-                      type="text"
-                      name={`items[${index}].color`}
-                      value={item.color}
-                      onChange={(e) => handleItemChange(index, e)}
-                      className="rounded px-2 py-1 w-full"
-                      placeholder="Color"
+                    <div>
+                      {/* <label className="block mb-2">Color:</label>  */}
+                      <input
+                        type="text"
+                        name={`items[${index}].color`}
+                        value={item.color}
+                        onChange={(e) => handleItemChange(index, e)}
+                        className="rounded px-2 py-1 w-full"
+                        placeholder="Color"
 
-                    />
-                  </div> 
+                      />
+                    </div>
                     {/* Size */}
                     <div>
                       {/* <label className="block mb-2">Size:</label> */}
@@ -855,7 +892,7 @@ const Invoice = () => {
 
                       />
                     </div>
-                   
+
                     {/* Unit Price */}
                     <div>
                       {/* <label className="block mb-2">Unit Price:</label> */}
@@ -879,9 +916,9 @@ const Invoice = () => {
                         className="rounded px-2 py-1 w-full"
                       />
                     </div>
-                   
-                     {/* Quantity */}
-                     <div >
+
+                    {/* Quantity */}
+                    <div >
                       {/* <label className="block mb-2">Quantity:</label> */}
                       <input
                         type="number"
@@ -892,7 +929,7 @@ const Invoice = () => {
 
                       />
                     </div>
-                    
+
                     {/* Total (Auto Calculated) */}
                     <div>
                       {/* <label className="block mb-2">Total:</label> */}
@@ -904,8 +941,8 @@ const Invoice = () => {
                         className="rounded px-2 py-1 w-full"
                       />
                     </div>
-                     {/* Tax Exempt */}
-                     <div className="pl-3">
+                    {/* Tax Exempt */}
+                    <div className="pl-3">
                       {/* <label className="block mb-2">Tax Exempt:</label> */}
                       <input
                         type="checkbox"
@@ -938,102 +975,159 @@ const Invoice = () => {
             </div>
 
 
-            {/* row 4 message,  sub total,  tax, grand total  */}
-            <div className="print-border-none flex justify-between gap-5 items-start px-5 border-b">
-              <div className="print-text-12px mt-4 w-full sm:w-[500px] ">
+            {/* row 4 note,  sub total,  tax, grand total  */}
+            <div className="print-border-none px-5 border-b flex justify-between ">
+              <div className="flex flex-col print-text-12px mt-4 w-[80%]">
+              <label className="font-semibold text-black mt-3 px-2">Notes</label>
                 <textarea
                   name="note"
                   value={formData.note}
                   onChange={handleChange}
-                  className="rounded px-2 py-1 w-full h-32"
+                  className="rounded px-2 py-1 h-8 w-[100%]"
                 ></textarea>
-              </div>
 
-              <div className="mt-4 w-full sm:w-1/2 flex flex-col 4">
-                <div className="flex justify-end items-center gap-3">
-                  <label className="block mb-2 ">Subtotal:</label>
+                <label className="font-semibold text-black mt-3 px-2">Terms</label>
+                <input
+                  type="text"
+                  name="paymentTerms"
+                  value={formData.paymentTerms}
+                  placeholder=""
+                  onChange={handleChange}
+                  className="px-2 py-1 w-full"
+
+                />
+                <div className=" ">
+                <label className="font-semibold text-black mt-3 px-2">Payment Date</label>
                   <input
-                    type="number"
-                    value={subtotal.toFixed(2)}
-                    name="subtotal"
+                    type="text"
+                    name="billingAddress"
+                    value={formData.paymentDates}
+                    placeholder=""
                     onChange={handleChange}
-                    readOnly
-                    className=" rounded px-2 py-1 w-1/2"
+                    className="px-2 py-1 w-full"
+
                   />
                 </div>
+                <label className="font-semibold text-black mt-3 px-2">Payment Method</label>
 
-                <div className=" flex justify-end items-center gap-3">
-                  <label className="block mb-2 ">{`Total Tax:`}</label>
-                  <div className="flex w-1/2 items-center">
-                    <input
-                      type="number"
-                      value={totalTax.toFixed(2)}
-                      name="totalTax"
-                      readOnly
-                      onChange={handleChange}
-                      className=" rounded px-2 py-1 w-full"
-                    />
+                <input
+                  type="text"
+                  name="payment Method"
+                  value={formData.paymentMethod}
+                  placeholder=""
+                  onChange={handleChange}
+                  className="px-2 py-1 w-full mb-4 "
+
+                />
+
+              </div>
+
+
+
+              <div className="w-full">
+
+                <div className="flex justify-end w-full gap-5">
+                  <div className="mt-1 flex flex-col gap-6 text font-semibold ">
+                    <label className="block mb-2 ">Subtotal:</label>
+                    <label className="block mb-2 ">Total Tax:</label>
+                    <label className="block mb-2 ">Grand Total:</label>
+                    <label className="block mb-2 ">Payment Paid:</label>
+                    <label className="block mb-2 ">Balance Due:</label>
+                    <label className="block mb-2  text-[12px]">{`(All Prices are shown in USD)`}</label>
+
+                  </div>
+
+                  <div className="flex flex-col gap-6 text font-semibold">
+
+                    <div className=" ">
+                      {/* <label className="block mb-2 ">Subtotal:</label> */}
+                      <input
+                        type="number"
+                        value={subtotal.toFixed(2)}
+                        name="subtotal"
+                        onChange={handleChange}
+                        readOnly
+                        className=" rounded px-2 py-1 "
+                      />
+                    </div>
+
+                    <div className="  ">
+                      {/* <label className="block mb-2 ">{`Total Tax:`}</label> */}
+                      <div className="">
+                        <input
+                          type="number"
+                          value={totalTax.toFixed(2)}
+                          name="totalTax"
+                          readOnly
+                          onChange={handleChange}
+                          className=" rounded px-2 py-1 "
+                        />
+                      </div>
+                    </div>
+                    <div className=" ">
+                      {/* <label className="block mb-2 ">Grand Total:</label> */}
+                      <input
+                        type="number"
+                        name="grandTotal"
+                        value={grandTotal.toFixed(2)}
+                        onChange={handleChange}
+                        readOnly
+                        className=" rounded px-2 py-1 "
+                      />
+
+                    </div>
+
+                    <div className=" ">
+                      {/* <label className="block mb-2 ">Payment Paid:</label> */}
+                      <input
+                        type="number"
+                        name="paymentPaid"
+                        value={formData.paymentPaid || grandTotal}
+                        onChange={handleChange}
+                        className=" rounded px-2 py-1 "
+
+
+                      />
+                    </div>
+                    <div className=" ">
+                      {/* <label className="block mb-2 ">Balance Due:</label> */}
+                      <input
+                        type="number"
+                        name="paymentDue"
+                        value={(grandTotal - formData.paymentPaid).toFixed(2)}
+                        // onChange={paymentDueHandleChange}
+                        readOnly
+                        className=" rounded px-2 py-1 "
+                      />
+                    </div>
+
+
+
+
                   </div>
                 </div>
-                <div className="flex justify-end items-center gap-3">
-                  <label className="block mb-2 ">Grand Total:</label>
-                  <input
-                    type="number"
-                    name="grandTotal"
-                    value={grandTotal.toFixed(2)}
-                    onChange={handleChange}
-                    readOnly
-                    className=" rounded px-2 py-1 w-1/2"
-                  />
-                </div>
+              </div>
 
-                <div className="flex justify-end items-center gap-3">
-                  <label className="block mb-2 ">Payment Paid:</label>
-                  <input
-                    type="number"
-                    name="paymentPaid"
-                    value={formData.paymentPaid || grandTotal}
-                    onChange={handleChange}
 
-                  />
-                </div>
-                <div className="flex justify-end items-center gap-3">
-                  <label className="block mb-2 ">Balance Due:</label>
-                  <input
-                    type="number"
-                    name="paymentDue"
-                    value={(grandTotal - formData.paymentPaid).toFixed(2)}
-                    // onChange={paymentDueHandleChange}
-                    readOnly
-                    className=" rounded px-2 py-1 w-1/2"
-                  />
-                </div>
 
-                <div className="flex justify-start items-center gap-3 border-t-2 mt-5 ">
-                  <label className="block mb-2 ">Installments:</label>
-                  <input
-                    type="number"
-                    name="grandTotal"
-                    value={totalPayments}
-                    onChange={handleChange}
-                    readOnly
-                    className=" rounded px-2 py-1 w-1/2"
-                  />
-                </div>
 
-                <div className="flex justify-start pr-10 mb-5 ">
-                  <button type="button"
-                    className="text-blue-500 underline"
-                    onClick={() => { setEditPayments(true) }}>
-                    Add Payment Installment Plan
-                  </button>
-                </div>
+            </div>
+            <div className="flex justify-between items-start
+">
+              <p className="w-1/2">
+                You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.
 
+              </p>
+
+
+              <div className=" flex justify-end pr-32">
+                <button type="button"
+                  className="text-blue-500 underline"
+                  onClick={() => { setEditPayments(true) }}>
+                  Add/Edit Payments
+                </button>
               </div>
             </div>
-
-
-
             {/* add payments plan/installments popup */}
 
             {editPayments &&
@@ -1045,24 +1139,28 @@ const Invoice = () => {
                 >
 
                   <button type="button"
-                    className="fixed top-10 right-60 bg-red-500  rounded-md px-3 py-1 font-semibold text-lg text-white"
+                    className="fixed top-10 right-60 hover:bg-blue-600 bg-blue-500  rounded-md px-3 py-1 font-semibold text-lg text-white"
+                    onClick={() => { setEditPayments(false) }}>
+                    Done
+                  </button>
+                  {/* <button type="button"
+                    className="fixed top-10 right-60 bg-red-500 hover:bg-red-600  rounded-md px-3 py-1 font-semibold text-lg text-white"
                     onClick={() => { setEditPayments(false) }}>
                     X
-                  </button>
+                  </button> */}
                   <div className="print-no-my print-text-12px grid grid-cols-9 gap-4 mb-4">
 
 
                   </div>
 
                   {formData.payments.map((payment, index) => (
-                    <div key={index} className=" flex justify-between border-b-4 py-2">
+                    <div key={index} className=" flex justify-between border-b-4 py-2 mb-6">
 
                       <div className="flex gap-5">
-                        <div className="flex flex-col gap-2 pt-1">
-                          <label>Amount</label> 
-                          <label>Payment Date</label>
-                          {/* <label>Reference</label> */}
-                          <label>PaymentMethod</label>
+                        <div className="flex flex-col gap-2 pt-2">
+                          <label className="my-1">Date Paid</label>
+                          {/* <label className="my-1">Out Standing Order Balance</label> */}
+                          <label className="my-1">Order Payment Amount</label>
 
 
                         </div>
@@ -1070,57 +1168,48 @@ const Invoice = () => {
                         <div>
                           <div className=''>
                             <input
-                              type="number"
-                              name={`payments[${index}].amount`}
-                              value={payment.amount}
+                              type="date"
+                              name={`payments[${index}].datePaid`}
+                              value={payment.datePaid}
                               onChange={(e) => handlePaymentChange(index, e)}
-                              className="rounded px-2 py-1 w-full"
-                              placeholder='Amount'
+                              className="rounded px-2 py-1 my-1 w-full border-2"
+                              placeholder='Date Paid'
                             />
                           </div>
-                          {/* Date */}
-                          <div className='flex items-center justify-center'>
+
+                          {/* <div className='flex items-center justify-center'>
                             <input
-                              type="date"
-                              name={`payments[${index}].date`}
+                              type="number"
+                              name={`payments[${index}].outstandingOrderBalance`}
                               value={payment.date}
                               onChange={(e) => handlePaymentChange(index, e)}
-                              className="rounded px-2 py-1 w-full"
-                              placeholder='Date'
+                              className="rounded px-2 py-1 my-1 w-full border-2"
+                              placeholder='Outstanding Order Balance'
                             />
-                          </div>
-                          {/* Reference */}
-                          {/* <div className='flex items-center justify-center'>
-                          <input
-                            type="text"
-                            name={`payments[${index}].reference`}
-                            value={payment.reference}
-                            onChange={(e) => handlePaymentChange(index, e)}
-                            className="rounded px-2 py-1 w-full"
-                            placeholder='Reference'
-                          />
-                        </div> */}
-                          {/* Note */}
+                          </div> */}
+
 
                           <div className='flex items-center justify-center'>
                             <input
-                              type="text"
-                              name={`payments[${index}].paymentMethod`}
-                              value={payment.paymentMethod}
+                              type="number"
+                              name={`payments[${index}].orderPaymentAmount`}
+                              value={payment.orderPaymentAmount}
                               onChange={(e) => handlePaymentChange(index, e)}
-                              className="rounded px-2 py-1 w-full"
-                              placeholder='Payment Method'
+                              className="rounded px-2 py-1 my-1 w-full border-2"
+                              placeholder='orderPaymentAmount'
                             />
                           </div>
 
                         </div>
                       </div>
 
+
                       <div className="flex gap-5">
-                        <div className="flex flex-col gap-2 pt-1">
-                          <label>Type</label>
-                          <label>Other Type</label>
-                          <label>Note</label>
+                        <div className="flex flex-col gap-2 pt-2">
+                          {/* <label className="my-1">Total Payment Amount</label> */}
+                          {/* <label className="my-1">Refunded Amoung</label> */}
+                          <label className="my-1">Payment Method</label>
+                          {/* <label className="my-1">Payment Status</label> */}
 
 
 
@@ -1128,50 +1217,56 @@ const Invoice = () => {
 
                         <div>
 
-                          {/* <div className='flex items-center justify-center'>
-                          <input
-                            type="text"
-                            name={`payments[${index}].type`}
-                            value={payment.type}
-                            onChange={(e) => handlePaymentChange(index, e)}
-                            className="rounded px-2 py-1 w-full"
-                            placeholder='Type'
-                          />
-                        </div> */}
 
-                          <div className="mb-2">
-                            <select
-                              name={`payments[${index}].type`}
-                              value={payment.type}
+
+                          {/* 
+                          <div className='flex items-center justify-center'>
+                            <input
+                              type="Number"
+                              name={`payments[${index}].totalPaymentAmount`}
+                              value={payment.totalPaymentAmount}
                               onChange={(e) => handlePaymentChange(index, e)}
-                              className=""
-                            >
-                              <option value="deposit">Deposit</option>
-                              <option value="on delivery">On Delivery</option>
-                              <option value="other">Other</option>
-                            </select>
+                              className="rounded px-2 py-1 my-1 w-full border-2"
+                              placeholder='Total Payment Amount'
+                            />
                           </div>
 
                           <div className='flex items-center justify-center'>
                             <input
-                              type="text"
-                              name={`payments[${index}].otherType`}
-                              value={payment.otherType}
+                              type="number"
+                              name={`payments[${index}].refundedAmount`}
+                              value={payment.refundedAmount}
                               onChange={(e) => handlePaymentChange(index, e)}
-                              className="rounded px-2 py-1 w-full"
-                              placeholder='Other Type'
+                              className="rounded px-2 py-1 my-1 w-full border-2"
+                              placeholder='Refunded Amount'
                             />
-                          </div>
+                          </div> */}
+
+
+
                           <div className='flex items-center justify-center'>
-                            <textarea
-                              // type="text"
-                              name={`payments[${index}].note`}
-                              value={payment.note}
+                            <input
+                              type="text"
+                              name={`payments[${index}].paymentMethod`}
+                              value={payment.paymentMethod}
                               onChange={(e) => handlePaymentChange(index, e)}
-                              className="rounded px-2 py-1 w-full border-2"
-                            // placeholder='Note'
-                            ></textarea>
+                              className="rounded px-2 py-1 my-1 w-full border-2"
+                              placeholder='Payment Method'
+                            />
+
                           </div>
+
+                          {/* <div className='flex items-center justify-center'>
+                            <input
+                              type="text"
+                              name={`payments[${index}].paymentStatus`}
+                              value={payment.paymentStatus}
+                              onChange={(e) => handlePaymentChange(index, e)}
+                              className="rounded px-2 py-1 my-1 w-full border-2"
+                              placeholder='Payment Status'
+                            />
+                          </div> */}
+
                           <div className="flex justify-center">
                             <button
                               type="button"
@@ -1187,13 +1282,28 @@ const Invoice = () => {
                       </div>
 
                     </div>
+
                   ))}
+
+                  <div className='flex items-center justify-center gap-5'>
+                    <label>{`Payment Terms:`}</label>
+                    <input
+                      type="text"
+                      name="paymentTerms"
+                      value={formData.paymentTerms}
+                      placeholder="Payment Terms"
+                      onChange={handleChange}
+                      className="rounded px-2 py-1 my-1 w-1/2 border-2"
+
+                    />
+                  </div>
+
                   <button
                     type="button"
                     onClick={addPayment}
                     className="no-print my-3 bg-blue-500 hover:bg-blue-600 text-white px-4 py-1 rounded"
                   >
-                    Add Payment Installment
+                    Add Payment
                   </button>
                 </div>
               )}

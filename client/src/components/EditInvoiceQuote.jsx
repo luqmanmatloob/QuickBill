@@ -1,6 +1,7 @@
 
 // handle submit and useeffect fetching the invoice from id diferent from invoice component
 //  print function not needed becuase here i have id as unique key so directly use that 
+// print and save buttons are diferent
 
 import React from "react";
 import Company from "./Company";

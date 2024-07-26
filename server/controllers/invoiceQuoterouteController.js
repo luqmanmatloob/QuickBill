@@ -15,6 +15,10 @@ const parseDate = (dateString, fallbackDate = new Date()) => {
 };
 
 
+
+
+
+
 (exports.createInvoiceQuote = async (req, res) => {
     try {
       console.log(req.body);
@@ -44,6 +48,8 @@ const parseDate = (dateString, fallbackDate = new Date()) => {
         payments,
         paymentPaid, 
         paymentDue, 
+        paymentTerms,
+        paymentDates,
     
       } = req.body;
 
@@ -90,6 +96,8 @@ const parseDate = (dateString, fallbackDate = new Date()) => {
         payments,
         paymentPaid, 
         paymentDue, 
+        paymentTerms,
+        paymentDates,
 
       });
 
@@ -109,9 +117,6 @@ const parseDate = (dateString, fallbackDate = new Date()) => {
   });
 
 
-
-
-  
 exports.getAllInvoicesQuotes = async (req, res) => {
   try {
     // Construct the query object to filter based on request query parameters
@@ -188,31 +193,34 @@ exports.getInvoiceQuoteById = async (req, res) => {
 };
 
 // PUT (update) an invoice or quote by uniqueKey
-exports.updateInvoiceQuote = async (req, res) => {
-  const { id } = req.params; // id is the uniqueKey in this case
-  const updateData = req.body;
+// exports.updateInvoiceQuote = async (req, res) => {
 
-  try {
-    const updatedInvoiceQuote = await InvoiceOrQuote.findOneAndUpdate(
-      { uniqueKey: id },
-      updateData,
-      { new: true } // Return the updated document
-    );
+//   console.log("first function is running")
 
-    if (!updatedInvoiceQuote) {
-      return res.status(404).json({ message: "Invoice or Quote not found" });
-    }
+//   const { id } = req.params; // id is the uniqueKey in this case
+//   const updateData = req.body;
 
-    res.json(updatedInvoiceQuote);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server Error" });
-  }
-};
+//   try {
+//     const updatedInvoiceQuote = await InvoiceOrQuote.findOneAndUpdate(
+//       { uniqueKey: id },
+//       updateData,
+//       { new: true } // Return the updated document
+//     );
+
+//     if (!updatedInvoiceQuote) {
+//       return res.status(404).json({ message: "Invoice or Quote not found" });
+//     }
+
+//     res.json(updatedInvoiceQuote);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ message: "Server Error" });
+//   }
+// };
 
 // update/ edit quote base on id (uniquekey)
-
 exports.updateInvoiceQuote = async (req, res) => {
+  console.log("second function is running")
   const {
     type,
     orderNumber,
@@ -233,6 +241,8 @@ exports.updateInvoiceQuote = async (req, res) => {
     paymentPaid,
     paymentDue,
     payments,
+    paymentTerms,
+    paymentDates,
   } = req.body;
 
   try {
@@ -269,7 +279,9 @@ exports.updateInvoiceQuote = async (req, res) => {
     existingInvoiceOrQuote.shippingPostcode = shippingPostcode;
     existingInvoiceOrQuote.paymentMethod = paymentMethod;
     existingInvoiceOrQuote.paymentPaid = paymentPaid;
+    existingInvoiceOrQuote.paymentDates = paymentDates;
     existingInvoiceOrQuote.paymentDue = paymentDue;
+    existingInvoiceOrQuote.paymentTerms = paymentTerms;
     payments.payments = payments;
 
     existingInvoiceOrQuote.items = items; // Update items array

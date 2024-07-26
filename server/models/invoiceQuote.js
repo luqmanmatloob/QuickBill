@@ -62,18 +62,19 @@ const invoiceOrQuoteSchema = new mongoose.Schema({
     shippingPostcode : String,
     shippingMethod: String,
     paymentMethod: String,
+    paymentDates: String,
     paymentPaid: Number, 
     paymentDue: Number, 
+    paymentTerms: String, 
     payments: [{
-        amount: Number,
-        date: Date,
-        reference: String, //for any credit card or banking information
-        note: String,
-        otherType: String, //text area for any other type of paymen
-        paymentMethod: String, // Payment method specific to each payment
-        type: { type: String, enum: ['deposit', 'on delivery', 'other'], default: 'other' } // Add type field
-    }], // Array of payments
-
+        datePaid: Date,
+        outstandingOrderBalance: Date,
+        orderPaymentAmount: Number, 
+        totalPaymentAmount: Number,
+        refundedAmount: Number, 
+        paymentMethod: String, 
+        paymentStatus: String, //paid or not
+    }],
 
     
 
