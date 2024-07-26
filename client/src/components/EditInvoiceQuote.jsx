@@ -971,8 +971,8 @@ const EditInvoiceQuote = ({ id }) => {
                                     <p className="col-span-2" >Product </p>
                                     <p>Color</p>
                                     <p className="pl-2">Size/Qty</p>
-                                    <p>Unit Price $</p>
-                                    <p className="pl-4">{"Tax $"}</p>
+                                    <p>Unit Price</p>
+                                    <p className="pl-4">Tax</p>
                                     <p>Qty:</p>
                                     <p>Total:</p>
                                     <p>Tax Exempt</p>
@@ -1041,7 +1041,7 @@ const EditInvoiceQuote = ({ id }) => {
                                             <input
                                                 type="number"
                                                 name={`items[${index}].tax`}
-                                                value={item.tax}
+                                                value={(item.tax).toFixed(2)}
                                                 onChange={(e) => handleItemChange(index, e)}
                                                 className="rounded px-2 py-1 w-full"
                                             />
@@ -1113,7 +1113,7 @@ const EditInvoiceQuote = ({ id }) => {
                                     name="note"
                                     value={formData.note}
                                     onChange={handleChange}
-                                    className="rounded px-2 py-1 h-8 w-[100%]"
+                                    className="rounded px-2 py-1 h-8 w-[100%] border-2"
                                 ></textarea>
 
                                 <label className="font-semibold text-black mt-3 px-2">Terms</label>
@@ -1123,7 +1123,7 @@ const EditInvoiceQuote = ({ id }) => {
                                     value={formData.paymentTerms}
                                     placeholder=""
                                     onChange={handleChange}
-                                    className="px-2 py-1 w-full"
+                                    className="px-2 py-1 w-full border-2"
 
                                 />
                                 <div className=" ">

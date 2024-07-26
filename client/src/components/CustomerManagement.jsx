@@ -75,6 +75,12 @@ const CustomerManagement = () => {
 
   // Save or update customer
   const saveCustomer = async () => {
+
+    if (newCustomer.primaryContactFirstName === '') {
+      window.alert("Invalid first name");
+      return;
+    }
+    
     try {
       let response;
       if (editMode) {
@@ -160,7 +166,178 @@ const CustomerManagement = () => {
   return (
     <div className="ml-40 mt-16">
       <div className="max-w-4xl min-h-screen mx-auto bg-white rounded-lg shadow-xl p-8 border-b-slate-300 border-solid border-2 border-[#f1f1f1] border-r-[#d1e4f5] border-l-[#d1e4f5]">
-        <h2 className="text-2xl font-bold mb-4 text-[#2b6bb9]">Customer Management</h2>
+        <h2 className="text-2xl font-bold mb-4 text-[#2b6bb9] text-center">Customer Management</h2>
+
+
+
+        <div className="flex justify-center border-b-4 mt-16 border-blue-300 mb-20">
+
+          <div className="mt-8">
+            <h3 className="text-2xl font-bold mb-4 text-[#2b6bb9]">Customer List:</h3>
+
+            {/* <li className="py-4 flex gap-5 items-center justify-between">
+              <div className='flex gap-5'>
+                <div className="font-semibold">Name</div>
+                <div className="text-gray-600">Email</div>
+                <div className="text-gray-600">Address1</div>
+              </div>
+            </li> */}
+
+            <ul className="divide-y divide-gray-200">
+
+              <div className='sticky top-20 flex bg-[#F5FAFF] px-7 py- border-blue-100 border-2 rounded-md'>
+                <div className={showCustomerDetails ? 'hidden' : 'visible'}>
+
+                  <button
+                    onClick={toggleCustomerDetails}
+                    className="no-print my-2 bg-transparent border-[1px] border-blue-500  hover:bg-blue-200 hover:text-black  text-blue-700 font-semibold px-4 py- rounded"
+                  >
+                    Detailed View
+                  </button>
+                </div>
+                <div className={showCustomerDetails ? 'visible' : 'hidden'}>
+
+                  <button type="button"
+                    className="no-print my-2 bg-transparent border-[1px] border-blue-500  hover:bg-blue-200 hover:text-black  text-blue-700 font-semibold px-4 py- rounded"
+
+                    onClick={toggleCustomerDetails}>
+                    List View
+                  </button>
+                </div>
+              </div>
+
+              {customers.map((customer) => (
+                <li key={customer._id} className={`py-4 flex gap-5 items-center justify-between ${showCustomerDetails ? 'flex-col' : 'flex'} `}>
+
+                  <div >
+
+                    <div className={`${showCustomerDetails ? 'hidden' : 'visible'} flex gap-5`}>
+                      <div className="font-semibold">{customer.primaryContactFirstName} {customer.primaryContactLastName}</div>
+                      <div className="text-gray-600">{customer.primaryContactEmail}</div>
+                      <div className="text-gray-600">{customer.billingAddress1}</div>
+                    </div>
+
+                    <div className={showCustomerDetails ? 'visible' : 'hidden'}>
+
+
+                      <div
+                        className="mt-5 bottom-14 bg-white rounded-lg p-10  border-b-slate-300 border-solid border- border-r-blue-300 border-l-blue-300 overflow-auto"
+                      >
+
+
+
+                        <div className='flex gap-32 justify- items-center my-5'>
+
+                          <div className=''>
+                            <div className="text-black font-semibold text-xl uppercase mb-2">Contact </div>
+                            <div className="text-gray-600">{customer.primaryContactFirstName} {customer.primaryContactLastName}</div>
+                            <div className="text-gray-600">{customer.primaryContactEmail}</div>
+                            <div className="text-gray-600">{customer.primaryContactPhone}</div>
+
+                          </div>
+
+                          <div className=''>
+                            <div className="text-black font-semibold text-xl uppercase ">Shipping Instructions </div>
+
+                            <div className="text-gray-600 max-w-md">Shipping Instructions: {customer.shippingDeliveryInstructions}</div>
+
+
+                          </div>
+                        </div>
+
+                        <div className='flex gap-[90px] justify- items-center my-5'>
+                          <div>
+                            <div className="text-black font-semibold text-xl uppercase ">Billing </div>
+                            <div className="text-gray-600">Billing Currency: {customer.billingCurrency}</div>
+                            <div className="text-gray-600">Billing Address  1: {customer.billingAddress1}</div>
+                            <div className="text-gray-600">Billing Address2: {customer.billingAddress2}</div>
+                            <div className="text-gray-600">Billing City: {customer.billingCity}</div>
+                            <div className="text-gray-600">Billing State: {customer.billingState}</div>
+                            <div className="text-gray-600">Billing Country: {customer.billingCountry}</div>
+                            <div className="text-gray-600">Billing Postal: {customer.billingPostal}</div>
+
+                          </div>
+
+
+                          <div>
+                            <div className="text-black font-semibold text-xl uppercase ">Shipping </div>
+
+                            <div className="text-gray-600">Shipping Name: {customer.shippingName}</div>
+                            <div className="text-gray-600">Shipping Address1: {customer.shippingAddress1}</div>
+                            <div className="text-gray-600">Shipping Address2: {customer.shippingAddress2}</div>
+                            <div className="text-gray-600">Shipping City: {customer.shippingCity}</div>
+                            <div className="text-gray-600">Shipping State: {customer.shippingState}</div>
+                            <div className="text-gray-600">Shipping Country: {customer.shippingCountry}</div>
+                            <div className="text-gray-600">Shipping Postal: {customer.shippingPostal}</div>
+
+
+                          </div>
+
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <button
+                      onClick={() => {
+                        setEditMode(true);
+                        setSelectedCustomerId(customer._id);
+                        setNewCustomer({
+                          ...customer,
+                          primaryContactFirstName: customer.primaryContactFirstName || '',
+                          primaryContactLastName: customer.primaryContactLastName || '',
+                          primaryContactEmail: customer.primaryContactEmail || '',
+                          primaryContactPhone: customer.primaryContactPhone || '',
+                          accountNumber: customer.accountNumber || '',
+                          website: customer.website || '',
+                          notes: customer.notes || '',
+                          billingCurrency: customer.billingCurrency || '',
+                          billingAddress1: customer.billingAddress1 || '',
+                          billingAddress2: customer.billingAddress2 || '',
+                          billingCountry: customer.billingCountry || '',
+                          billingState: customer.billingState || '',
+                          billingCity: customer.billingCity || '',
+                          billingPostal: customer.billingPostal || '',
+                          shippingName: customer.shippingName || '',
+                          shippingAddress1: customer.shippingAddress1 || '',
+                          shippingAddress2: customer.shippingAddress2 || '',
+                          shippingCountry: customer.shippingCountry || '',
+                          shippingState: customer.shippingState || '',
+                          shippingCity: customer.shippingCity || '',
+                          shippingPostal: customer.shippingPostal || '',
+                          shippingPhone: customer.shippingPhone || '',
+                          shippingDeliveryInstructions: customer.shippingDeliveryInstructions || '',
+                        });
+                        window.scrollTo(0, 0);
+
+
+                      }}
+                      className="bg-blue-400 hover:bg-blue-500 text-white font-bold py-1 px-3 rounded mr-2"
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => deleteCustomer(customer._id)}
+                      className=" text-gray-900 border-gray-900 border-[1px]  hover:red hover:border-red-400 hover:text-red-500 m-1 font-bold px-4 py-1 rounded"
+
+                    >
+                      Delete
+                    </button>
+                  </div>
+
+
+                </li>
+              ))}
+            </ul>
+          </div>
+
+        </div>
+
+
+
 
         {/* Contact Information */}
         <div className="bg-white p-4 border-b-4 border-blue-300 mb-10 pb-10">
@@ -422,175 +599,6 @@ const CustomerManagement = () => {
           </button>
         </div>
 
-
-        {/* Customer List */}
-
-
-        <div className="flex justify-center border-t-4 mt-16 border-blue-300">
-
-          <div className="mt-8">
-            <h3 className="text-2xl font-bold mb-4 text-[#2b6bb9]">Customer List:</h3>
-
-            {/* <li className="py-4 flex gap-5 items-center justify-between">
-              <div className='flex gap-5'>
-                <div className="font-semibold">Name</div>
-                <div className="text-gray-600">Email</div>
-                <div className="text-gray-600">Address1</div>
-              </div>
-            </li> */}
-
-            <ul className="divide-y divide-gray-200">
-
-              <div className='sticky top-20 flex bg-[#F5FAFF] px-7 py- border-blue-100 border-2 rounded-md'>
-                <div className={showCustomerDetails ? 'hidden' : 'visible'}>
-
-                  <button
-                    onClick={toggleCustomerDetails}
-                    className="no-print my-2 bg-transparent border-[1px] border-blue-500  hover:bg-blue-200 hover:text-black  text-blue-700 font-semibold px-4 py- rounded"
-                  >
-                    Detailed View
-                  </button>
-                </div>
-                <div className={showCustomerDetails ? 'visible' : 'hidden'}>
-
-                  <button type="button"
-                    className="no-print my-2 bg-transparent border-[1px] border-blue-500  hover:bg-blue-200 hover:text-black  text-blue-700 font-semibold px-4 py- rounded"
-
-                    onClick={toggleCustomerDetails}>
-                    List View
-                  </button>
-                </div>
-              </div>
-
-              {customers.map((customer) => (
-                <li key={customer._id} className={`py-4 flex gap-5 items-center justify-between ${showCustomerDetails ? 'flex-col' : 'flex'} `}>
-
-                  <div >
-
-                    <div className={`${showCustomerDetails ? 'hidden' : 'visible'} flex gap-5`}>
-                      <div className="font-semibold">{customer.primaryContactFirstName} {customer.primaryContactLastName}</div>
-                      <div className="text-gray-600">{customer.primaryContactEmail}</div>
-                      <div className="text-gray-600">{customer.billingAddress1}</div>
-                    </div>
-
-                    <div className={showCustomerDetails ? 'visible' : 'hidden'}>
-
-
-                      <div
-                        className="mt-5 bottom-14 bg-white rounded-lg p-10  border-b-slate-300 border-solid border- border-r-blue-300 border-l-blue-300 overflow-auto"
-                      >
-
-
-
-                        <div className='flex gap-32 justify- items-center my-5'>
-
-                          <div className=''>
-                            <div className="text-black font-semibold text-xl uppercase mb-2">Contact </div>
-                            <div className="text-gray-600">{customer.primaryContactFirstName} {customer.primaryContactLastName}</div>
-                            <div className="text-gray-600">{customer.primaryContactEmail}</div>
-                            <div className="text-gray-600">{customer.primaryContactPhone}</div>
-
-                          </div>
-
-                          <div className=''>
-                            <div className="text-black font-semibold text-xl uppercase ">Shipping Instructions </div>
-
-                            <div className="text-gray-600 max-w-md">Shipping Instructions: {customer.shippingDeliveryInstructions}</div>
-
-
-                          </div>
-                        </div>
-
-                        <div className='flex gap-[90px] justify- items-center my-5'>
-                          <div>
-                            <div className="text-black font-semibold text-xl uppercase ">Billing </div>
-                            <div className="text-gray-600">Billing Currency: {customer.billingCurrency}</div>
-                            <div className="text-gray-600">Billing Address  1: {customer.billingAddress1}</div>
-                            <div className="text-gray-600">Billing Address2: {customer.billingAddress2}</div>
-                            <div className="text-gray-600">Billing City: {customer.billingCity}</div>
-                            <div className="text-gray-600">Billing State: {customer.billingState}</div>
-                            <div className="text-gray-600">Billing Country: {customer.billingCountry}</div>
-                            <div className="text-gray-600">Billing Postal: {customer.billingPostal}</div>
-
-                          </div>
-
-
-                          <div>
-                            <div className="text-black font-semibold text-xl uppercase ">Shipping </div>
-
-                            <div className="text-gray-600">Shipping Name: {customer.shippingName}</div>
-                            <div className="text-gray-600">Shipping Address1: {customer.shippingAddress1}</div>
-                            <div className="text-gray-600">Shipping Address2: {customer.shippingAddress2}</div>
-                            <div className="text-gray-600">Shipping City: {customer.shippingCity}</div>
-                            <div className="text-gray-600">Shipping State: {customer.shippingState}</div>
-                            <div className="text-gray-600">Shipping Country: {customer.shippingCountry}</div>
-                            <div className="text-gray-600">Shipping Postal: {customer.shippingPostal}</div>
-
-
-                          </div>
-
-                        </div>
-
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <button
-                      onClick={() => {
-                        setEditMode(true);
-                        setSelectedCustomerId(customer._id);
-                        setNewCustomer({
-                          ...customer,
-                          primaryContactFirstName: customer.primaryContactFirstName || '',
-                          primaryContactLastName: customer.primaryContactLastName || '',
-                          primaryContactEmail: customer.primaryContactEmail || '',
-                          primaryContactPhone: customer.primaryContactPhone || '',
-                          accountNumber: customer.accountNumber || '',
-                          website: customer.website || '',
-                          notes: customer.notes || '',
-                          billingCurrency: customer.billingCurrency || '',
-                          billingAddress1: customer.billingAddress1 || '',
-                          billingAddress2: customer.billingAddress2 || '',
-                          billingCountry: customer.billingCountry || '',
-                          billingState: customer.billingState || '',
-                          billingCity: customer.billingCity || '',
-                          billingPostal: customer.billingPostal || '',
-                          shippingName: customer.shippingName || '',
-                          shippingAddress1: customer.shippingAddress1 || '',
-                          shippingAddress2: customer.shippingAddress2 || '',
-                          shippingCountry: customer.shippingCountry || '',
-                          shippingState: customer.shippingState || '',
-                          shippingCity: customer.shippingCity || '',
-                          shippingPostal: customer.shippingPostal || '',
-                          shippingPhone: customer.shippingPhone || '',
-                          shippingDeliveryInstructions: customer.shippingDeliveryInstructions || '',
-                        });
-                        window.scrollTo(0, 0);
-
-
-                      }}
-                      className="bg-blue-400 hover:bg-blue-500 text-white font-bold py-1 px-3 rounded mr-2"
-                    >
-                      Edit
-                    </button>
-
-                    <button
-                      onClick={() => deleteCustomer(customer._id)}
-                      className=" text-gray-900 border-gray-900 border-[1px]  hover:red hover:border-red-400 hover:text-red-500 m-1 font-bold px-4 py-1 rounded"
-
-                    >
-                      Delete
-                    </button>
-                  </div>
-
-
-                </li>
-              ))}
-            </ul>
-          </div>
-
-        </div>
 
       </div>
     </div>
