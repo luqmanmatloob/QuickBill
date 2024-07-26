@@ -229,10 +229,14 @@ exports.updateInvoiceQuote = async (req, res) => {
     dateDue,
     orderTotal,
     items,
+    billingFirstName,
+    billingLastName,
     billingCity,
     billingAddress,
     billingState,
     billingEmailAddress,
+    shippingFirstName,
+    shippingLastName,
     shippingAddress,
     shippingCity,
     shippingState,
@@ -269,11 +273,15 @@ exports.updateInvoiceQuote = async (req, res) => {
     existingInvoiceOrQuote.dateOrdered = dateOrdered;
     existingInvoiceOrQuote.dateDue = dateDue;
     existingInvoiceOrQuote.orderTotal = orderTotal;
+    existingInvoiceOrQuote.billingFirstName = billingFirstName;
+    existingInvoiceOrQuote.billingLastName = billingLastName;
     existingInvoiceOrQuote.billingCity = billingCity;
     existingInvoiceOrQuote.billingAddress = billingAddress;
     existingInvoiceOrQuote.billingState = billingState;
     existingInvoiceOrQuote.billingEmailAddress = billingEmailAddress;
     existingInvoiceOrQuote.shippingAddress = shippingAddress;
+    existingInvoiceOrQuote.shippingFirstName = shippingFirstName;
+    existingInvoiceOrQuote.shippingLastName = shippingLastName;
     existingInvoiceOrQuote.shippingCity = shippingCity;
     existingInvoiceOrQuote.shippingState = shippingState;
     existingInvoiceOrQuote.shippingPostcode = shippingPostcode;

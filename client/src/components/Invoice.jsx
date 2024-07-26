@@ -298,6 +298,9 @@ const Invoice = () => {
       const tax = parseFloat(item.tax) || 0;
       const taxExempt = item.taxExempt;
       const taxAmount = taxExempt ? 0 : (tax);
+      if (taxExempt){item.tax=0}
+
+
 
       subtotal += lineTotal;
       totalTax += taxAmount;
