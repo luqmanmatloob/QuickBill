@@ -115,7 +115,7 @@ const Print = ({ id }) => {
       doc.setTextColor(0, 0, 0); //  black
 
 
-    doc.setFont('Helvetica', 'bolditalic');
+      doc.setFont('Helvetica', 'bolditalic');
       doc.setFontSize(20);
       doc.text(`${settings.companyName}`, 15, 15);
       doc.setFont('Helvetica', 'normal');
@@ -166,7 +166,7 @@ const Print = ({ id }) => {
 
       doc.setFontSize(8);
       doc.setFont('Helvetica', 'bold');
-    
+
       doc.text('Billing Address:', 15, 65);
 
 
@@ -226,7 +226,7 @@ const Print = ({ id }) => {
 
       doc.setTextColor(200, 204, 203); //   border grey 
       doc.setFontSize(20);
-      doc.text(`____________________________________________`, 15, startY+2);
+      doc.text(`____________________________________________`, 15, startY + 2);
       doc.setFont('Helvetica', 'normal');
       doc.setFontSize(7);
       doc.setTextColor(80, 80, 80); //   Items grey 
@@ -245,9 +245,9 @@ const Print = ({ id }) => {
         const lineQty = parseInt(item.lineQty) || 0;
         const lineTotal = unitPrice * lineQty;
         let tax = parseFloat(item.tax) || 0;
-        tax= lineQty*tax;
+        tax = lineQty * tax;
         const taxExempt = item.taxExempt;
-         tax =(taxExempt ? 0 : tax);
+        tax = (taxExempt ? 0 : tax);
 
         subtotal += lineTotal;
         totalTax += tax;
@@ -255,7 +255,7 @@ const Print = ({ id }) => {
         const yPosition = startY + itemIndex * 10;
         doc.text(`${item.productName}`, 15, yPosition);
         doc.text(`${item.color}`, 75, yPosition);
-        doc.text(`${item.size}`, 90, yPosition,{ maxWidth: 30 });
+        doc.text(`${item.size}`, 90, yPosition, { maxWidth: 30 });
         doc.text(`$${item.unitPrice}`, 125, yPosition);
         doc.text(`$${item.tax.toFixed(1)}`, 145, yPosition);
         doc.text(`${item.lineQty}`, 158, yPosition);
@@ -263,16 +263,16 @@ const Print = ({ id }) => {
 
         doc.setTextColor(200, 204, 203); //   border grey 
         doc.setFontSize(15);
-        doc.text(`___________________________________________________________`, 15, yPosition+3);
+        doc.text(`___________________________________________________________`, 15, yPosition + 3);
         doc.setTextColor(0, 0, 0); //  black
         doc.setFont('Helvetica', 'normal');
         doc.setFontSize(7);
         doc.setTextColor(80, 80, 80); //   Items grey 
-  
-  
+
+
       });
 
-       GrandTotal = subtotal + totalTax;
+      GrandTotal = subtotal + totalTax;
 
       // Totals
       const totalsY = startY + invoice.items.length * 10 + 10;
@@ -290,7 +290,7 @@ const Print = ({ id }) => {
       doc.text(`$${totalTax.toFixed(2)}`, 165, totalsY + 10);
       doc.text(`$${GrandTotal.toFixed(2)}`, 165, totalsY + 20);
       doc.text(`$${invoice.paymentPaid || ''}`, 165, totalsY + 30);
-      doc.text(`$${GrandTotal-invoice.paymentPaid || 0}`, 165, totalsY + 40);
+      doc.text(`$${GrandTotal - invoice.paymentPaid || 0}`, 165, totalsY + 40);
 
       doc.setFontSize(7);
       doc.setFont('Helvetica', 'normal');
@@ -298,21 +298,72 @@ const Print = ({ id }) => {
       doc.text(`(All prices are shown in USD)`, 140, totalsY + 50);
 
 
-      doc.setFont('Helvetica', 'normal');
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+      {
+        doc.setTextColor(0, 0, 0); //  black
+        doc.setFontSize(8);
+        doc.setFont('Helvetica', 'bold');
+        doc.text(`Terms:`, 15, totalsY, { maxWidth: 90 });
+
+        doc.setTextColor(105, 105, 105); //   grey 
+        doc.setFont('Helvetica', 'normal');
+        doc.text(`${invoice.paymentTerms || ''}`, 15, totalsY + 5, { maxWidth: 90 });
+
+      }
+
+      {
+        doc.setTextColor(0, 0, 0); //  black
+        doc.setFontSize(8);
+        doc.setFont('Helvetica', 'bold');
+        doc.text(`Payment Date:`, 15, totalsY + 12, { maxWidth: 90 });
+
+        doc.setTextColor(105, 105, 105); //   grey 
+        doc.setFont('Helvetica', 'normal');
+        doc.text(`${invoice.paymentDates || ''}`, 15, totalsY + 17, { maxWidth: 90 });
+      }
+
+
+
+{
+      doc.setTextColor(0, 0, 0); //  black
       doc.setFontSize(8);
-      doc.setTextColor(105, 105, 105); //   grey 
-
-      doc.text(`Note: ${invoice.note}`,15, totalsY+5, { maxWidth: 75 });
-
-      // Footer Note
-      doc.setFontSize(10);
       doc.setFont('Helvetica', 'bold');
-      doc.text(`Payment Method:`, 15, totalsY+20, { maxWidth: 90 });
+      doc.text(`Payment Method:`, 15, totalsY + 23, { maxWidth: 90 });
       doc.setFont('Helvetica', 'normal');
 
-      doc.text(`${invoice.paymentMethod || ''}`, 15, totalsY+30, { maxWidth: 90 });
+      doc.setTextColor(105, 105, 105); //   grey 
+      doc.text(`${invoice.paymentMethod || ''}`, 15, totalsY + 28, { maxWidth: 90 });
+}
+
+{
+  doc.setFont('Helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(0, 0, 0); //  black
+
+  doc.text(`Note:`, 15, totalsY+35, { maxWidth: 75 });
+
+  doc.setTextColor(105, 105, 105); //   grey 
+  doc.setFont('Helvetica', 'normal');
+  doc.text(`${invoice.note}`, 15, totalsY+40, { maxWidth: 75 });
+}
 
 
+
+
+      doc.setTextColor(0, 0, 0); //  black
       doc.setFont('Helvetica', 'normal');
       doc.setFontSize(8);
       doc.setTextColor(105, 105, 105); //   grey 
@@ -320,14 +371,29 @@ const Print = ({ id }) => {
 
       doc.setTextColor(200, 204, 203); //   border grey 
       doc.setFontSize(17);
-      doc.text(`__________________________`, 15, totalsY+45);
+      doc.text(`__________________________`, 15, totalsY + 45);
       doc.setTextColor(0, 0, 0); //  black
       doc.setFont('Helvetica', 'normal');
       doc.setFontSize(7);
       doc.setTextColor(80, 80, 80); //   Items grey 
 
-      doc.text(`'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.}`, 15, totalsY+50, { maxWidth: 85 });
+      doc.text(`'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.}`, 15, totalsY + 50, { maxWidth: 85 });
     });
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Open the PDF in a new tab
     const pdfUrl = doc.output('bloburl');
@@ -343,40 +409,39 @@ const Print = ({ id }) => {
 
   return (
     <div className="ml-40 mt-16">
-    <div className='mx-auto max-w-5xl py-12'>
-      <div className='bg-white rounded-lg shadow-xl p-8 border-r-blue-100 border-l-blue-100 border-solid border-2 min-h-[70vh]'>
-        <p className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded text-center"> Please Make sure Pop ups are allowed</p>
+      <div className='mx-auto max-w-5xl py-12'>
+        <div className='bg-white rounded-lg shadow-xl p-8 border-r-blue-100 border-l-blue-100 border-solid border-2 min-h-[70vh]'>
+          <p className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded text-center"> Please Make sure Pop ups are allowed</p>
 
-        {gettingsetting && (
-          <div className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded">
-            Loading Info...
-          </div>
-        )}
+          {gettingsetting && (
+            <div className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded">
+              Loading Info...
+            </div>
+          )}
 
-        {gettinginvoices && (
-          <div className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded">
-            Loading Invoices & Quotes ...
-          </div>
-        )}
+          {gettinginvoices && (
+            <div className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded">
+              Loading Invoices & Quotes ...
+            </div>
+          )}
 
-        {generatingpdf && (
-          <div className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded">
-            generating PDF...
-          </div>
-        )}
+          {generatingpdf && (
+            <div className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded">
+              generating PDF...
+            </div>
+          )}
 
-        {success && (
-          <div className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded">
-            PDF for Print Generated Successfully
-          </div>
-        )}
+          {success && (
+            <div className="my-4 bg-blue-100 text-green-800 py-2 px-4 rounded">
+              PDF for Print Generated Successfully
+            </div>
+          )}
 
 
+        </div>
       </div>
-    </div>
     </div>
   );
 };
 
 export default Print;
-  

@@ -58,8 +58,7 @@ const Invoice = () => {
     paymentDue: "",
     paymentTerms: "",
     paymentDates: "",
-
-
+    
     items: [
       {
         orderNumber: "",
