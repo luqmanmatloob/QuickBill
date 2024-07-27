@@ -41,7 +41,7 @@ const itemSchema = new mongoose.Schema({
 
 // Define the schema for the invoice or quote
 const invoiceOrQuoteSchema = new mongoose.Schema({
-    type: { type: String, enum: ['invoice', 'quote'] }, // Type can be 'invoice' or 'quote'
+    type: String, 
     orderNumber: String,
     note: String,
     dateOrdered: Date,

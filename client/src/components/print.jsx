@@ -96,7 +96,9 @@ const Print = ({ id }) => {
       return;
     }
 
-    const doc = new jsPDF();
+    // const doc = new jsPDF(); old
+    const doc = new jsPDF({ format: 'letter' }); //letter format
+
 
     invoices.forEach((invoice, index) => {
       let subtotal = 0; // Declare subtotal here

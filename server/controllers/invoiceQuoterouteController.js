@@ -53,11 +53,11 @@ const parseDate = (dateString, fallbackDate = new Date()) => {
     
       } = req.body;
 
-      if (!type || !["invoice", "quote"].includes(type)) {
-        return res
-          .status(400)
-          .send("Invalid type. Must be 'invoice' or 'quote'.");
-      }
+      // if (!type || !["invoice", "quote"].includes(type)) {
+      //   return res
+      //     .status(400)
+      //     .send("Invalid type. Must be 'invoice' or 'quote'.");
+      // }
 
       // Check if orderNumber already exists
       const existingInvoiceOrQuote = await InvoiceOrQuote.findOne({

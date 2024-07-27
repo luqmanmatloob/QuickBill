@@ -9,6 +9,8 @@ const Upload = () => {
   const [invoicesQuotes, setInvoicesQuotes] = useState([]);
   const [loading, setLoading] = useState(false);
   const [creatingInvoiceNumber, setCreatingInvoiceNumber] = useState(false);
+  const [success, setSuccess] = useState('');
+
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -47,6 +49,7 @@ const Upload = () => {
           }
         });
       });
+      console.log(parsedData)
 
       const uploadedUniqueKeys = [];
 
@@ -59,8 +62,11 @@ const Upload = () => {
           color: row['Color'] || '',
           lineQty: parseInt(row['Line Qty']) || 1,
           decorationProcess: row['Decoration Process'] || '',
-          unitPrice: parseFloat(row['Unit Price']) || 0,
-          lineTotal: parseFloat(row['Line Total']) || 0,
+          // unitPrice: parseFloat(row['Unit Price']) || 0, //old
+          unitPrice: parseFloat(row['Unit Price'].replace('$', '')) || 0, //new
+          lineTotal: parseFloat(row['Line Total']) || 0, // old
+          // lineTotal: parseFloat(row['Line Total'].replace('$', '')) || 0, //new
+
           tax: parseFloat(row['Tax']) || 0,
           taxExempt: row['Tax Exempt'] === 'true',
           orderShippingTotal: parseFloat(row['Order Shipping Total']) || 0,
@@ -86,15 +92,18 @@ const Upload = () => {
           shippingPhoneNo: row['Shipping Phone No.'] || '',
           shippingMethod: row['Shipping Method'] || '',
           designName: row['Design Name'] || '',
-          designPrice: parseFloat(row['Design Price']) || 0
+          designPrice: parseFloat(row['Design Price']) || 0 //old
+          // designPrice: parseFloat(row['Design Price'].replace('$', '')) || 0 //new
         }));
 
         const invoiceData = {
-          type: 'invoice',
+            type: parsedData[i][0]['Quote / Invoice'] || 'Invoice',
           orderNumber: parsedData[i][0]['Order Number'] || '',
           dateOrdered: parsedData[i][0]['Date Ordered'] || '',
           dateDue: parsedData[i][0]['Date Due'] || '',
-          orderTotal: parseFloat(parsedData[i][0]['Order Total']) || 0,
+          // orderTotal: parseFloat(parsedData[i][0]['Order Total']) || 0, //old
+          orderTotal: parseFloat(parsedData[i][0]['Order Total'].replace('$', '').replace(',', '')) || 0,//new
+
           billingCity: parsedData[i][0]['Billing City'] || '',
           billingAddress: parsedData[i][0]['Billing Address'] || '',
           billingState: parsedData[i][0]['Billing State'] || '',
@@ -103,6 +112,16 @@ const Upload = () => {
           shippingMethod: parsedData[i][0]['Shipping Method'] || '',
           shippingState: parsedData[i][0]['Shipping State'] || '',
           shippingPostcode: parsedData[i][0]['Shipping Postcode/zip'] || '',
+
+          shippingFirstName: parsedData[i][0]['Shipping First Name'] || '',
+          shippingLastName: parsedData[i][0]['Shipping Last Name'] || '',
+          billingFirstName: parsedData[i][0]['Billing First Name'] || '',
+          billingLastName: parsedData[i][0]['Billing Last Name'] || '',
+
+          billingEmailAddress: parsedData[i][0]['Billing Email Address'] || '',
+
+
+
           items: items,
           note: ''
         };
@@ -182,7 +201,6 @@ const Upload = () => {
     }
   };
 
-  const [success, setSuccess] = useState('');
 
   const handleSave = () => {
     // Simulate saving data (you can replace this with actual API call or other logic)
