@@ -272,7 +272,7 @@ const Invoice = () => {
       // Calculate tax
       const tax = unitPrice * lineQty * (taxRate / 100);
       updatedItems[index].tax = tax;
-      updatedItems[index].tax = tax.toFixed(1);
+      updatedItems[index].tax = tax.toFixed(2);
 
       const taxExempt = updatedItems[index].taxExempt;
       let lineTotal = lineQty * unitPrice;
@@ -962,6 +962,7 @@ const Invoice = () => {
                         name={`items[${index}].tax`}
                         value={(item.tax)}
                         onChange={(e) => handleItemChange(index, e)}
+                        // readOnly
                         className="rounded px-2 py-1 w-full"
                       />
                     </div>
@@ -1131,7 +1132,7 @@ const Invoice = () => {
                       <input
                         type="number"
                         name="paymentPaid"
-                        value={formData.paymentPaid || grandTotal}
+                        value={formData.paymentPaid }
                         onChange={handleChange}
                         className=" rounded px-2 py-1 "
 

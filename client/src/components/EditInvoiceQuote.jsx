@@ -1219,7 +1219,7 @@ const EditInvoiceQuote = ({ id }) => {
                                             <input
                                                 type="number"
                                                 name="paymentPaid"
-                                                value={formData.paymentPaid || grandTotal}
+                                                value={formData.paymentPaid}
                                                 onChange={handleChange}
                                                 className=" rounded px-2 py-1 "
 
