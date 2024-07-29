@@ -293,6 +293,7 @@ exports.updateInvoiceQuote = async (req, res) => {
     payments.payments = payments;
 
     existingInvoiceOrQuote.items = items; // Update items array
+    existingInvoiceOrQuote.payments = payments; // Update items array
 
     // Save the updated document
     await existingInvoiceOrQuote.save();

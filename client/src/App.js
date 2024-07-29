@@ -11,6 +11,8 @@ import PrintPage from './pages/PrintPage'
 import InvoiceQuotesListPage from './pages/InvoiceQuotesListPage'
 import TestPage from './pages/TestPage'
 import CustomerPage from './pages/CustomerPage';
+import PaymentsListPage from './pages/PaymentsListPage'; 
+import UploadPaymentsPage from './pages/UploadPaymentsPage';
 
 
 const App = () => {
@@ -28,6 +30,8 @@ const App = () => {
           <Route path="/InvoiceQuotesListPage" element={<InvoiceQuotesListPage />} />
           <Route path="/test" element={<TestPage />} />
           <Route path="/customer" element={<CustomerPage />} />
+          <Route path="/paymentslistpage" element={<PaymentsListPage />} />
+          <Route path="/uploadpaymentspage" element={<UploadPaymentsPage />} />
         </Routes>
         <Footer />
       </div>
