@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -95,8 +97,8 @@ const InvoiceQuotesList = () => {
                             Sort
                         </button>
                         {printBtn && (
-                            <Link to={`/print/${selectedInvoices}`} target="_blank" 
-                            className=" my-3 mr-2 bg-transparent border-[2px] border-blue-500 hover:bg-blue-100 hover:text-black text-blue-700 font-bold px-[20px] py-[5px] rounded"
+                            <Link to={`/print/${selectedInvoices}`} target="_blank"
+                                className=" my-3 mr-2 bg-transparent border-[2px] border-blue-500 hover:bg-blue-100 hover:text-black text-blue-700 font-bold px-[20px] py-[5px] rounded"
                             >
                                 Print
                             </Link>
@@ -106,6 +108,12 @@ const InvoiceQuotesList = () => {
                                 Please Select to Print
                             </p>
                         )}
+                        <NavLink exact to="/uploadPage"
+                            className="py-2 bg-gradient-to-r from-blue-200 to-blue-300 border-2 border-blue-300 active:text-black text-black font-semibold rounded-md hover:scale-105 px-8 hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+                        >
+                            Upload 
+                        </NavLink>
+
                     </div>
                 </div>
 
@@ -150,9 +158,9 @@ const InvoiceQuotesList = () => {
                 )}
 
                 <table className="table-auto w-full border-collapse border border-gray-300">
-                    <thead>
+                    <thead className=''>
                         <tr className="bg-gray-300">
-                            <th className="border border-gray-300 px-4 py-2">
+                            <th className="border bg-blue-100 border-gray-300 rounded-md  px-4 py-2">
                                 <input
                                     type="checkbox"
                                     onChange={(e) => {
@@ -165,15 +173,15 @@ const InvoiceQuotesList = () => {
                                     checked={selectedInvoices.length === invoicesQuotes.length}
                                 />
                             </th>
-                            <th className="border border-gray-300 px-4 py-2">Order Number</th>
-                            <th className="border border-gray-300 px-4 py-2">Type</th>
-                            <th className="border border-gray-300 px-4 py-2">Date Ordered</th>
-                            <th className="border border-gray-300 px-4 py-2">Date Due</th>
-                            <th className="border border-gray-300 px-4 py-2">Billing</th>
-                            <th className="border border-gray-300 px-4 py-2">Shipping</th>
-                            <th className="border border-gray-300 px-4 py-2">Order Total</th>
-                            <th className="border border-gray-300 px-4 py-2">Edit</th>
-                            <th className="border border-gray-300 px-4 py-2">Delete</th>
+                            <th className="border bg-blue-100 rounded-md border-gray-300 px-4 py-2">Order Number</th>
+                            <th className="border bg-blue-100 rounded-md border-gray-300 px-4 py-2">Type</th>
+                            <th className="border bg-blue-100 rounded-md border-gray-300 px-4 py-2">Date Ordered</th>
+                            <th className="border bg-blue-100 rounded-md border-gray-300 px-4 py-2">Date Due</th>
+                            <th className="border bg-blue-100 rounded-md border-gray-300 px-4 py-2">Billing</th>
+                            <th className="border bg-blue-100 rounded-md border-gray-300 px-4 py-2">Shipping</th>
+                            <th className="border bg-blue-100 rounded-md border-gray-300 px-4 py-2">Order Total</th>
+                            <th className="border bg-blue-100 rounded-md border-gray-300 px-4 py-2">Edit</th>
+                            <th className="border bg-blue-100 rounded-md border-gray-300 px-4 py-2">Delete</th>
                         </tr>
                     </thead>
                     <tbody>

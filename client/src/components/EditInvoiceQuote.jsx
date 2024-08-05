@@ -1315,16 +1315,16 @@ const EditInvoiceQuote = ({ id }) => {
                                                     </div>
 
                                                     {/* <div className='flex items-center justify-center'>
-                            <input
-                              type="number"
-                              name={`payments[${index}].outstandingOrderBalance`}
-                              value={payment.date}
-                              onChange={(e) => handlePaymentChange(index, e)}
-                              className="rounded px-2 py-1 my-1 w-full border-2"
-                              placeholder='Outstanding Order Balance'
-                            />
-                          </div> */}
-
+                                                        <input
+                                                            type="number"
+                                                            name={`payments[${index}].outstandingOrderBalance`}
+                                                            value={payment.date}
+                                                            onChange={(e) => handlePaymentChange(index, e)}
+                                                            className="rounded px-2 py-1 my-1 w-full border-2"
+                                                            placeholder='Outstanding Order Balance'
+                                                        />
+                                                    </div>
+ */}
 
                                                     <div className='flex items-center justify-center'>
                                                         <input
@@ -1343,8 +1343,8 @@ const EditInvoiceQuote = ({ id }) => {
 
                                             <div className="flex gap-5">
                                                 <div className="flex flex-col gap-2 pt-2">
-                                                    {/* <label className="my-1">Total Payment Amount</label> */}
-                                                    {/* <label className="my-1">Refunded Amoung</label> */}
+                                                    {/* <label className="my-1">Total Payment Amount</label>
+                                                    <label className="my-1">Refunded Amoung</label> */}
                                                     <label className="my-1">Payment Method</label>
                                                     {/* <label className="my-1">Payment Status</label> */}
 
@@ -1356,28 +1356,28 @@ const EditInvoiceQuote = ({ id }) => {
 
 
 
-                                                    {/* 
-                          <div className='flex items-center justify-center'>
-                            <input
-                              type="Number"
-                              name={`payments[${index}].totalPaymentAmount`}
-                              value={payment.totalPaymentAmount}
-                              onChange={(e) => handlePaymentChange(index, e)}
-                              className="rounded px-2 py-1 my-1 w-full border-2"
-                              placeholder='Total Payment Amount'
-                            />
-                          </div>
 
-                          <div className='flex items-center justify-center'>
-                            <input
-                              type="number"
-                              name={`payments[${index}].refundedAmount`}
-                              value={payment.refundedAmount}
-                              onChange={(e) => handlePaymentChange(index, e)}
-                              className="rounded px-2 py-1 my-1 w-full border-2"
-                              placeholder='Refunded Amount'
-                            />
-                          </div> */}
+                                                    {/* <div className='flex items-center justify-center'>
+                                                        <input
+                                                            type="Number"
+                                                            name={`payments[${index}].totalPaymentAmount`}
+                                                            value={payment.totalPaymentAmount}
+                                                            onChange={(e) => handlePaymentChange(index, e)}
+                                                            className="rounded px-2 py-1 my-1 w-full border-2"
+                                                            placeholder='Total Payment Amount'
+                                                        />
+                                                    </div>
+
+                                                    <div className='flex items-center justify-center'>
+                                                        <input
+                                                            type="number"
+                                                            name={`payments[${index}].refundedAmount`}
+                                                            value={payment.refundedAmount}
+                                                            onChange={(e) => handlePaymentChange(index, e)}
+                                                            className="rounded px-2 py-1 my-1 w-full border-2"
+                                                            placeholder='Refunded Amount'
+                                                        />
+                                                    </div> */}
 
 
 
@@ -1394,15 +1394,15 @@ const EditInvoiceQuote = ({ id }) => {
                                                     </div>
 
                                                     {/* <div className='flex items-center justify-center'>
-                            <input
-                              type="text"
-                              name={`payments[${index}].paymentStatus`}
-                              value={payment.paymentStatus}
-                              onChange={(e) => handlePaymentChange(index, e)}
-                              className="rounded px-2 py-1 my-1 w-full border-2"
-                              placeholder='Payment Status'
-                            />
-                          </div> */}
+                                                        <input
+                                                            type="text"
+                                                            name={`payments[${index}].paymentStatus`}
+                                                            value={payment.paymentStatus}
+                                                            onChange={(e) => handlePaymentChange(index, e)}
+                                                            className="rounded px-2 py-1 my-1 w-full border-2"
+                                                            placeholder='Payment Status'
+                                                        />
+                                                    </div> */}
 
                                                     <div className="flex justify-center">
                                                         <button

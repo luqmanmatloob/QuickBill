@@ -1162,8 +1162,7 @@ const Invoice = () => {
 
 
             </div>
-            <div className="flex justify-between items-start
-">
+            <div className="flex justify-between items-start">
               <p className="w-1/2">
                 You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.
 
@@ -1256,8 +1255,8 @@ const Invoice = () => {
 
                       <div className="flex gap-5">
                         <div className="flex flex-col gap-2 pt-2">
-                          {/* <label className="my-1">Total Payment Amount</label> */}
-                          {/* <label className="my-1">Refunded Amoung</label> */}
+                          {/* <label className="my-1">Total Payment Amount</label>
+                          <label className="my-1">Refunded Amoung</label> */}
                           <label className="my-1">Payment Method</label>
                           {/* <label className="my-1">Payment Status</label> */}
 
@@ -1269,8 +1268,8 @@ const Invoice = () => {
 
 
 
-                          {/* 
-                          <div className='flex items-center justify-center'>
+                          
+                          {/* <div className='flex items-center justify-center'>
                             <input
                               type="Number"
                               name={`payments[${index}].totalPaymentAmount`}

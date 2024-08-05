@@ -381,3 +381,57 @@ exports.getByUniqueKeys = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
+
+
+
+
+
+exports.updatePayments = async (req, res) => {
+  const { orderNumber, payments } = req.body;
+
+  try {
+    // Find the invoice or quote by orderNumber and update its payments
+    const updatedInvoiceOrQuote = await InvoiceOrQuote.findOneAndUpdate(
+      { orderNumber },
+      { $push: { payments: { $each: payments } } },
+      { new: true }
+    );
+
+    if (!updatedInvoiceOrQuote) {
+      // Order number not found
+      return res.status(404).json({ message: `Order Number ${orderNumber} not found` });
+    }
+
+    // Successful update
+    res.status(200).json(updatedInvoiceOrQuote);
+  } catch (error) {
+    // Server error
+    console.error('Error updating payments:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Controller function to delete payments
+exports.deletePayments = async (req, res) => {
+  const { orderNumber } = req.body;
+
+  try {
+    const updatedInvoiceOrQuote = await InvoiceOrQuote.findOneAndUpdate(
+      { orderNumber },
+      { $set: { payments: [] } }, 
+      { new: true }
+    );
+
+    if (!updatedInvoiceOrQuote) {
+      return res.status(404).json({ message: `Order Number ${orderNumber} not found` });
+    }
+
+    res.status(200).json(updatedInvoiceOrQuote);
+  } catch (error) {
+    console.error('Error deleting payments:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+

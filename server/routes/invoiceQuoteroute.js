@@ -8,6 +8,8 @@ const {
     getInvoicesByUniqueKeys,
     deleteMultipleInvoices,
     getByUniqueKeys,
+    updatePayments,
+    deletePayments,
     
 
 } = require('../controllers/invoiceQuoterouteController');
@@ -37,6 +39,15 @@ router.delete('/:id', deleteInvoiceQuote);
 
 
 router.post('/getByUniqueKeys', getByUniqueKeys )
+
+// Route to update payments
+router.post('/updatePayments', updatePayments);
+
+// Route to delete payments
+router.delete('/deletePayments', deletePayments);
+
+
+
 
 
 module.exports = router;
