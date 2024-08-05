@@ -117,26 +117,106 @@ const parseDate = (dateString, fallbackDate = new Date()) => {
   });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+// exports.getAllInvoicesQuotes = async (req, res) => {
+//   try {
+//     // Construct the query object to filter based on request query parameters
+//     let query = {};
+//     if (req.query.billingFirstName) {
+//       query.billingFirstName = {
+//         $regex: new RegExp(req.query.billingFirstName, "i"),
+//       };
+//     }
+//     if (req.query.billingLastName) {
+//       query.billingLastName = {
+//         $regex: new RegExp(req.query.billingLastName, "i"),
+//       };
+//     }
+//     if (req.query.orderNumber) {
+//       query.orderNumber = { $regex: new RegExp(req.query.orderNumber, "i") };
+//     }
+//     if (req.query.dateOrdered) {
+//       // Assuming dateOrdered is stored as ISO string in the database
+//       query.dateOrdered = { $gte: new Date(req.query.dateOrdered) };
+//     }
+
+//     const invoicesQuotes = await InvoiceOrQuote.find(query)
+//       .sort({ createdAt: -1 }) // Sort by createdAt field in descending order (newest first)
+//       .exec();
+
+//     res.status(200).json({
+//       success: true,
+//       data: invoicesQuotes,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching invoices and quotes:", error);
+//     res.status(500).json({ success: false, error: error.message });
+//   }
+// };
+
+
+
+
+
+
+
 exports.getAllInvoicesQuotes = async (req, res) => {
   try {
     // Construct the query object to filter based on request query parameters
     let query = {};
+    
+    // Filtering by billing first name
     if (req.query.billingFirstName) {
       query.billingFirstName = {
         $regex: new RegExp(req.query.billingFirstName, "i"),
       };
     }
+    
+    // Filtering by billing last name
     if (req.query.billingLastName) {
       query.billingLastName = {
         $regex: new RegExp(req.query.billingLastName, "i"),
       };
     }
+    
+    // Filtering by order number
     if (req.query.orderNumber) {
       query.orderNumber = { $regex: new RegExp(req.query.orderNumber, "i") };
     }
-    if (req.query.dateOrdered) {
-      // Assuming dateOrdered is stored as ISO string in the database
-      query.dateOrdered = { $gte: new Date(req.query.dateOrdered) };
+    
+    // Filtering by date ordered range
+    if (req.query.dateOrderedStart && req.query.dateOrderedEnd) {
+      query.dateOrdered = {
+        $gte: new Date(req.query.dateOrderedStart),
+        $lte: new Date(req.query.dateOrderedEnd),
+      };
+    } else if (req.query.dateOrderedStart) {
+      query.dateOrdered = { $gte: new Date(req.query.dateOrderedStart) };
+    } else if (req.query.dateOrderedEnd) {
+      query.dateOrdered = { $lte: new Date(req.query.dateOrderedEnd) };
+    }
+    
+    // Filtering by date due range
+    if (req.query.dateDueStart && req.query.dateDueEnd) {
+      query.dateDue = {
+        $gte: new Date(req.query.dateDueStart),
+        $lte: new Date(req.query.dateDueEnd),
+      };
+    } else if (req.query.dateDueStart) {
+      query.dateDue = { $gte: new Date(req.query.dateDueStart) };
+    } else if (req.query.dateDueEnd) {
+      query.dateDue = { $lte: new Date(req.query.dateDueEnd) };
     }
 
     const invoicesQuotes = await InvoiceOrQuote.find(query)
@@ -152,6 +232,25 @@ exports.getAllInvoicesQuotes = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 exports.deleteInvoiceQuote = async (req, res) => {
   const { uniqueKey } = req.body;
@@ -174,6 +273,8 @@ exports.deleteInvoiceQuote = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
+
+
 
 exports.getInvoiceQuoteById = async (req, res) => {
   const { id } = req.params; // id is the uniqueKey in this case

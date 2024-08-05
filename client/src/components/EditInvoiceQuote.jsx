@@ -1,5 +1,5 @@
 
-// imported react router dom
+// import react router dom
 // added print link 
 // changed "save" to "update"
 // removed handle print function
@@ -452,12 +452,13 @@ const EditInvoiceQuote = ({ id }) => {
         setGrandTotal(subtotal + totalTax);
 
         const computedOrderTotal = grandTotal;
-        // console.log(`grandtotal ${grandTotal}`)
-        // console.log(`computedordertotal ${computedOrderTotal}`)
 
-        const updatedFormData = { ...formData, orderTotal: computedOrderTotal };
+        let paymentDue=(grandTotal - formData.paymentPaid).toFixed(2)
+
+        const updatedFormData = { ...formData, orderTotal: computedOrderTotal, paymentDue:paymentDue };
         setFormData(updatedFormData);
-    };
+
+        };
 
 
 

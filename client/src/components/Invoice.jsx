@@ -311,11 +311,13 @@ const Invoice = () => {
     setGrandTotal(subtotal + totalTax);
 
     const computedOrderTotal = grandTotal;
-    // console.log(`grandtotal ${grandTotal}`)
-    // console.log(`computedordertotal ${computedOrderTotal}`)
 
-    const updatedFormData = { ...formData, orderTotal: computedOrderTotal };
+    let paymentDue=(grandTotal - formData.paymentPaid).toFixed(2)
+
+    const updatedFormData = { ...formData, orderTotal: computedOrderTotal, paymentDue:paymentDue };
     setFormData(updatedFormData);
+
+
   };
 
 
