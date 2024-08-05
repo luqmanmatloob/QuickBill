@@ -167,7 +167,7 @@ const UploadPayments = () => {
 
           {/* Successful uploads table */}
           <div className="mb-10">
-            <h2 className="text-2xl font-bold mb-4">Successful Uploads</h2>
+            <h2 className="text-xl font-semibold mb-4">Successful Uploads</h2>
             <div className="overflow-x-auto">
               <table className="min-w-full border border-blue-200">
                 <thead className='rounded-lg'>
@@ -191,7 +191,7 @@ const UploadPayments = () => {
 
           {/* Failed uploads table */}
           <div>
-            <h2 className="text-2xl font-bold mb-4">Failed Uploads</h2>
+            <h2 className="text-xl font-semibold mb-4">Unsuccessful Uploads</h2>
             <div className="overflow-x-auto">
               <table className="min-w-full border border-red-200">
                 <thead className='rounded-lg'>

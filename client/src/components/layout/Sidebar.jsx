@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
+
 import { NavLink } from 'react-router-dom';
+
 import { FaPencilAlt } from "react-icons/fa";
 import { IoMdPerson } from "react-icons/io";
 import { FaFileInvoice } from "react-icons/fa";
@@ -12,6 +14,19 @@ import { FaFileUpload } from "react-icons/fa";
 
 
 const Sidebar = () => {
+
+    const [ toggleUploads, setToggleUploads ] = useState(false)
+
+    const toggleUploadState = () => {
+        if (toggleUploads) {
+            setToggleUploads(false);
+        } else {
+            setToggleUploads(true);
+        }
+    };
+
+
+
     return (
         <div className="bg-white text-[#3952ac] pl-2 text-bases py-4 fixed left-0 top-[64px] bottom-0 z-40 w-52 border-[#d1e4f5] border-r-[1px] max-h-[110vh] h-full overflow-auto custom-scrollbar">
             <ul className="flex flex-col my-8 space-y-4 font-semibold text-sm">
@@ -50,20 +65,32 @@ const Sidebar = () => {
                         Settings
                     </NavLink>
                 </li>
+
                 <li className='flex gap-2 py-2 px-4 hover:text-[#2046cf] hover:underline font-semibold text-lg items-center '>
                     <FaFileUpload className='text-blue-400' />
 
-                    <NavLink exact to="/uploadPage" className="" activeClassName="font-bold">
+                    <button onClick={toggleUploadState} className="" activeClassName="font-bold">
                         Upload
-                    </NavLink>
+                    </button>
                 </li>
-                <li className='flex gap-2 py-2 px-4 hover:text-[#2046cf] hover:underline font-semibold text-lg items-center '>
-                    <FaFileUpload className='text-blue-400' />
+                <div 
+                className={`${toggleUploads ? 'block' : 'hidden'} ml-4` }
+                >
+                <li className='flex gap-2 py-2 px-4 hover:text-[#2046cf] hover:underline font-semibold text-base items-center '>
+                        <FaFileUpload className='text-blue-400' />
 
-                    <NavLink exact to="/uploadpaymentspage" className="" activeClassName="font-bold">
-                        Upload Payments
-                    </NavLink>
-                </li>
+                        <NavLink exact to="/uploadPage" className="" activeClassName="font-semibod">
+                            Upload Orders
+                        </NavLink>
+                    </li>
+                    <li className='flex gap-2 py-2 px-4 hover:text-[#2046cf] hover:underline font-semibold text-base items-center '>
+                        <FaFileUpload className='text-blue-400' />
+
+                        <NavLink exact to="/uploadpaymentspage" className="" activeClassName="font-semibold">
+                            Upload Payments
+                        </NavLink>
+                    </li>
+                </div>
 
 
             </ul>
