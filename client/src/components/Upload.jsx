@@ -118,6 +118,7 @@ const Upload = () => {
           billingFirstName: parsedData[i][0]['Billing First Name'] || '',
           billingLastName: parsedData[i][0]['Billing Last Name'] || '',
           paymentDue: 0,
+          paymentPaid: parseFloat(parsedData[i][0]['Order Total'].replace('$', '').replace(',', '')) || 0,
 
           billingEmailAddress: parsedData[i][0]['Billing Email Address'] || '',
 

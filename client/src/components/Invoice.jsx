@@ -634,9 +634,8 @@ const Invoice = () => {
 
                   />
                 </div>
-                <div className="flex min-w-[100px] items-center ">
+                {/* <div className="flex min-w-[100px] items-center ">
                   <label className="min-w-24 ">Payment:</label>{" "}
-                  {/*Order Number*/}
                   <input
                     type="text"
                     name="paymentMethod"
@@ -646,7 +645,7 @@ const Invoice = () => {
                     className="px-2 py-1 w-full"
 
                   />
-                </div>
+                </div> */}
                 {/*                                 
                                 <div className="flex min-w-[100px] items-center ">
                                     <label className="min-w-24 ">Invoice_No: </label> 
@@ -1174,7 +1173,8 @@ const Invoice = () => {
               <div className=" flex justify-end pr-32">
                 <button type="button"
                   className="text-blue-500 underline"
-                  onClick={() => { setEditPayments(true) }}>
+                  onClick={() => { setEditPayments(true) }}
+                  >
                   Add/Edit Payments
                 </button>
               </div>

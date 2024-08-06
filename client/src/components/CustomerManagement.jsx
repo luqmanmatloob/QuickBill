@@ -35,6 +35,50 @@ const CustomerManagement = () => {
   const [editMode, setEditMode] = useState(false);
   const [showCustomerDetails, setShowCustomerDetails] = useState(false);
 
+
+
+
+
+  // const handleCheckboxChange = (e) => {
+  //   if (e.target.checked) {
+  //     populateShippingFromBilling();
+  //   } else {
+  //     clearShippingFields();
+  //   }
+  // };
+
+  // const populateShippingFromBilling = () => {
+  //   setNewCustomer((prevCustomer) => ({
+  //     ...prevCustomer,
+  //     shippingName: '',
+  //     shippingAddress1: prevCustomer.billingAddress1,
+  //     shippingAddress2: prevCustomer.billingAddress2,
+  //     shippingCity: prevCustomer.billingCity,
+  //     shippingState: prevCustomer.billingState,
+  //     shippingPostal: prevCustomer.billingPostal,
+  //     shippingCountry: prevCustomer.billingCountry,
+  //     shippingPhone: '',
+  //     shippingDeliveryInstructions: '',
+  //   }));
+  // };
+
+  // const clearShippingFields = () => {
+  //   setNewCustomer((prevCustomer) => ({
+  //     ...prevCustomer,
+  //     shippingAddress1: '',
+  //     shippingAddress2: '',
+  //     shippingCity: '',
+  //     shippingState: '',
+  //     shippingPostal: '',
+  //     shippingCountry: '',
+  //     shippingPhone: '',
+  //     shippingDeliveryInstructions: '',
+  //   }));
+  // };
+
+
+
+
   const toggleCustomerDetails = () => {
     if (showCustomerDetails) {
       setShowCustomerDetails(false);
@@ -42,8 +86,6 @@ const CustomerManagement = () => {
       setShowCustomerDetails(true);
     }
   };
-
-
 
   // Fetch all customers
   const fetchCustomers = async () => {
@@ -80,7 +122,7 @@ const CustomerManagement = () => {
       window.alert("Invalid first name");
       return;
     }
-    
+
     try {
       let response;
       if (editMode) {
@@ -119,7 +161,7 @@ const CustomerManagement = () => {
   const deleteCustomer = async (customerId) => {
     const isConfirmed = window.confirm(`Are you sure you want to delete this item?`);
     if (!isConfirmed) {
-        return; // If the user cancels, do nothing
+      return; // If the user cancels, do nothing
     }
 
     try {
@@ -315,12 +357,12 @@ const CustomerManagement = () => {
 
                         const offsetFromBottom = 2100;
                         const scrollPosition = document.documentElement.scrollHeight - window.innerHeight - offsetFromBottom;
-                        
+
                         window.scrollTo({
                           top: scrollPosition,
                           behavior: 'smooth'
                         });
-                    
+
 
                       }}
                       className="bg-blue-400 hover:bg-blue-500 text-white font-bold py-1 px-3 rounded mr-2"
@@ -494,6 +536,28 @@ const CustomerManagement = () => {
             </div>
           </div>
         </div>
+
+
+{/* 
+
+        <div className="mb-4 col-span-2">
+          <input
+            type="checkbox"
+            id="sameAsBilling"
+            onChange={handleCheckboxChange}
+            className="mr-2"
+          />
+          <label htmlFor="sameAsBilling" className="text-sm font-medium text-gray-700">Same as Billing</label>
+        </div>
+        <button
+          onClick={populateShippingFromBilling}
+          className="px-2 py-1 bg-blue-300 text-white font-semibold rounded-md hover:bg-blue-400"
+        >
+          Same as Billing
+        </button>
+ */}
+
+
 
         {/* Shipping Information */}
         <div className="bg-white p-4">

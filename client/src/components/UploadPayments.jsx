@@ -160,7 +160,7 @@ const UploadPayments = () => {
             </div>
           )}
           {loading && (
-            <div className="my-4 bg-yellow-200 text-yellow-800 py-2 px-4 rounded">
+            <div className="my-4 bg-green-200 text-yellow-800 py-2 px-4 rounded">
               Processing payments...
             </div>
           )}
