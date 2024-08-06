@@ -107,6 +107,8 @@ const CustomerManagement = () => {
       setEditMode(false);
       clearBtn();
       fetchCustomers(); // Refresh customer list
+      window.alert("Customer Added Successfully");
+
 
     } catch (error) {
       console.error('Error saving customer:', error);
@@ -310,8 +312,15 @@ const CustomerManagement = () => {
                           shippingPhone: customer.shippingPhone || '',
                           shippingDeliveryInstructions: customer.shippingDeliveryInstructions || '',
                         });
-                        window.scrollTo(0, 0);
 
+                        const offsetFromBottom = 2100;
+                        const scrollPosition = document.documentElement.scrollHeight - window.innerHeight - offsetFromBottom;
+                        
+                        window.scrollTo({
+                          top: scrollPosition,
+                          behavior: 'smooth'
+                        });
+                    
 
                       }}
                       className="bg-blue-400 hover:bg-blue-500 text-white font-bold py-1 px-3 rounded mr-2"
