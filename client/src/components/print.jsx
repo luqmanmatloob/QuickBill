@@ -294,7 +294,7 @@ const Print = ({ id }) => {
       doc.text(`$${totalTax.toFixed(2)}`, 165, totalsY + 10);
       doc.text(`$${GrandTotal.toFixed(2)}`, 165, totalsY + 20);
       doc.text(`$${invoice.paymentPaid || ''}`, 165, totalsY + 30);
-      doc.text(`$${GrandTotal - invoice.paymentPaid || 0}`, 165, totalsY + 40);
+      doc.text(`$${invoice.Balance || 0}`, 165, totalsY + 40);
 
       doc.setFontSize(7);
       doc.setFont('Helvetica', 'normal');
@@ -313,7 +313,7 @@ const Print = ({ id }) => {
 
 
 
-    
+
 
 
       {
@@ -341,29 +341,28 @@ const Print = ({ id }) => {
 
 
 
-{
-      doc.setTextColor(0, 0, 0); //  black
-      doc.setFontSize(8);
-      doc.setFont('Helvetica', 'bold');
-      doc.text(`Payment Method:`, 15, totalsY + 23, { maxWidth: 90 });
-      doc.setFont('Helvetica', 'normal');
+      {
+        doc.setTextColor(0, 0, 0); //  black
+        doc.setFontSize(8);
+        doc.setFont('Helvetica', 'bold');
+        doc.text(`Payment Method:`, 15, totalsY + 23, { maxWidth: 90 });
+        doc.setFont('Helvetica', 'normal');
 
-      doc.setTextColor(105, 105, 105); //   grey 
-      doc.text(`${invoice.paymentMethod || ''}`, 15, totalsY + 28, { maxWidth: 90 });
-}
+        doc.setTextColor(105, 105, 105); //   grey 
+        doc.text(`${invoice.paymentMethod || ''}`, 15, totalsY + 28, { maxWidth: 90 });
+      }
 
-{
-  doc.setFont('Helvetica', 'bold');
-  doc.setFontSize(8);
-  doc.setTextColor(0, 0, 0); //  black
+      {
+        doc.setFont('Helvetica', 'bold');
+        doc.setFontSize(8);
+        doc.setTextColor(0, 0, 0); //  black
 
-  doc.text(`Note:`, 15, totalsY+35, { maxWidth: 75 });
+        doc.text(`Note:`, 15, totalsY + 35, { maxWidth: 75 });
 
-  doc.setTextColor(105, 105, 105); //   grey 
-  doc.setFont('Helvetica', 'normal');
-  doc.text(`${invoice.note}`, 15, totalsY+40, { maxWidth: 75 });
-}
-
+        doc.setTextColor(105, 105, 105); //   grey 
+        doc.setFont('Helvetica', 'normal');
+        doc.text(`${invoice.note}`, 15, totalsY + 40, { maxWidth: 75 });
+      }
 
 
 
@@ -383,19 +382,6 @@ const Print = ({ id }) => {
 
       doc.text(`'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.}`, 15, totalsY + 60, { maxWidth: 85 });
     });
-
-  
-
-
-
-
-
-
-
-
-
-
-
 
 
 
