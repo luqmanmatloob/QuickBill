@@ -97,7 +97,7 @@ const Upload = () => {
         }));
 
         const invoiceData = {
-            type: parsedData[i][0]['Quote / Invoice'] || 'Invoice',
+            type: parsedData[i][0]['Quote / Invoice'] || 'invoice',
           orderNumber: parsedData[i][0]['Order Number'] || '',
           dateOrdered: parsedData[i][0]['Date Ordered'] || '',
           dateDue: parsedData[i][0]['Date Due'] || '',
@@ -117,6 +117,7 @@ const Upload = () => {
           shippingLastName: parsedData[i][0]['Shipping Last Name'] || '',
           billingFirstName: parsedData[i][0]['Billing First Name'] || '',
           billingLastName: parsedData[i][0]['Billing Last Name'] || '',
+          paymentDue: 0,
 
           billingEmailAddress: parsedData[i][0]['Billing Email Address'] || '',
 

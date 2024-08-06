@@ -293,7 +293,7 @@ const EditInvoiceQuote = ({ id }) => {
 
     useEffect(() => {
         calculateTotals();
-    }, [formData.items, grandTotal]);
+    }, [formData.items, grandTotal, formData.paymentPaid]);
 
 
 

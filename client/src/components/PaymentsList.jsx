@@ -96,7 +96,7 @@ const PaymentsList = () => {
 
             <NavLink exact to="/uploadpaymentspage"
               className="py-2 bg-gradient-to-r from-blue-200 to-blue-300 border-2 border-blue-300 active:text-black text-black font-semibold rounded-md hover:scale-105 px-8 hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-              >
+            >
               Upload
             </NavLink>
 
@@ -104,29 +104,31 @@ const PaymentsList = () => {
         </div>
 
         <div className="mb-4">
-          <input
+          {/* <input
             type="text"
             name="billingFirstName"
             placeholder="Filter by Billing First Name"
             value={filters.billingFirstName}
             onChange={handleFilterChange}
             className="border border-gray-300 px-4 py-2 rounded mr-2"
-          />
-          <input
+          /> */}
+          {/* <input
             type="text"
             name="billingLastName"
             placeholder="Filter by Billing Last Name"
             value={filters.billingLastName}
             onChange={handleFilterChange}
             className="border border-gray-300 px-4 py-2 rounded mr-2"
-          />
+          /> */}
+          <label className='text-lg'>Search: </label>
           <input
             type="text"
             name="orderNumber"
-            placeholder="Filter by Order Number"
+            // placeholder="Filter by Order Number"
+            placeholder="Search By Invoice/Quote Number"
             value={filters.orderNumber}
             onChange={handleFilterChange}
-            className="border border-gray-300 px-4 py-2 rounded mr-2"
+            className="border border-gray-300 px-4 py-2 rounded mr-2 w-1/3"
           />
           {/* <input
                         type="date"

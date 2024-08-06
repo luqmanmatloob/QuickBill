@@ -375,13 +375,13 @@ const Print = ({ id }) => {
 
       doc.setTextColor(200, 204, 203); //   border grey 
       doc.setFontSize(17);
-      doc.text(`__________________________`, 15, totalsY + 45);
+      doc.text(`__________________________`, 15, totalsY + 55);
       doc.setTextColor(0, 0, 0); //  black
       doc.setFont('Helvetica', 'normal');
       doc.setFontSize(7);
       doc.setTextColor(80, 80, 80); //   Items grey 
 
-      doc.text(`'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.}`, 15, totalsY + 50, { maxWidth: 85 });
+      doc.text(`'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.}`, 15, totalsY + 60, { maxWidth: 85 });
     });
 
   
