@@ -97,7 +97,7 @@ const Upload = () => {
         }));
 
         const invoiceData = {
-            type: parsedData[i][0]['Quote / Invoice'] || 'invoice',
+          type: parsedData[i][0]['Quote / Invoice'] || 'invoice',
           orderNumber: parsedData[i][0]['Order Number'] || '',
           dateOrdered: parsedData[i][0]['Date Ordered'] || '',
           dateDue: parsedData[i][0]['Date Due'] || '',
@@ -122,10 +122,41 @@ const Upload = () => {
 
           billingEmailAddress: parsedData[i][0]['Billing Email Address'] || '',
 
-
-
           items: items,
           note: ''
+        };
+
+
+        const customerData = {
+
+
+
+
+          primaryContactFirstName : parsedData[i][0]['Billing First Name'] || '',
+          primaryContactLastName: parsedData[i][0]['Billing Last Name'] || '',
+          primaryContactEmail: parsedData[i][0]['Billing Email Address'] || '',
+          primaryContactPhone :parsedData[i][0]['Billing Phone No.'] || '',
+          // accountNumber,
+          // website,
+          // notes,
+          // billingCurrency,
+          billingAddress1: parsedData[i][0]['Billing Email Address'] || '',
+          billingAddress2: parsedData[i][0]['Billing Email Address'] || '',
+          // billingCountry,
+          billingState: parsedData[i][0]['Billing State'] || '',
+          billingCity: parsedData[i][0]['Billing City'] || '',
+          billingPostal : parsedData[i][0]['Billing Postcode/zip'] || '',
+          shippingName: parsedData[i][0]['Shipping First Name'] || '',
+          shippingAddress1: parsedData[i][0]['Shipping Address'] || '',
+          shippingAddress2: parsedData[i][0]['Shipping Address'] || '',
+          // shippingCountry,
+          shippingState: parsedData[i][0]['Shipping State'] || '',
+          shippingCity: parsedData[i][0]['Shipping City'] || '',
+          shippingPostal: parsedData[i][0]['Shipping Postcode/zip'] || '',
+          shippingPhone:parsedData[i][0]['Shipping Phone No.'] || '',
+          // shippingDeliveryInstructions,
+      
+
         };
 
         console.log('Invoice Data:', invoiceData);
@@ -145,6 +176,16 @@ const Upload = () => {
         const result = await response.json();
         uploadedUniqueKeys.push(result.invoiceOrQuote.uniqueKey);
         console.log(`Invoice ${i + 1} submitted successfully`);
+        
+        
+        const customerResponse = await fetch(`${BASE_URL}/api/customer/uploadCustomer`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(customerData),
+        });
+
       }
 
       fetchUploadedInvoices(uploadedUniqueKeys);
@@ -263,7 +304,7 @@ const Upload = () => {
           <button
             onClick={handleParseAndSubmit}
             className=" py-2 bg-gradient-to-r from-blue-300 to-blue-200 border-2 border-blue-300 active:text-black  text-black font-bold rounded-md hover:scale-105 px-8 hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-            >
+          >
             OK
           </button>
         </div>
@@ -292,7 +333,7 @@ const Upload = () => {
 
           {loading && (
             <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
-            {  ` Processing invoice number ${creatingInvoiceNumber} ... `}
+              {` Processing invoice number ${creatingInvoiceNumber} ... `}
             </div>
           )}
 

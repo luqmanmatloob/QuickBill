@@ -91,3 +91,94 @@ exports.getCustomerDetails = async (req, res) => {
     res.status(500).json({ message: 'Error fetching customer details', error: err });
   }
 };
+
+
+
+exports.uploadCustomer = async (req, res) => {
+  const {
+    name,
+    primaryContactFirstName,
+    primaryContactLastName,
+    primaryContactEmail,
+    primaryContactPhone,
+    accountNumber,
+    website,
+    notes,
+    billingCurrency,
+    billingAddress1,
+    billingAddress2,
+    billingCountry,
+    billingState,
+    billingCity,
+    billingPostal,
+    shippingName,
+    shippingAddress1,
+    shippingAddress2,
+    shippingCountry,
+    shippingState,
+    shippingCity,
+    shippingPostal,
+    shippingPhone,
+    shippingDeliveryInstructions,
+  } = req.body;
+
+  try {
+    // Check if a customer with the same email already exists
+    const existingCustomer = await Customer.findOne({
+      primaryContactFirstName,
+    });
+
+    if (existingCustomer) {
+      // If customer exists, send a response indicating a duplicate
+      return res.status(400).json({
+        success: false,
+        message: 'Customer with the given name already exists',
+      });
+    }
+
+    // Create a new customer if no duplicate is found
+    const newCustomer = new Customer({
+      name,
+      primaryContactFirstName,
+      primaryContactLastName,
+      primaryContactEmail,
+      primaryContactPhone,
+      accountNumber,
+      website,
+      notes,
+      billingCurrency,
+      billingAddress1,
+      billingAddress2,
+      billingCountry,
+      billingState,
+      billingCity,
+      billingPostal,
+      shippingName,
+      shippingAddress1,
+      shippingAddress2,
+      shippingCountry,
+      shippingState,
+      shippingCity,
+      shippingPostal,
+      shippingPhone,
+      shippingDeliveryInstructions,
+    });
+
+    // Save the new customer to the database
+    await newCustomer.save();
+
+    // Respond with success
+    res.status(201).json({
+      success: true,
+      message: 'Customer created successfully',
+      data: newCustomer,
+    });
+  } catch (error) {
+    // Handle errors
+    console.error('Error uploading customer:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+    });
+  }
+};
