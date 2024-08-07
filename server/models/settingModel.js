@@ -25,7 +25,11 @@ const settingSchema = new mongoose.Schema({
   },
   taxRate:{
     type: Number,
+  },
+  imageUrl: { 
+    type: String,
   }
+
 });
 
 const Setting = mongoose.model('Setting', settingSchema);

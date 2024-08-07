@@ -10,7 +10,9 @@ const Company = () => {
     city: '',
     state: '',
     country: '',
-    url: ''
+    url: '',
+    imageUrl: ''
+
   });
 
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -20,6 +22,12 @@ const Company = () => {
     fetchSettings();
   }, []);
 
+  const removePublicPrefix = (path) => {
+    let url = path.replace('public', '');
+    return url.replace('\\', '');
+  };
+
+
   const fetchSettings = async () => {
     try {
       const response = await fetch(`${BASE_URL}/api/settings`);
@@ -27,6 +35,9 @@ const Company = () => {
         throw new Error('Failed to fetch settings');
       }
       const data = await response.json();
+
+      const cleanedPath = removePublicPrefix(data.imageUrl);
+
       // Set the settings from the fetched data
       setSettings({
         companyName: data.companyName || '',
@@ -35,7 +46,9 @@ const Company = () => {
         city: data.city || '',
         state: data.state || '',
         country: data.country || '',
-        url: data.url || ''
+        url: data.url || '',
+        imageUrl: cleanedPath || ''
+
       });
 
       setLoading(false)
@@ -55,6 +68,17 @@ const Company = () => {
           <LoadingSkeleton2 />
         </div>
       )}
+
+      {settings.imageUrl && (
+        <div className="">
+          <img
+            src={`${BASE_URL}/${settings.imageUrl}`}
+            alt="Setting Image"
+            className="max-w-[250px] h-auto border rounded-md "
+          />
+        </div>
+      )}
+
       <h2 className="text-[1.75rem] font-bold mb-4 text-blue-400">{settings.companyName}</h2>
       <div className="flex flex-col space-y-2 print-text-10px">
 

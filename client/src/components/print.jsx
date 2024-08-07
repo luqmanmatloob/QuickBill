@@ -15,8 +15,11 @@ const Print = ({ id }) => {
     city: '',
     state: '',
     country: '',
-    url: ''
+    url: '',
+    imageUrl: ''
+  
   });
+
 
 
   useEffect(() => {
@@ -36,6 +39,11 @@ const Print = ({ id }) => {
   }, [invoices, settings]);
 
 
+  const removePublicPrefix = (path) => {
+    let url = path.replace('public', '');
+    return url.replace('\\', '');
+  };
+
 
   const fetchSettings = async () => {
     try {
@@ -45,6 +53,9 @@ const Print = ({ id }) => {
         throw new Error('Failed to fetch settings');
       }
       const data = await response.json();
+
+      const cleanedPath = removePublicPrefix(data.imageUrl);
+
       // Set the settings from the fetched data
       setSettings({
         companyName: data.companyName || '',
@@ -53,9 +64,10 @@ const Print = ({ id }) => {
         city: data.city || '',
         state: data.state || '',
         country: data.country || '',
-        url: data.url || ''
+        url: data.url || '',
+        imageUrl: cleanedPath || ''
+  
       });
-      console.log(settings)
       setgettingsetting(false)
 
 
@@ -108,6 +120,15 @@ const Print = ({ id }) => {
       if (index > 0) doc.addPage();
 
 
+      let logourl = `${BASE_URL}\\${settings.imageUrl}`
+        logourl.replace('jpeg', 'JPEG')
+        doc.addImage(logourl, 'JPEG', 15,6, 55, 25);
+      
+
+      console.log(settings)
+      console.log(`image url is this ${logourl}`)
+  
+
 
       doc.setTextColor(112, 112, 112); //   dark grey
       doc.setTextColor(105, 105, 105); //   grey 
@@ -119,20 +140,20 @@ const Print = ({ id }) => {
 
       doc.setFont('Helvetica', 'bolditalic');
       doc.setFontSize(20);
-      doc.text(`${settings.companyName}`, 15, 15);
+      doc.text(`${settings.companyName}`, 15, 38);
       doc.setFont('Helvetica', 'normal');
 
       doc.setFontSize(8);
-      doc.text(`${settings.companyName} ${settings.phoneNumber}`, 15, 25);
-      doc.text(`${settings.address}`, 15, 30);
-      doc.text(`${settings.city} ${settings.state}`, 15, 35);
-      doc.text(`${settings.country} `, 15, 40);
-      doc.text(` ${settings.url}`, 15, 50);
+      doc.text(`${settings.companyName} ${settings.phoneNumber}`, 15, 45);
+      doc.text(`${settings.address}`, 15, 50);
+      doc.text(`${settings.city} ${settings.state}`, 15, 55);
+      doc.text(`${settings.country} `, 15, 60);
+      doc.text(` ${settings.url}`, 15, 65);
 
 
 
 
-      doc.setFontSize(15);
+      doc.setFontSize(16);
       doc.setFont('Helvetica', 'bold');
 
 
@@ -146,19 +167,19 @@ const Print = ({ id }) => {
 
 
 
-      doc.setFontSize(10);
+      doc.setFontSize(11);
 
-      doc.text(`${invoice.type.toUpperCase()} # : ${invoice.orderNumber}`, 135, 22);
+      doc.text(`${invoice.type.toUpperCase()} # : ${invoice.orderNumber}`, 135, 26);
 
-      doc.setFontSize(7);
-      doc.text(`Shipping:         ${invoice.shippingMethod}`, 135, 30);
-      doc.text(`Date Ordered:    ${new Date(invoice.dateOrdered).toLocaleDateString()}`, 135, 34);
-      doc.text(`Date Due:          ${new Date(invoice.dateDue).toLocaleDateString()}`, 135, 38);
+      doc.setFontSize(8);
+      doc.text(`Shipping:         ${invoice.shippingMethod}`, 135, 35);
+      doc.text(`Date Ordered:    ${new Date(invoice.dateOrdered).toLocaleDateString()}`, 135, 40);
+      doc.text(`Date Due:          ${new Date(invoice.dateDue).toLocaleDateString()}`, 135, 45);
 
 
       doc.setTextColor(200, 204, 203); //   border grey 
       doc.setFontSize(35);
-      doc.text(`_________________________`, 15, 55);
+      doc.text(`_________________________`, 15, 68);
       doc.setTextColor(0, 0, 0); //  black
 
 
@@ -169,7 +190,7 @@ const Print = ({ id }) => {
       doc.setFontSize(8);
       doc.setFont('Helvetica', 'bold');
 
-      doc.text('Billing Address:', 15, 65);
+      doc.text('Billing Address:', 15, 75);
 
 
       doc.setFont('Helvetica', 'normal');
@@ -177,27 +198,27 @@ const Print = ({ id }) => {
       doc.setTextColor(105, 105, 105); //   grey 
 
 
-      doc.text(`${invoice.billingFirstName} ${invoice.billingLastName}`, 15, 70);
-      doc.text(`${invoice.billingAddress}`, 15, 75);
-      doc.text(`${invoice.billingCity}, ${invoice.billingState}`, 15, 80);
-      doc.text(`${invoice.billingEmailAddress}`, 15, 85);
+      doc.text(`${invoice.billingFirstName} ${invoice.billingLastName}`, 15, 80);
+      doc.text(`${invoice.billingAddress}`, 15, 85);
+      doc.text(`${invoice.billingCity}, ${invoice.billingState}`, 15, 90);
+      doc.text(`${invoice.billingEmailAddress}`, 15, 95);
 
 
 
       doc.setTextColor(0, 0, 0); //  black
       doc.setFontSize(8);
       doc.setFont('Helvetica', 'bold');
-      doc.text('Shipping Address:', 115, 65);
+      doc.text('Shipping Address:', 115, 75);
 
 
       doc.setFont('Helvetica', 'normal');
       doc.setFontSize(7);
       doc.setTextColor(105, 105, 105); //   grey 
 
-      doc.text(`${invoice.shippingFirstName}`, 115, 70);
-      doc.text(`${invoice.shippingAddress}`, 115, 75);
-      doc.text(`${invoice.shippingCity}, ${invoice.shippingState}`, 115, 80);
-      doc.text(`${invoice.shippingPostcode}`, 115, 85);
+      doc.text(`${invoice.shippingFirstName}`, 115, 80);
+      doc.text(`${invoice.shippingAddress}`, 115, 85);
+      doc.text(`${invoice.shippingCity}, ${invoice.shippingState}`, 115, 90);
+      doc.text(`${invoice.shippingPostcode}`, 115, 95);
 
       doc.setTextColor(0, 0, 0); //  black
 
@@ -213,7 +234,7 @@ const Print = ({ id }) => {
 
 
       // Line Items Table
-      let startY = 100;
+      let startY = 105;
 
       // Table Headers
       doc.setFontSize(8);
@@ -279,7 +300,7 @@ const Print = ({ id }) => {
       GrandTotal = subtotal + totalTax;
 
       // Totals
-      const totalsY = startY + invoice.items.length * 10 + 10;
+      const totalsY = startY + invoice.items.length * 10 + 2;
 
       doc.setFontSize(8);
       doc.setFont('Helvetica', 'bold');
@@ -332,11 +353,11 @@ const Print = ({ id }) => {
         doc.setTextColor(0, 0, 0); //  black
         doc.setFontSize(8);
         doc.setFont('Helvetica', 'bold');
-        doc.text(`Payment Date:`, 15, totalsY + 12, { maxWidth: 90 });
+        doc.text(`Payment Date:`, 15, totalsY + 10, { maxWidth: 90 });
 
         doc.setTextColor(105, 105, 105); //   grey 
         doc.setFont('Helvetica', 'normal');
-        doc.text(`${invoice.paymentDates || ''}`, 15, totalsY + 17, { maxWidth: 90 });
+        doc.text(`${invoice.paymentDates || ''}`, 15, totalsY + 15, { maxWidth: 90 });
       }
 
 
@@ -345,11 +366,11 @@ const Print = ({ id }) => {
         doc.setTextColor(0, 0, 0); //  black
         doc.setFontSize(8);
         doc.setFont('Helvetica', 'bold');
-        doc.text(`Payment Method:`, 15, totalsY + 23, { maxWidth: 90 });
+        doc.text(`Payment Method:`, 15, totalsY + 20, { maxWidth: 90 });
         doc.setFont('Helvetica', 'normal');
 
         doc.setTextColor(105, 105, 105); //   grey 
-        doc.text(`${invoice.paymentMethod || ''}`, 15, totalsY + 28, { maxWidth: 90 });
+        doc.text(`${invoice.paymentMethod || ''}`, 15, totalsY + 25, { maxWidth: 90 });
       }
 
       {
@@ -357,11 +378,11 @@ const Print = ({ id }) => {
         doc.setFontSize(8);
         doc.setTextColor(0, 0, 0); //  black
 
-        doc.text(`Note:`, 15, totalsY + 35, { maxWidth: 75 });
+        doc.text(`Note:`, 15, totalsY + 30, { maxWidth: 75 });
 
         doc.setTextColor(105, 105, 105); //   grey 
         doc.setFont('Helvetica', 'normal');
-        doc.text(`${invoice.note}`, 15, totalsY + 40, { maxWidth: 75 });
+        doc.text(`${invoice.note}`, 15, totalsY + 35, { maxWidth: 95 });
       }
 
 
@@ -374,13 +395,13 @@ const Print = ({ id }) => {
 
       doc.setTextColor(200, 204, 203); //   border grey 
       doc.setFontSize(17);
-      doc.text(`__________________________`, 15, totalsY + 55);
+      doc.text(`____________________________`, 15, totalsY + 46);
       doc.setTextColor(0, 0, 0); //  black
       doc.setFont('Helvetica', 'normal');
       doc.setFontSize(7);
       doc.setTextColor(80, 80, 80); //   Items grey 
 
-      doc.text(`'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.}`, 15, totalsY + 60, { maxWidth: 85 });
+      doc.text(`'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.}`, 15, totalsY + 50, { maxWidth: 95 });
     });
 
 

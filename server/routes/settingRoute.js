@@ -6,5 +6,8 @@ router.get('/', settingController.getSettings);
 
 router.put('/', settingController.updateSettings);
 
+router.put('/upload', settingController.upload.single('image'), settingController.updateSettings);
+
+
 
 module.exports = router;
