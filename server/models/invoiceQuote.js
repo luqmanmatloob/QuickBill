@@ -36,7 +36,43 @@ const itemSchema = new mongoose.Schema({
     shippingPhoneNo: String,
     shippingMethod: String,
     designName: String,
-    designPrice: Number
+    designPrice: Number,
+
+    
+    sQty: Number,
+    sPrice: Number,
+    sTotal: Number,
+
+    mQty: Number,
+    mPrice: Number,
+    mTotal: Number,
+
+    lQty: Number,
+    lPrice: Number,
+    lTotal: Number,
+
+    xlQty: Number,
+    xlPrice: Number,
+    xlTotal: Number,
+
+    "2xlQty": Number,
+    "2xlPrice": Number,
+    "2xlTotal": Number,
+
+    "3xlQty": Number,
+    "3xlPrice": Number,
+    "3xlTotal": Number,
+
+    "4xlQty": Number,
+    "4xlPrice": Number,
+    "4xlTotal": Number,
+
+    "5xlQty": Number,
+    "5xlPrice": Number,
+    "5xlTotal": Number
+
+
+
 });
 
 // Define the schema for the invoice or quote

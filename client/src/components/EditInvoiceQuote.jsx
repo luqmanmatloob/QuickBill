@@ -18,6 +18,9 @@ import { FaPlus } from "react-icons/fa6";
 
 import { Link } from 'react-router-dom';
 
+import { TiTick } from "react-icons/ti";
+
+
 
 
 
@@ -33,17 +36,23 @@ const EditInvoiceQuote = ({ id }) => {
     const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 
+    const [invoiceNoLbl, setinvoiceNoLbl] = useState('Invoice No')
+
+    const [customers, setCustomers] = useState([]);
+
+    const [responseMessage, setResponseMessage] = useState("");
+
+    const [editPayments, setEditPayments] = useState(false) //for toggle
+    const [sizeQtyToggle, setSizeQtyToggle] = useState(false);
+    const [visiblePopupIndex, setVisiblePopupIndex] = useState(null);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+
     const [subtotal, setSubtotal] = useState(0);
     const [totalTax, setTotalTax] = useState(0);
     const [grandTotal, setGrandTotal] = useState(0);
-    const [responseMessage, setResponseMessage] = useState("");
-    const [invoiceNoLbl, setinvoiceNoLbl] = useState('Invoice No')
-    const [editPayments, setEditPayments] = useState(false)
-    const [totalPayments, setTotalPayments] = useState(1)
-    const [customers, setCustomers] = useState([]);
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [taxRate, setTaxRate] = useState();
-    const [uniqueKey, setUniqueKey] = useState();
+
+
 
     const [formData, setFormData] = useState({
         type: "invoice",
@@ -108,6 +117,40 @@ const EditInvoiceQuote = ({ id }) => {
                 shippingMethod: "",
                 designName: "",
                 designPrice: 0,
+
+                // Size fields for each size
+                sQty: 0,
+                sPrice: 0,
+                sTotal: 0,
+
+                mQty: 0,
+                mPrice: 0,
+                mTotal: 0,
+
+                lQty: 0,
+                lPrice: 0,
+                lTotal: 0,
+
+                xlQty: 0,
+                xlPrice: 0,
+                xlTotal: 0,
+
+                "2xlQty": 0,
+                "2xlPrice": 0,
+                "2xlTotal": 0,
+
+                "3xlQty": 0,
+                "3xlPrice": 0,
+                "3xlTotal": 0,
+
+                "4xlQty": 0,
+                "4xlPrice": 0,
+                "4xlTotal": 0,
+
+                "5xlQty": 0,
+                "5xlPrice": 0,
+                "5xlTotal": 0,
+
             },
         ],
         payments:
@@ -123,14 +166,12 @@ const EditInvoiceQuote = ({ id }) => {
 
                 },
             ],
+
         note: "Note here",
     });
 
 
     // ##############################################
-
-
-
 
 
     useEffect(() => {
@@ -256,10 +297,6 @@ const EditInvoiceQuote = ({ id }) => {
     }, [id]); // Fetch data when id changes
 
 
-
-
-
-
     // to toggle invoice and quote in dropdown
     useEffect(() => {
         if (formData.type === 'invoice') {
@@ -295,11 +332,7 @@ const EditInvoiceQuote = ({ id }) => {
         calculateTotals();
     }, [formData.items, grandTotal, formData.paymentPaid]);
 
-
-
     // ##############################################
-
-
 
     // function to fetch settings for taxrate
     const fetchSettings = async () => {
@@ -318,8 +351,6 @@ const EditInvoiceQuote = ({ id }) => {
 
 
     };
-
-
 
     // function to fetch and populate billing and shipping when user clicks on customer name
     const populateCustomer = (uniqueKey) => {
@@ -372,16 +403,12 @@ const EditInvoiceQuote = ({ id }) => {
             .catch(error => console.error('Error fetching customer details:', error));
     };
 
-
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         const updatedFormData = { ...formData, [name]: value };
         setFormData(updatedFormData);
         console.log(formData)
     };
-
-
 
     // funciton to remove and item
     const removeItem = (index) => {
@@ -393,10 +420,10 @@ const EditInvoiceQuote = ({ id }) => {
 
 
 
+
     const handleItemChange = (index, e) => {
         const { name, value, type, checked } = e.target;
         const updatedItems = [...formData.items];
-        // Remove the 'items[index].' part from the name
         const key = name.replace(`items[${index}].`, "");
 
         // Handle checkbox separately
@@ -411,18 +438,51 @@ const EditInvoiceQuote = ({ id }) => {
             const unitPrice = parseFloat(updatedItems[index].unitPrice) || 0;
             const lineQty = parseInt(updatedItems[index].lineQty) || 0;
 
-            // Calculate tax
+            let [lineSubtotal, totalQty] = (() => {
+                const quantities = [
+                    updatedItems[index].sQty,
+                    updatedItems[index].mQty,
+                    updatedItems[index].lQty,
+                    updatedItems[index].xlQty,
+                    updatedItems[index]["2xlQty"],
+                    updatedItems[index]["3xlQty"],
+                    updatedItems[index]["4xlQty"],
+                    updatedItems[index]["5xlQty"]
+                ].map(qty => Number(qty));
+
+                const prices = [
+                    updatedItems[index].sPrice,
+                    updatedItems[index].mPrice,
+                    updatedItems[index].lPrice,
+                    updatedItems[index].xlPrice,
+                    updatedItems[index]["2xlPrice"],
+                    updatedItems[index]["3xlPrice"],
+                    updatedItems[index]["4xlPrice"],
+                    updatedItems[index]["5xlPrice"]
+                ].map(price => Number(price));
+
+                const weightedSum = quantities.reduce((acc, qty, i) => acc + (qty * prices[i]), 0);
+                const totalQty = quantities.reduce((acc, qty) => acc + qty, 0);
+
+                return [weightedSum, totalQty];
+            })();
+
+            if (totalQty > 0) {
+                let avgUnitPrice = lineSubtotal / totalQty;
+                if (updatedItems[index].unitPrice !== avgUnitPrice.toFixed(0)) {
+                    updatedItems[index].unitPrice = avgUnitPrice.toFixed(0);
+                    updatedItems[index].lineQty = totalQty;
+                }
+            }
+
+            // Calculate tax using the global taxRate variable
             const tax = unitPrice * lineQty * (taxRate / 100);
-            updatedItems[index].tax = tax;
             updatedItems[index].tax = tax.toFixed(1);
 
             const taxExempt = updatedItems[index].taxExempt;
             let lineTotal = lineQty * unitPrice;
             lineTotal = taxExempt ? lineTotal : (lineTotal + tax);
             updatedItems[index].lineTotal = lineTotal;
-
-
-
         }
 
         const updatedFormData = { ...formData, items: updatedItems };
@@ -453,12 +513,12 @@ const EditInvoiceQuote = ({ id }) => {
 
         const computedOrderTotal = grandTotal;
 
-        let paymentDue=(grandTotal - formData.paymentPaid).toFixed(2)
+        let paymentDue = (grandTotal - formData.paymentPaid).toFixed(2)
 
-        const updatedFormData = { ...formData, orderTotal: computedOrderTotal, paymentDue:paymentDue };
+        const updatedFormData = { ...formData, orderTotal: computedOrderTotal, paymentDue: paymentDue };
         setFormData(updatedFormData);
 
-        };
+    };
 
 
 
@@ -501,6 +561,39 @@ const EditInvoiceQuote = ({ id }) => {
                 shippingMethod: "",
                 designName: "",
                 designPrice: 0,
+
+                sQty: 0,
+                sPrice: 0,
+                sTotal: 0,
+
+                mQty: 0,
+                mPrice: 0,
+                mTotal: 0,
+
+                lQty: 0,
+                lPrice: 0,
+                lTotal: 0,
+
+                xlQty: 0,
+                xlPrice: 0,
+                xlTotal: 0,
+
+                "2xlQty": 0,
+                "2xlPrice": 0,
+                "2xlTotal": 0,
+
+                "3xlQty": 0,
+                "3xlPrice": 0,
+                "3xlTotal": 0,
+
+                "4xlQty": 0,
+                "4xlPrice": 0,
+                "4xlTotal": 0,
+
+                "5xlQty": 0,
+                "5xlPrice": 0,
+                "5xlTotal": 0,
+
             },
         ];
 
@@ -583,10 +676,6 @@ const EditInvoiceQuote = ({ id }) => {
         setFormData({ ...formData, payments: updatedPayments });
 
     };
-
-
-
-
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -1023,10 +1112,9 @@ const EditInvoiceQuote = ({ id }) => {
                                                 type="text"
                                                 name={`items[${index}].size`}
                                                 value={item.size}
-                                                onChange={(e) => handleItemChange(index, e)}
+                                                onClick={() => { setVisiblePopupIndex(index); setSizeQtyToggle(true) }}
                                                 className="rounded px-2 py-1 w-full"
                                                 placeholder="Size/Qty"
-
                                             />
                                         </div>
 
@@ -1089,7 +1177,23 @@ const EditInvoiceQuote = ({ id }) => {
                                                 className="rounded px-2 py-1"
                                             />
                                         </div>
+
+
                                         <div className="flex items-center">
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const checkbox = document.querySelector(`input[name="items[${index}].taxExempt"]`);
+                                                    if (checkbox) {
+                                                        checkbox.click(); // Check
+                                                        setTimeout(() => checkbox.click(), 0); // Uncheck right after
+                                                    }
+                                                }}
+                                                className="no-print text-blue-400 hover:bg-red-6 border-[1px] hover:font-extrabold text-base border-blue-400 m-1 font-semibold px-3 py-[6px] rounded"
+                                            >
+                                                <TiTick />
+                                            </button>
+
                                             <button
                                                 type="button"
                                                 onClick={() => removeItem(index)}
@@ -1098,7 +1202,269 @@ const EditInvoiceQuote = ({ id }) => {
                                                 X
                                             </button>
                                         </div>
+
+
+
+
+
+
+
+                                        {/* {sizeQtyToggle && visiblePopupIndex === index && ( */}
+
+                                        <div
+                                            // className="fixed z-50 top-3 right-0 left-0 bottom-6 bg-white rounded-lg shadow-2xl p-10  border-b-slate-300 border-solid border-2 border-r-[#6539c0] border-l-[#6539c0] overflow-auto mx-40 my-10"
+                                            className={`fixed z-50 top-3 right-0 left-0 bottom-6 bg-white rounded-lg shadow-2xl p-10 border-b-slate-300 border-solid border-2 border-r-[#6539c0] border-l-[#6539c0] overflow-auto mx-40 my-10 transition-opacity duration-300 ease-in-out ${sizeQtyToggle && visiblePopupIndex === index ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                                                }`}
+
+                                            style={{ boxShadow: `0 25px 50px 600px rgba(0, 0, 0, 0.50)`, }}
+                                        >
+                                            <button type="button"
+                                                className="absolute top-5 right-7 hover:bg-blue-600 bg-blue-500  rounded-md px-3 py-1 font-semibold text-lg text-white"
+                                                onClick={() => { setSizeQtyToggle(false) }}>
+                                                Done
+                                            </button>
+
+
+
+                                            <div className="min-w-full bg-white shadow rounded-lg">
+                                                <div className="grid grid-cols-4 gap-4 p-4 border-b border-gray-200">
+                                                    {/* Table Header */}
+                                                    <div className="font-bold">Size</div>
+                                                    <div className="font-bold">Qty</div>
+                                                    <div className="font-bold">Price</div>
+                                                    <div className="font-bold">Total</div>
+                                                </div>
+                                                {/* Table Body */}
+                                                <div className="grid grid-cols-4 gap-4 p-4">
+                                                    {/* Size S */}
+                                                    <div>Size S</div>
+                                                    <input
+                                                        type="number"
+                                                        name="sQty"
+                                                        value={item.sQty}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="sQty"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="sPrice"
+                                                        value={item.sPrice}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="sPrice"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="sTotal"
+                                                        value={item.sQty * item.sPrice} // Automatically calculated
+                                                        readOnly
+                                                        className="rounded px-2 py-1 w-full bg-gray-200"
+                                                        placeholder="sTotal"
+                                                    />
+
+                                                    {/* Size M */}
+                                                    <div>Size M</div>
+                                                    <input
+                                                        type="number"
+                                                        name="mQty"
+                                                        value={item.mQty}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="mQty"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="mPrice"
+                                                        value={item.mPrice}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="mPrice"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="mTotal"
+                                                        value={item.mQty * item.mPrice} // Automatically calculated
+                                                        readOnly
+                                                        className="rounded px-2 py-1 w-full bg-gray-200"
+                                                        placeholder="mTotal"
+                                                    />
+
+                                                    {/* Size L */}
+                                                    <div>Size L</div>
+                                                    <input
+                                                        type="number"
+                                                        name="lQty"
+                                                        value={item.lQty}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="lQty"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="lPrice"
+                                                        value={item.lPrice}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="lPrice"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="lTotal"
+                                                        value={item.lQty * item.lPrice} // Automatically calculated
+                                                        readOnly
+                                                        className="rounded px-2 py-1 w-full bg-gray-200"
+                                                        placeholder="lTotal"
+                                                    />
+
+                                                    {/* Size XL */}
+                                                    <div>Size XL</div>
+                                                    <input
+                                                        type="number"
+                                                        name="xlQty"
+                                                        value={item.xlQty}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="xlQty"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="xlPrice"
+                                                        value={item.xlPrice}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="xlPrice"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="xlTotal"
+                                                        value={item.xlQty * item.xlPrice} // Automatically calculated
+                                                        readOnly
+                                                        className="rounded px-2 py-1 w-full bg-gray-200"
+                                                        placeholder="xlTotal"
+                                                    />
+
+                                                    {/* Size 2XL */}
+                                                    <div>Size 2XL</div>
+                                                    <input
+                                                        type="number"
+                                                        name="2xlQty"
+                                                        value={item["2xlQty"]}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="2xlQty"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="2xlPrice"
+                                                        value={item["2xlPrice"]}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="2xlPrice"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="2xlTotal"
+                                                        value={item["2xlQty"] * item["2xlPrice"]} // Automatically calculated
+                                                        readOnly
+                                                        className="rounded px-2 py-1 w-full bg-gray-200"
+                                                        placeholder="2xlTotal"
+                                                    />
+
+                                                    {/* Size 3XL */}
+                                                    <div>Size 3XL</div>
+                                                    <input
+                                                        type="number"
+                                                        name="3xlQty"
+                                                        value={item["3xlQty"]}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="3xlQty"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="3xlPrice"
+                                                        value={item["3xlPrice"]}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="3xlPrice"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="3xlTotal"
+                                                        value={item["3xlQty"] * item["3xlPrice"]} // Automatically calculated
+                                                        readOnly
+                                                        className="rounded px-2 py-1 w-full bg-gray-200"
+                                                        placeholder="3xlTotal"
+                                                    />
+
+                                                    {/* Size 4XL */}
+                                                    <div>Size 4XL</div>
+                                                    <input
+                                                        type="number"
+                                                        name="4xlQty"
+                                                        value={item["4xlQty"]}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="4xlQty"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="4xlPrice"
+                                                        value={item["4xlPrice"]}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="4xlPrice"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="4xlTotal"
+                                                        value={item["4xlQty"] * item["4xlPrice"]} // Automatically calculated
+                                                        readOnly
+                                                        className="rounded px-2 py-1 w-full bg-gray-200"
+                                                        placeholder="4xlTotal"
+                                                    />
+
+                                                    {/* Size 5XL */}
+                                                    <div>Size 5XL</div>
+                                                    <input
+                                                        type="number"
+                                                        name="5xlQty"
+                                                        value={item["5xlQty"]}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="5xlQty"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="5xlPrice"
+                                                        value={item["5xlPrice"]}
+                                                        onChange={(e) => handleItemChange(index, e)}
+                                                        className="rounded px-2 py-1 w-full"
+                                                        placeholder="5xlPrice"
+                                                    />
+                                                    <input
+                                                        type="number"
+                                                        name="5xlTotal"
+                                                        value={item["5xlQty"] * item["5xlPrice"]} // Automatically calculated
+                                                        readOnly
+                                                        className="rounded px-2 py-1 w-full bg-gray-200"
+                                                        placeholder="5xlTotal"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        {/* )} */}
+
+
                                     </div>
+
+
+
+
+
                                 ))}
                                 <button
                                     type="button"
@@ -1458,7 +1824,7 @@ const EditInvoiceQuote = ({ id }) => {
 
                             {/* old print using react-to-print */}
                             {/* <button
-                onClick={handlePrint}
+                              onClick={handlePrint}
                 type="button"
                 className=" bg-[#6539c0] hover:bg-purple-500 text-white px-6 py-2  rounded"
 
@@ -1473,10 +1839,6 @@ const EditInvoiceQuote = ({ id }) => {
                                 Print
                             </Link>
 
-
-
-
-
                             {responseMessage && (
                                 <span
                                     className={`mt-4 ${responseMessage.startsWith("Error")
@@ -1488,8 +1850,6 @@ const EditInvoiceQuote = ({ id }) => {
                                 </span>
                             )}
                         </div>
-
-
 
                     </div>
                 </form>
