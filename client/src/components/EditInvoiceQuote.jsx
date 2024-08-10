@@ -469,8 +469,8 @@ const EditInvoiceQuote = ({ id }) => {
 
             if (totalQty > 0) {
                 let avgUnitPrice = lineSubtotal / totalQty;
-                if (updatedItems[index].unitPrice !== avgUnitPrice.toFixed(0)) {
-                    updatedItems[index].unitPrice = avgUnitPrice.toFixed(0);
+                if (updatedItems[index].unitPrice !== avgUnitPrice.toFixed(1)) {
+                    updatedItems[index].unitPrice = avgUnitPrice.toFixed(1);
                     updatedItems[index].lineQty = totalQty;
                 }
             }
@@ -513,7 +513,7 @@ const EditInvoiceQuote = ({ id }) => {
 
         const computedOrderTotal = grandTotal;
 
-        let paymentDue = (grandTotal - formData.paymentPaid).toFixed(2)
+        let paymentDue = (grandTotal - formData.paymentPaid).toFixed(1)
 
         const updatedFormData = { ...formData, orderTotal: computedOrderTotal, paymentDue: paymentDue };
         setFormData(updatedFormData);
@@ -1161,7 +1161,7 @@ const EditInvoiceQuote = ({ id }) => {
                                             <input
                                                 type="number"
                                                 name={`items[${index}].lineTotal`}
-                                                value={item.lineTotal}
+                                                value={item.lineTotal.toFixed(1)}
                                                 readOnly
                                                 className="rounded px-2 py-1 w-full"
                                             />
@@ -1546,7 +1546,7 @@ const EditInvoiceQuote = ({ id }) => {
                                             {/* <label className="block mb-2 ">Subtotal:</label> */}
                                             <input
                                                 type="number"
-                                                value={subtotal.toFixed(2)}
+                                                value={subtotal.toFixed(1)}
                                                 name="subtotal"
                                                 onChange={handleChange}
                                                 readOnly
@@ -1559,7 +1559,7 @@ const EditInvoiceQuote = ({ id }) => {
                                             <div className="">
                                                 <input
                                                     type="number"
-                                                    value={totalTax.toFixed(2)}
+                                                    value={totalTax.toFixed(1)}
                                                     name="totalTax"
                                                     readOnly
                                                     onChange={handleChange}
@@ -1572,7 +1572,7 @@ const EditInvoiceQuote = ({ id }) => {
                                             <input
                                                 type="number"
                                                 name="grandTotal"
-                                                value={grandTotal.toFixed(2)}
+                                                value={grandTotal.toFixed(1)}
                                                 onChange={handleChange}
                                                 readOnly
                                                 className=" rounded px-2 py-1 "
@@ -1597,7 +1597,7 @@ const EditInvoiceQuote = ({ id }) => {
                                             <input
                                                 type="number"
                                                 name="paymentDue"
-                                                value={(grandTotal - formData.paymentPaid).toFixed(2)}
+                                                value={(grandTotal - formData.paymentPaid).toFixed(1)}
                                                 // onChange={paymentDueHandleChange}
                                                 readOnly
                                                 className=" rounded px-2 py-1 "
