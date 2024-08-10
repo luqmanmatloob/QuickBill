@@ -264,6 +264,29 @@ const Print = ({ id }) => {
 
       startY += 10;
 
+
+
+
+
+      const generateSizeSummary = (item) => {
+        const sizes = [
+          { key: 'sQty', size: 'Small' },
+          { key: 'mQty', size: 'Medium' },
+          { key: 'lQty', size: 'Large' },
+          { key: 'xlQty', size: 'X-Large' },
+          { key: '2xlQty', size: '2X-Large' },
+          { key: '3xlQty', size: '3X-Large' },
+          { key: '4xlQty', size: '4X-Large' },
+          { key: '5xlQty', size: '5X-Large' },
+        ];
+      
+        return sizes
+          .filter(size => item[size.key] > 0)
+          .map(size => `${size.size} x ${item[size.key]}`)
+          .join(', ');
+      };
+      
+    
       // Table Content
       invoice.items.forEach((item, itemIndex) => {
         const unitPrice = parseFloat(item.unitPrice) || 0;
@@ -281,6 +304,8 @@ const Print = ({ id }) => {
         doc.text(`${item.productName}`, 15, yPosition);
         doc.text(`${item.color}`, 75, yPosition);
         doc.text(`${item.size}`, 90, yPosition, { maxWidth: 30 });
+        doc.text(`${generateSizeSummary(item)}`, 90, yPosition, { maxWidth: 30 });
+
         doc.text(`$${item.unitPrice}`, 125, yPosition);
         doc.text(`$${item.tax.toFixed(1)}`, 145, yPosition);
         doc.text(`${item.lineQty}`, 158, yPosition);
@@ -401,7 +426,7 @@ const Print = ({ id }) => {
       doc.setFontSize(7);
       doc.setTextColor(80, 80, 80); //   Items grey 
 
-      doc.text(`'You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.}`, 15, totalsY + 50, { maxWidth: 95 });
+      doc.text(`You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.`, 15, totalsY + 50, { maxWidth: 95 });
     });
 
 

@@ -1219,9 +1219,9 @@ const EditInvoiceQuote = ({ id }) => {
                                             style={{ boxShadow: `0 25px 50px 600px rgba(0, 0, 0, 0.50)`, }}
                                         >
                                             <button type="button"
-                                                className="absolute top-5 right-7 hover:bg-blue-600 bg-blue-500  rounded-md px-3 py-1 font-semibold text-lg text-white"
+                                                className="absolute top-5 right-7 hover:bg-blue-600 bg-blue-500  rounded-md px-5 py-1 font-semibold text-lg text-white"
                                                 onClick={() => { setSizeQtyToggle(false) }}>
-                                                Done
+                                                X
                                             </button>
 
 
