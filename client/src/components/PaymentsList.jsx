@@ -182,7 +182,7 @@ const PaymentsList = () => {
                                     </td> */}
                   <td className="border border-gray-300 px-4 py-2">{invoiceQuote.orderNumber}</td>
                   <td className="border border-gray-300 px-4 py-2">{formatDate(payment.datePaid)}</td>
-                  <td className="border border-gray-300 px-4 py-2">${payment.orderPaymentAmount.toFixed(2)}</td>
+                  <td className="border border-gray-300 px-4 py-2">${payment.orderPaymentAmount}</td>
                   <td className="border border-gray-300 px-4 py-2">{payment.paymentMethod}</td>
                   <td className="border border-gray-300 px-4 py-2">
                     <Link to={`/Edit/${invoiceQuote.uniqueKey}`} className="text-blue-500 hover:underline mr-4">Edit</Link>
