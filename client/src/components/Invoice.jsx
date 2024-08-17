@@ -1163,9 +1163,15 @@ const Invoice = () => {
                       style={{ boxShadow: `0 25px 50px 600px rgba(0, 0, 0, 0.50)`, }}
                     >
                       <button type="button"
-                        className="absolute top-5 right-7 hover:bg-blue-600 bg-blue-500  rounded-md px-5 py-1 font-semibold text-lg text-white"
+                        className="absolute top-5 right-7 hover:bg-red-600 bg-red-500  rounded-md px-5 py-1 font-semibold text-lg text-white"
                         onClick={() => { setSizeQtyToggle(false) }}>
                         X
+                      </button>  
+
+                      <button type="button"
+                        className="absolute bottom-3 right-7 hover:bg-blue-600 bg-blue-500  rounded-md px-5 py-1 font-semibold text-lg text-white"
+                        onClick={() => { setSizeQtyToggle(false) }}>
+                        OK
                       </button>
 
 
