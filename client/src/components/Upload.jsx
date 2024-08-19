@@ -30,17 +30,30 @@ const Upload = () => {
           header: true,
           skipEmptyLines: true,
           complete: (result) => {
-            const filteredData = result.data.filter(row => Object.values(row).some(value => value !== ''));
-
+            console.log(`parsed data ${JSON.stringify(result.data, null, 2)}`); // Log the parsed data to check format
+      
+            // Sanitize header keys
+            const sanitizedData = result.data.map(row => {
+              const sanitizedRow = {};
+              Object.keys(row).forEach(key => {
+                // Trim spaces and remove quotes from keys
+                const sanitizedKey = key.trim().replace(/"/g, '');
+                sanitizedRow[sanitizedKey] = row[key];
+              });
+              return sanitizedRow;
+            });
+      
+            const filteredData = sanitizedData.filter(row => Object.values(row).some(value => value !== ''));
+      
             const groupedData = {};
             filteredData.forEach(row => {
-              const orderNumber = row['Order Number'];
+              const orderNumber = row['Order Number'] || row['Invoice/Quote Number'];
               if (!groupedData[orderNumber]) {
                 groupedData[orderNumber] = [];
               }
               groupedData[orderNumber].push(row);
             });
-
+      
             const invoices = Object.values(groupedData);
             resolve(invoices);
           },
@@ -49,12 +62,13 @@ const Upload = () => {
           }
         });
       });
-      console.log(parsedData)
+            console.log(parsedData)
 
       const uploadedUniqueKeys = [];
 
       for (let i = 0; i < parsedData.length; i++) {
         setCreatingInvoiceNumber(i)
+        
         const items = parsedData[i].map(row => ({
           productName: row['Product Name'] || '',
           productCode: row['Product Code'] || '',
@@ -63,7 +77,12 @@ const Upload = () => {
           lineQty: parseInt(row['Line Qty']) || 1,
           decorationProcess: row['Decoration Process'] || '',
           // unitPrice: parseFloat(row['Unit Price']) || 0, //old
-          unitPrice: parseFloat(row['Unit Price'].replace('$', '')) || 0, //new
+          // unitPrice: parseFloat(row['Unit Price'].replace('$', '')) || 0, //new
+          unitPrice: parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$\-\s]/g, '') : '0') || 0,
+          
+
+
+
           lineTotal: parseFloat(row['Line Total']) || 0, // old
           // lineTotal: parseFloat(row['Line Total'].replace('$', '')) || 0, //new
 
@@ -98,11 +117,13 @@ const Upload = () => {
 
         const invoiceData = {
           type: parsedData[i][0]['Quote / Invoice'] || 'invoice',
-          orderNumber: parsedData[i][0]['Order Number'] || '',
+          orderNumber: parsedData[i][0]['Order Number'] || parsedData[i][0]['Invoice/Quote Number'],
           dateOrdered: parsedData[i][0]['Date Ordered'] || '',
           dateDue: parsedData[i][0]['Date Due'] || '',
           // orderTotal: parseFloat(parsedData[i][0]['Order Total']) || 0, //old
-          orderTotal: parseFloat(parsedData[i][0]['Order Total'].replace('$', '').replace(',', '')) || 0,//new
+          // orderTotal: parseFloat(parsedData[i][0]['Order Total'].replace('$', '').replace(',', '')) || 0,//new
+          orderTotal: parseFloat(parsedData[i][0]['Order Total'] ? parsedData[i][0]['Order Total'].replace('$', '').replace(',', '') : '0') || 0,
+
 
           billingCity: parsedData[i][0]['Billing City'] || '',
           billingAddress: parsedData[i][0]['Billing Address'] || '',
@@ -118,7 +139,9 @@ const Upload = () => {
           billingFirstName: parsedData[i][0]['Billing First Name'] || '',
           billingLastName: parsedData[i][0]['Billing Last Name'] || '',
           paymentDue: 0,
-          paymentPaid: parseFloat(parsedData[i][0]['Order Total'].replace('$', '').replace(',', '')) || 0,
+          // paymentPaid: parseFloat(parsedData[i][0]['Order Total'].replace('$', '').replace(',', '')) || 0,
+          orderTotal: parseFloat(parsedData[i][0]['Order Total'] ? parsedData[i][0]['Order Total'].replace('$', '').replace(',', '') : '') || 0,
+
 
           billingEmailAddress: parsedData[i][0]['Billing Email Address'] || '',
 
