@@ -1,5 +1,3 @@
-
-
 import React, { useState } from 'react';
 import Papa from 'papaparse';
 
@@ -25,11 +23,11 @@ const Upload = () => {
         skipEmptyLines: true,
         complete: (result) => {
           // Filter out rows where all values are empty
-          const filteredData = result.data.filter(row => Object.values(row).some(value => value !== ''));
+          const filteredData = result.data.filter((row) => Object.values(row).some((value) => value !== ''));
 
           // Group data by Order Number
           const groupedData = {};
-          filteredData.forEach(row => {
+          filteredData.forEach((row) => {
             const orderNumber = row['Order Number'];
             if (!groupedData[orderNumber]) {
               groupedData[orderNumber] = [];
@@ -61,7 +59,7 @@ const Upload = () => {
       }
 
       for (let i = 0; i < csvData.length; i++) {
-        const items = csvData[i].map(row => ({
+        const items = csvData[i].map((row) => ({
           productName: row['Product Name'] || '',
           productCode: row['Product Code'] || '',
           size: row['Size'] || '',
@@ -122,9 +120,9 @@ const Upload = () => {
         const response = await fetch(`${BASE_URL}/api/invoicequote/createInvoiceQuote`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify(invoiceData),
+          body: JSON.stringify(invoiceData)
         });
 
         if (!response.ok) {
@@ -144,27 +142,15 @@ const Upload = () => {
   return (
     <div className="m-10">
       {/* File input and Parse CSV button */}
-      <div className='flex items-center justify-center max-w-3xl mx-auto mt-8 p-4 bg-white shadow-xl border-2 rounded-md'>
-        <input
-          type="file"
-          accept=".csv"
-          onChange={handleFileChange}
-          className=""
-        />
-        <button
-          onClick={handleParse}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4"
-        >
+      <div className="mx-auto mt-8 flex max-w-3xl items-center justify-center rounded-md border-2 bg-white p-4 shadow-xl">
+        <input type="file" accept=".csv" onChange={handleFileChange} className="" />
+        <button onClick={handleParse} className="ml-4 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
           Parse CSV
         </button>
       </div>
 
       {/* Button to submit parsed invoices */}
-      <button
-        onClick={handleSubmitInvoices}
-        disabled={csvData.length === 0 || !file}
-        className="mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-      >
+      <button onClick={handleSubmitInvoices} disabled={csvData.length === 0 || !file} className="mt-4 rounded bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-700">
         Save Invoices
       </button>
 
@@ -173,12 +159,12 @@ const Upload = () => {
         {csvData.length > 0 &&
           csvData.map((invoice, index) => (
             <div key={index} className="mb-8">
-              <h2 className="text-lg font-bold mb-2">Invoice #{index + 1}</h2>
-              <table className='w-full table-auto'>
-                <thead className='bg-gray-400 border-2 border-black'>
-                  <tr className='text-center sticky top-0 bg-slate-400'>
+              <h2 className="mb-2 text-lg font-bold">Invoice #{index + 1}</h2>
+              <table className="w-full table-auto">
+                <thead className="border-2 border-black bg-gray-400">
+                  <tr className="sticky top-0 bg-slate-400 text-center">
                     {Object.keys(invoice[0]).map((key, idx) => (
-                      <th key={idx} className='border-2 border-black' style={{ height: '30px', minWidth: '150px' }}>
+                      <th key={idx} className="border-2 border-black" style={{ height: '30px', minWidth: '150px' }}>
                         {key}
                       </th>
                     ))}
@@ -186,9 +172,9 @@ const Upload = () => {
                 </thead>
                 <tbody>
                   {invoice.map((row, idx) => (
-                    <tr key={idx} className='text-center'>
+                    <tr key={idx} className="text-center">
                       {Object.values(row).map((value, i) => (
-                        <td key={i} className='border-2 border-black' style={{ height: '30px', minWidth: '150px' }}>
+                        <td key={i} className="border-2 border-black" style={{ height: '30px', minWidth: '150px' }}>
                           {value}
                         </td>
                       ))}

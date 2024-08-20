@@ -3,7 +3,6 @@
 /* Tailwind CSS base, components, and utilities */
 @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600&display=swap');
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,22 +11,18 @@ body {
   background-color: #ffffff;
 }
 
-.font-Josefin-Sans{
-
+.font-Josefin-Sans {
   font-family: 'Josefin Sans', sans-serif;
-  }
+}
 
-  html {
-    scroll-behavior: smooth;
-  }
-  
+html {
+  scroll-behavior: smooth;
+}
 
-
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
-
 
 @media print {
   .no-print {
@@ -45,45 +40,34 @@ input[type="number"] {
     padding-bottom: 0px;
   }
 
-  input[type="text"],
-  input[type="date"],
-  input[type="number"] {
+  input[type='text'],
+  input[type='date'],
+  input[type='number'] {
     font-size: 10px;
   }
-  
 
-  label{
+  label {
     font-size: 12px;
-  } 
+  }
   .print-text-8px {
     font-size: 8px;
   }
-  .print-text-10px{
-    font-size: 12px;
-  } 
-  .print-text-12px{
+  .print-text-10px {
     font-size: 12px;
   }
-  .print-border-none{
+  .print-text-12px {
+    font-size: 12px;
+  }
+  .print-border-none {
     border: none !important;
     border-width: 0 !important;
     border-bottom-width: 0px;
-
   }
 
-  .print-shadow-none{
+  .print-shadow-none {
     box-shadow: none;
-
   }
-  
 }
-
-
-
-
-
-
-
 
 /* Webkit browsers (Chrome, Safari) */
 .custom-scrollbar {

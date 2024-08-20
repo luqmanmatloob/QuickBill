@@ -11,16 +11,15 @@ const Upload = () => {
   const [creatingInvoiceNumber, setCreatingInvoiceNumber] = useState(false);
   const [success, setSuccess] = useState('');
 
-
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
   const handleParseAndSubmit = async () => {
-    setLoading(true)
+    setLoading(true);
     if (!file) {
       alert('No file selected');
-      setLoading(false)
+      setLoading(false);
       return;
     }
 
@@ -31,29 +30,29 @@ const Upload = () => {
           skipEmptyLines: true,
           complete: (result) => {
             console.log(`parsed data ${JSON.stringify(result.data, null, 2)}`); // Log the parsed data to check format
-      
+
             // Sanitize header keys
-            const sanitizedData = result.data.map(row => {
+            const sanitizedData = result.data.map((row) => {
               const sanitizedRow = {};
-              Object.keys(row).forEach(key => {
+              Object.keys(row).forEach((key) => {
                 // Trim spaces and remove quotes from keys
                 const sanitizedKey = key.trim().replace(/"/g, '');
                 sanitizedRow[sanitizedKey] = row[key];
               });
               return sanitizedRow;
             });
-      
-            const filteredData = sanitizedData.filter(row => Object.values(row).some(value => value !== ''));
-      
+
+            const filteredData = sanitizedData.filter((row) => Object.values(row).some((value) => value !== ''));
+
             const groupedData = {};
-            filteredData.forEach(row => {
+            filteredData.forEach((row) => {
               const orderNumber = row['Order Number'] || row['Invoice/Quote Number'];
               if (!groupedData[orderNumber]) {
                 groupedData[orderNumber] = [];
               }
               groupedData[orderNumber].push(row);
             });
-      
+
             const invoices = Object.values(groupedData);
             resolve(invoices);
           },
@@ -62,14 +61,14 @@ const Upload = () => {
           }
         });
       });
-            console.log(parsedData)
+      console.log(parsedData);
 
       const uploadedUniqueKeys = [];
 
       for (let i = 0; i < parsedData.length; i++) {
-        setCreatingInvoiceNumber(i)
-        
-        const items = parsedData[i].map(row => ({
+        setCreatingInvoiceNumber(i);
+
+        const items = parsedData[i].map((row) => ({
           productName: row['Product Name'] || '',
           productCode: row['Product Code'] || '',
           size: row['Size'] || '',
@@ -79,9 +78,6 @@ const Upload = () => {
           // unitPrice: parseFloat(row['Unit Price']) || 0, //old
           // unitPrice: parseFloat(row['Unit Price'].replace('$', '')) || 0, //new
           unitPrice: parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$\-\s]/g, '') : '0') || 0,
-          
-
-
 
           lineTotal: parseFloat(row['Line Total']) || 0, // old
           // lineTotal: parseFloat(row['Line Total'].replace('$', '')) || 0, //new
@@ -124,7 +120,6 @@ const Upload = () => {
           // orderTotal: parseFloat(parsedData[i][0]['Order Total'].replace('$', '').replace(',', '')) || 0,//new
           orderTotal: parseFloat(parsedData[i][0]['Order Total'] ? parsedData[i][0]['Order Total'].replace('$', '').replace(',', '') : '0') || 0,
 
-
           billingCity: parsedData[i][0]['Billing City'] || '',
           billingAddress: parsedData[i][0]['Billing Address'] || '',
           billingState: parsedData[i][0]['Billing State'] || '',
@@ -142,23 +137,17 @@ const Upload = () => {
           // paymentPaid: parseFloat(parsedData[i][0]['Order Total'].replace('$', '').replace(',', '')) || 0,
           orderTotal: parseFloat(parsedData[i][0]['Order Total'] ? parsedData[i][0]['Order Total'].replace('$', '').replace(',', '') : '') || 0,
 
-
           billingEmailAddress: parsedData[i][0]['Billing Email Address'] || '',
 
           items: items,
           note: ''
         };
 
-
         const customerData = {
-
-
-
-
-          primaryContactFirstName : parsedData[i][0]['Billing First Name'] || '',
+          primaryContactFirstName: parsedData[i][0]['Billing First Name'] || '',
           primaryContactLastName: parsedData[i][0]['Billing Last Name'] || '',
           primaryContactEmail: parsedData[i][0]['Billing Email Address'] || '',
-          primaryContactPhone :parsedData[i][0]['Billing Phone No.'] || '',
+          primaryContactPhone: parsedData[i][0]['Billing Phone No.'] || '',
           // accountNumber,
           // website,
           // notes,
@@ -168,7 +157,7 @@ const Upload = () => {
           // billingCountry,
           billingState: parsedData[i][0]['Billing State'] || '',
           billingCity: parsedData[i][0]['Billing City'] || '',
-          billingPostal : parsedData[i][0]['Billing Postcode/zip'] || '',
+          billingPostal: parsedData[i][0]['Billing Postcode/zip'] || '',
           shippingName: parsedData[i][0]['Shipping First Name'] || '',
           shippingAddress1: parsedData[i][0]['Shipping Address'] || '',
           shippingAddress2: parsedData[i][0]['Shipping Address'] || '',
@@ -176,10 +165,8 @@ const Upload = () => {
           shippingState: parsedData[i][0]['Shipping State'] || '',
           shippingCity: parsedData[i][0]['Shipping City'] || '',
           shippingPostal: parsedData[i][0]['Shipping Postcode/zip'] || '',
-          shippingPhone:parsedData[i][0]['Shipping Phone No.'] || '',
+          shippingPhone: parsedData[i][0]['Shipping Phone No.'] || ''
           // shippingDeliveryInstructions,
-      
-
         };
 
         console.log('Invoice Data:', invoiceData);
@@ -187,9 +174,9 @@ const Upload = () => {
         const response = await fetch(`${BASE_URL}/api/invoicequote/createInvoiceQuote`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify(invoiceData),
+          body: JSON.stringify(invoiceData)
         });
 
         if (!response.ok) {
@@ -199,26 +186,22 @@ const Upload = () => {
         const result = await response.json();
         uploadedUniqueKeys.push(result.invoiceOrQuote.uniqueKey);
         console.log(`Invoice ${i + 1} submitted successfully`);
-        
-        
+
         const customerResponse = await fetch(`${BASE_URL}/api/customer/uploadCustomer`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify(customerData),
+          body: JSON.stringify(customerData)
         });
-
       }
 
       fetchUploadedInvoices(uploadedUniqueKeys);
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
       console.error('Error during processing:', error);
       alert('Failed to process the file and submit invoices, It could be because of duplicate invoices');
-      setLoading(false)
-
-
+      setLoading(false);
     }
   };
 
@@ -227,9 +210,9 @@ const Upload = () => {
       const response = await fetch(`${BASE_URL}/api/invoicequote/getInvoicesByUniqueKeys`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ uniqueKeys }),
+        body: JSON.stringify({ uniqueKeys })
       });
 
       if (!response.ok) {
@@ -253,20 +236,19 @@ const Upload = () => {
       const response = await fetch(`${BASE_URL}/api/invoicequote/deleteInvoiceQuote`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ uniqueKey }),
+        body: JSON.stringify({ uniqueKey })
       });
       if (!response.ok) {
         throw new Error('Failed to delete data');
       }
-      setInvoicesQuotes(invoicesQuotes.filter(item => item.uniqueKey !== uniqueKey)); // Update state after deletion
+      setInvoicesQuotes(invoicesQuotes.filter((item) => item.uniqueKey !== uniqueKey)); // Update state after deletion
     } catch (error) {
       console.error('Error deleting invoice/quote:', error);
       alert('Failed to delete invoice/quote');
     }
   };
-
 
   const handleSave = () => {
     // Simulate saving data (you can replace this with actual API call or other logic)
@@ -278,7 +260,6 @@ const Upload = () => {
     setTimeout(() => {
       setSuccess('');
       window.location.reload();
-
     }, 3000); // Show success message for 3 seconds
   };
 
@@ -294,13 +275,13 @@ const Upload = () => {
       return; // If the user cancels, do nothing
     }
     try {
-      const uniqueKeys = invoicesQuotes.map(invoice => invoice.uniqueKey);
+      const uniqueKeys = invoicesQuotes.map((invoice) => invoice.uniqueKey);
       const response = await fetch(`${BASE_URL}/api/invoicequote/deleteMultipleInvoices`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ uniqueKeys }),
+        body: JSON.stringify({ uniqueKeys })
       });
       if (!response.ok) {
         throw new Error('Failed to delete all uploaded invoices');
@@ -312,91 +293,69 @@ const Upload = () => {
     }
   };
 
-
   return (
     <div className="ml-56 mt-28">
-
       <div className="m-10 mb-[70vh]">
-        <div className='flex items-center justify-center max-w-3xl mx-auto mt-8 p-4 bg-white shadow-xl  rounded-md border-2 py-8 border-[#f1f1f1] border-t-[#c2d6e7] border-b-[#c2d6e7]'>
-          <input
-            type="file"
-            accept=".csv"
-            onChange={handleFileChange}
-            className=""
-          />
-          <button
-            onClick={handleParseAndSubmit}
-            className=" py-2 bg-gradient-to-r from-blue-300 to-blue-200 border-2 border-blue-300 active:text-black  text-black font-bold rounded-md hover:scale-105 px-8 hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
-          >
+        <div className="mx-auto mt-8 flex max-w-3xl items-center justify-center rounded-md border-2 border-[#f1f1f1] border-b-[#c2d6e7] border-t-[#c2d6e7] bg-white p-4 py-8 shadow-xl">
+          <input type="file" accept=".csv" onChange={handleFileChange} className="" />
+          <button onClick={handleParseAndSubmit} className="rounded-md border-2 border-blue-300 bg-gradient-to-r from-blue-300 to-blue-200 px-8 py-2 font-bold text-black hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black">
             OK
           </button>
         </div>
 
-        <div className="mt-20 shadow-2xl p-5  border-2 border-[#f1f1f1] border-r-[#c5d9eb] border-l-[#c5d9eb] rounded-md">
-          <div className='flex items-center justify-between mb-5 '>
-            <h1 className="text-3xl font-bold font-Josefin-Sans text-[#3952ac]">Invoices/Quotes</h1>
-            <div >
-              <button onClick={cancel}
-                className=" text-red-600 border-red-500 border-[1px] hover:red hover:bg-red-100 hover:text-red-500 m-1 font-bold px-4 py-1 rounded"
-              >
+        <div className="mt-20 rounded-md border-2 border-[#f1f1f1] border-l-[#c5d9eb] border-r-[#c5d9eb] p-5 shadow-2xl">
+          <div className="mb-5 flex items-center justify-between">
+            <h1 className="font-Josefin-Sans text-3xl font-bold text-[#3952ac]">Invoices/Quotes</h1>
+            <div>
+              <button onClick={cancel} className="hover:red m-1 rounded border-[1px] border-red-500 px-4 py-1 font-bold text-red-600 hover:bg-red-100 hover:text-red-500">
                 Cancel
               </button>
-              <button onClick={handleSave}
-                className="no-print my-3 bg-transparent border-[1px] border-blue-500  hover:bg-blue-100 hover:text-black  text-blue-700 font-bold px-[20px] py-[5px] rounded"
-              >
+              <button onClick={handleSave} className="no-print my-3 rounded border-[1px] border-blue-500 bg-transparent px-[20px] py-[5px] font-bold text-blue-700 hover:bg-blue-100 hover:text-black">
                 Save All
               </button>
             </div>
           </div>
-          {success && (
-            <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
-              {success}
-            </div>
-          )}
+          {success && <div className="my-4 rounded bg-green-200 px-4 py-2 text-green-800">{success}</div>}
 
-          {loading && (
-            <div className="my-4 bg-green-200 text-green-800 py-2 px-4 rounded">
-              {` Processing invoice number ${creatingInvoiceNumber} ... `}
-            </div>
-          )}
+          {loading && <div className="my-4 rounded bg-green-200 px-4 py-2 text-green-800">{` Processing invoice number ${creatingInvoiceNumber} ... `}</div>}
 
           <div className="overflow-x-auto">
-            <table className="min-w-full  border border-blue-200 ">
-              <thead className='rounded-lg'>
-                <tr className='bg-blue-50 rounded-md py-20'>
+            <table className="min-w-full border border-blue-200">
+              <thead className="rounded-lg">
+                <tr className="rounded-md bg-blue-50 py-20">
                   {/* <th className="py-2 px-4 border-b">Unique Key</th> */}
-                  <th className="py-2 px-4 border-b">Order Number</th>
-                  <th className="py-2 px-4 border-b">Date Ordered</th>
-                  <th className="py-2 px-4 border-b">Date Due</th>
-                  <th className="py-2 px-4 border-b">Billing</th>
-                  <th className="py-2 px-4 border-b">Shipping</th>
-                  <th className="py-2 px-4 border-b">Order Total</th>
-                  <th className="py-2 px-4 border-b">Actions</th>
+                  <th className="border-b px-4 py-2">Order Number</th>
+                  <th className="border-b px-4 py-2">Date Ordered</th>
+                  <th className="border-b px-4 py-2">Date Due</th>
+                  <th className="border-b px-4 py-2">Billing</th>
+                  <th className="border-b px-4 py-2">Shipping</th>
+                  <th className="border-b px-4 py-2">Order Total</th>
+                  <th className="border-b px-4 py-2">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {invoicesQuotes.map((invoice, index) => (
                   <tr key={invoice.uniqueKey} className={`bg-white text-center ${index % 2 === 0 ? '' : 'bg-[#f1f1f1]'}`}>
                     {/* <td className="py-2 px-4 border-b">{invoice.uniqueKey}</td> */}
-                    <td className="py-2 px-4 border-b">{invoice.orderNumber}</td>
-                    <td className="py-2 px-4 border-b">{formatDate(invoice.dateOrdered)}</td>
-                    <td className="py-2 px-4 border-b">{formatDate(invoice.dateDue)}</td>
-                    <td className="py-2 px-4 border-b">{invoice.billingAddress}, {invoice.billingCity}</td>
-                    <td className="py-2 px-4 border-b">{invoice.shippingAddress}, {invoice.shippingCity}</td>
-                    <td className="py-2 px-4 border-b">${invoice.orderTotal.toFixed(2)}</td>
-                    <td className="py-2 px-4 border-b">
-                      <div className='flex items-center justify-center flex-wrap'>
-                        <button
-                          onClick={() => handleDelete(invoice.uniqueKey)}
-                          className=" text-red-600 border-red-500 border-[1px] hover:red hover:bg-red-100 hover:text-red-500 m-1 font-bold px-4 py-1 rounded"
-                        >
+                    <td className="border-b px-4 py-2">{invoice.orderNumber}</td>
+                    <td className="border-b px-4 py-2">{formatDate(invoice.dateOrdered)}</td>
+                    <td className="border-b px-4 py-2">{formatDate(invoice.dateDue)}</td>
+                    <td className="border-b px-4 py-2">
+                      {invoice.billingAddress}, {invoice.billingCity}
+                    </td>
+                    <td className="border-b px-4 py-2">
+                      {invoice.shippingAddress}, {invoice.shippingCity}
+                    </td>
+                    <td className="border-b px-4 py-2">${invoice.orderTotal.toFixed(2)}</td>
+                    <td className="border-b px-4 py-2">
+                      <div className="flex flex-wrap items-center justify-center">
+                        <button onClick={() => handleDelete(invoice.uniqueKey)} className="hover:red m-1 rounded border-[1px] border-red-500 px-4 py-1 font-bold text-red-600 hover:bg-red-100 hover:text-red-500">
                           Delete
                         </button>
 
-
-                        <Link to={`/Edit/${invoice.uniqueKey}`} target="_blank"
-                          className="no-print my-3 bg-transparent border-[1px] border-blue-500  hover:bg-blue-100 hover:text-black  text-blue-700 font-bold px-[20px] py-[5px] rounded"
-                        > Edit
+                        <Link to={`/Edit/${invoice.uniqueKey}`} target="_blank" className="no-print my-3 rounded border-[1px] border-blue-500 bg-transparent px-[20px] py-[5px] font-bold text-blue-700 hover:bg-blue-100 hover:text-black">
+                          {' '}
+                          Edit
                         </Link>
                       </div>
                     </td>
@@ -404,7 +363,6 @@ const Upload = () => {
                 ))}
               </tbody>
             </table>
-
           </div>
         </div>
       </div>

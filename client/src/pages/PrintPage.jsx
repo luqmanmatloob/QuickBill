@@ -1,22 +1,16 @@
-import React from 'react'
-import Print from '../components/print'
+import React from 'react';
+import Print from '../components/print';
 import { useParams } from 'react-router-dom';
 
-
 const PrintPage = () => {
+  const { id } = useParams();
+  const selectedInvoices = id.split(',').map(Number);
 
-
-    const { id } = useParams();
-    const selectedInvoices = id.split(',').map(Number);
-
-
-    return (
+  return (
     <>
-        <Print id={selectedInvoices} />
-
+      <Print id={selectedInvoices} />
     </>
+  );
+};
 
-    )
-}
-
-export default PrintPage
+export default PrintPage;
