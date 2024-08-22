@@ -11,6 +11,79 @@ const Upload = () => {
   const [creatingInvoiceNumber, setCreatingInvoiceNumber] = useState(false);
   const [success, setSuccess] = useState('');
 
+
+
+  const parseSizeString = (sizeString) => {
+    // Ensure sizeString is a string and not empty
+    if (!sizeString || typeof sizeString !== 'string') {
+      console.error('Invalid input: sizeString should be a non-empty string');
+      return {}; // Return an empty object if the input is invalid
+    }
+  
+    // Initialize the size data object
+    const sizeData = {
+      sQty: 0, sPrice: 0, sTotal: 0,
+      mQty: 0, mPrice: 0, mTotal: 0,
+      lQty: 0, lPrice: 0, lTotal: 0,
+      xlQty: 0, xlPrice: 0, xlTotal: 0,
+      '2xlQty': 0, '2xlPrice': 0, '2xlTotal': 0,
+      '3xlQty': 0, '3xlPrice': 0, '3xlTotal': 0,
+      '4xlQty': 0, '4xlPrice': 0, '4xlTotal': 0,
+      '5xlQty': 0, '5xlPrice': 0, '5xlTotal': 0
+    };
+  
+    // Split the string into individual size entries
+    const sizeEntries = sizeString.split(',').map(entry => entry.trim());
+    
+    sizeEntries.forEach(entry => {
+      // Split by 'x' and trim parts
+      const [size, quantityPart] = entry.split('x').map(part => part.trim());
+      // Ensure quantity is a valid number
+      const quantity = parseInt(quantityPart, 10) || 0;
+      
+      // Map size to the corresponding sizeData field
+      switch (size) {
+        case 'Small':
+          sizeData.sQty = quantity;
+          break;
+        case 'Medium':
+          sizeData.mQty = quantity;
+          break;
+        case 'Large':
+          sizeData.lQty = quantity;
+          break;
+        case 'X Large':
+          sizeData.xlQty = quantity;
+          break;
+        case '2X Large':
+          sizeData['2xlQty'] = quantity;
+          break;
+        case '3X Large':
+          sizeData['3xlQty'] = quantity;
+          break;
+        case '4X Large':
+          sizeData['4xlQty'] = quantity;
+          break;
+        case '5X Large':
+          sizeData['5xlQty'] = quantity;
+          break;
+        default:
+          console.warn(`Unknown size: ${size}`);
+          break;
+      }
+    });
+  
+    return sizeData;
+  };
+
+
+
+
+
+
+
+
+
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -63,63 +136,102 @@ const Upload = () => {
       });
       console.log(parsedData);
 
+      const sizeString = parsedData.size
+      const parsedSizeData = parseSizeString(sizeString);
+      console.log(`this ${parsedSizeData}`);
+
+
       const uploadedUniqueKeys = [];
 
       for (let i = 0; i < parsedData.length; i++) {
         setCreatingInvoiceNumber(i);
 
-        const items = parsedData[i].map((row) => ({
-          productName: row['Product Name'] || '',
-          productCode: row['Product Code'] || '',
-          size: row['Size'] || '',
-          color: row['Color'] || '',
-          lineQty: parseInt(row['Line Qty']) || 1,
-          decorationProcess: row['Decoration Process'] || '',
-          // unitPrice: parseFloat(row['Unit Price']) || 0, //old
-          // unitPrice: parseFloat(row['Unit Price'].replace('$', '')) || 0, //new
-          unitPrice: parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$\-\s]/g, '') : '0') || 0,
 
-          lineTotal: parseFloat(row['Line Total']) || 0, // old
-          // lineTotal: parseFloat(row['Line Total'].replace('$', '')) || 0, //new
 
-          tax: parseFloat(row['Tax']) || 0,
-          taxExempt: row['Tax Exempt'] === 'true',
-          orderShippingTotal: parseFloat(row['Order Shipping Total']) || 0,
-          poNumber: row['PO Number'] || '',
-          supplierPoNumber: row['Supplier PO Number'] || '',
-          productionStaffAccount: row['Production Staff Account'] || '',
-          storeName: row['Store Name'] || '',
-          company: row['Company'] || '',
-          billingFirstName: row['Billing First Name'] || '',
-          billingLastName: row['Billing Last Name'] || '',
-          billingEmailAddress: row['Billing Email Address'] || '',
-          billingAddress: row['Billing Address'] || '',
-          billingCity: row['Billing City'] || '',
-          billingState: row['Billing State'] || '',
-          billingPostcode: row['Billing Postcode/zip'] || '',
-          billingPhoneNo: row['Billing Phone No.'] || '',
-          shippingFirstName: row['Shipping First Name'] || '',
-          shippingLastName: row['Shipping Last Name'] || '',
-          shippingAddress: row['Shipping Address'] || '',
-          shippingCity: row['Shipping City'] || '',
-          shippingState: row['Shipping State'] || '',
-          shippingPostcode: row['Shipping Postcode/zip'] || '',
-          shippingPhoneNo: row['Shipping Phone No.'] || '',
-          shippingMethod: row['Shipping Method'] || '',
-          designName: row['Design Name'] || '',
-          designPrice: parseFloat(row['Design Price']) || 0 //old
-          // designPrice: parseFloat(row['Design Price'].replace('$', '')) || 0 //new
-        }));
+        const items = parsedData[i].map(function (row) {
+
+          const sizeString = row['Size'] || '';
+          const parsedSizeData = parseSizeString(sizeString);
+          // console.log(`sizeString ${sizeString}`)
+          // console.log(`parsedSizeData ${JSON.stringify(parsedSizeData)}`)
+          // console.log(`parsedSizeData ${parsedSizeData.sQty}`)
+  
+
+          return {
+
+            sQty: parsedSizeData.sQty || '',
+            sPrice: parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            sTotal: parsedSizeData.sTotal || '',
+            mQty: parsedSizeData.mQty || '',
+            mPrice: parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            mTotal: parsedSizeData.mTotal || '',
+            lQty: parsedSizeData.lQty || '',
+            lPrice: parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            lTotal: parsedSizeData.lTotal || '',
+            xlQty: parsedSizeData.xlQty || '',
+            xlPrice: parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            xlTotal: parsedSizeData.xlTotal || '',
+            '2xlQty': parsedSizeData['2xlQty'] || '',
+            '2xlPrice': parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            '2xlTotal': parsedSizeData['2xlTotal'] || '',
+            '3xlQty': parsedSizeData['3xlQty'] || '',
+            '3xlPrice': parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            '3xlTotal': parsedSizeData['3xlTotal'] || '',
+            '4xlQty': parsedSizeData['4xlQty'] || '',
+            '4xlPrice': parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            '4xlTotal': parsedSizeData['4xlTotal'] || '',
+            '5xlQty': parsedSizeData['5xlQty'] || '',
+            '5xlPrice': parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            '5xlTotal': parsedSizeData['5xlTotal'] || '',
+
+            
+            productName: row['Product Name'] || '',
+            productCode: row['Product Code'] || '',
+            size: row['Size'] || '',
+            color: row['Color'] || '',
+            lineQty: parseInt(row['Line Qty']) || 1,
+            decorationProcess: row['Decoration Process'] || '',
+            unitPrice: parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            lineTotal: parseFloat(row['Line Total'] ? row['Line Total'].replace(/[$,]/g, '') : '0') || 0,
+            tax: parseFloat(row['Tax'] ? row['Tax'].replace(/[$,]/g, '') : '0') || 0,
+            taxExempt: row['Tax Exempt'] === 'true',
+            orderShippingTotal: parseFloat(row['Order Shipping Total']) || 0,
+            poNumber: row['PO Number'] || '',
+            supplierPoNumber: row['Supplier PO Number'] || '',
+            productionStaffAccount: row['Production Staff Account'] || '',
+            storeName: row['Store Name'] || '',
+            company: row['Company'] || '',
+            billingFirstName: row['Billing First Name'] || '',
+            billingLastName: row['Billing Last Name'] || '',
+            billingEmailAddress: row['Billing Email Address'] || '',
+            billingAddress: row['Billing Address'] || '',
+            billingCity: row['Billing City'] || '',
+            billingState: row['Billing State'] || '',
+            billingPostcode: row['Billing Postcode/zip'] || '',
+            billingPhoneNo: row['Billing Phone No.'] || '',
+            shippingFirstName: row['Shipping First Name'] || '',
+            shippingLastName: row['Shipping Last Name'] || '',
+            shippingAddress: row['Shipping Address'] || '',
+            shippingCity: row['Shipping City'] || '',
+            shippingState: row['Shipping State'] || '',
+            shippingPostcode: row['Shipping Postcode/zip'] || '',
+            shippingPhoneNo: row['Shipping Phone No.'] || '',
+            shippingMethod: row['Shipping Method'] || '',
+            designName: row['Design Name'] || '',
+            designPrice: parseFloat(row['Design Price']) || 0 //old
+            // designPrice: parseFloat(row['Design Price'].replace('$', '')) || 0 //new
+          };
+        }
+        );
 
         const invoiceData = {
-          type: parsedData[i][0]['Quote / Invoice'] || 'invoice',
+          type: parsedData[i][0]['Quote / Invoice'] || parsedData[i][0]['Status'],
           orderNumber: parsedData[i][0]['Order Number'] || parsedData[i][0]['Invoice/Quote Number'],
           dateOrdered: parsedData[i][0]['Date Ordered'] || '',
           dateDue: parsedData[i][0]['Date Due'] || '',
           // orderTotal: parseFloat(parsedData[i][0]['Order Total']) || 0, //old
           // orderTotal: parseFloat(parsedData[i][0]['Order Total'].replace('$', '').replace(',', '')) || 0,//new
           orderTotal: parseFloat(parsedData[i][0]['Order Total'] ? parsedData[i][0]['Order Total'].replace('$', '').replace(',', '') : '0') || 0,
-
           billingCity: parsedData[i][0]['Billing City'] || '',
           billingAddress: parsedData[i][0]['Billing Address'] || '',
           billingState: parsedData[i][0]['Billing State'] || '',
@@ -128,19 +240,18 @@ const Upload = () => {
           shippingMethod: parsedData[i][0]['Shipping Method'] || '',
           shippingState: parsedData[i][0]['Shipping State'] || '',
           shippingPostcode: parsedData[i][0]['Shipping Postcode/zip'] || '',
-
           shippingFirstName: parsedData[i][0]['Shipping First Name'] || '',
           shippingLastName: parsedData[i][0]['Shipping Last Name'] || '',
           billingFirstName: parsedData[i][0]['Billing First Name'] || '',
           billingLastName: parsedData[i][0]['Billing Last Name'] || '',
           paymentDue: 0,
-          // paymentPaid: parseFloat(parsedData[i][0]['Order Total'].replace('$', '').replace(',', '')) || 0,
           orderTotal: parseFloat(parsedData[i][0]['Order Total'] ? parsedData[i][0]['Order Total'].replace('$', '').replace(',', '') : '') || 0,
-
           billingEmailAddress: parsedData[i][0]['Billing Email Address'] || '',
 
           items: items,
-          note: ''
+          note: '',
+
+
         };
 
         const customerData = {
