@@ -155,34 +155,39 @@ const Upload = () => {
           // console.log(`sizeString ${sizeString}`)
           // console.log(`parsedSizeData ${JSON.stringify(parsedSizeData)}`)
           // console.log(`parsedSizeData ${parsedSizeData.sQty}`)
-  
+
+          function getPriceBasedOnQty(qty, unitPrice) {
+            return qty > 0 ? parseFloat(unitPrice ? unitPrice.replace(/[$,]/g, '') : '0') || 0 : 0;
+        }
+        
 
           return {
 
             sQty: parsedSizeData.sQty || '',
-            sPrice: parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            sPrice: getPriceBasedOnQty(parsedSizeData.sQty, row['Unit Price']),
             sTotal: parsedSizeData.sTotal || '',
             mQty: parsedSizeData.mQty || '',
-            mPrice: parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            mPrice: getPriceBasedOnQty(parsedSizeData.mQty, row['Unit Price']),
             mTotal: parsedSizeData.mTotal || '',
             lQty: parsedSizeData.lQty || '',
-            lPrice: parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            lPrice: getPriceBasedOnQty(parsedSizeData.lQty, row['Unit Price']),
             lTotal: parsedSizeData.lTotal || '',
             xlQty: parsedSizeData.xlQty || '',
-            xlPrice: parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            xlPrice: getPriceBasedOnQty(parsedSizeData.xlQty, row['Unit Price']),
             xlTotal: parsedSizeData.xlTotal || '',
             '2xlQty': parsedSizeData['2xlQty'] || '',
-            '2xlPrice': parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            '2xlPrice': getPriceBasedOnQty(parsedSizeData['2xlQty'], row['Unit Price']),
             '2xlTotal': parsedSizeData['2xlTotal'] || '',
             '3xlQty': parsedSizeData['3xlQty'] || '',
-            '3xlPrice': parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            '3xlPrice': getPriceBasedOnQty(parsedSizeData['3xlQty'], row['Unit Price']),
             '3xlTotal': parsedSizeData['3xlTotal'] || '',
             '4xlQty': parsedSizeData['4xlQty'] || '',
-            '4xlPrice': parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            '4xlPrice': getPriceBasedOnQty(parsedSizeData['4xlQty'], row['Unit Price']),
             '4xlTotal': parsedSizeData['4xlTotal'] || '',
             '5xlQty': parsedSizeData['5xlQty'] || '',
-            '5xlPrice': parseFloat(row['Unit Price'] ? row['Unit Price'].replace(/[$,]/g, '') : '0') || 0,
+            '5xlPrice': getPriceBasedOnQty(parsedSizeData['5xlQty'], row['Unit Price']),
             '5xlTotal': parsedSizeData['5xlTotal'] || '',
+        
 
             
             productName: row['Product Name'] || '',
