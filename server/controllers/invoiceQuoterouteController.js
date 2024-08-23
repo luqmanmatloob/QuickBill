@@ -14,117 +14,126 @@ const parseDate = (dateString, fallbackDate = new Date()) => {
   return isNaN(parsedDate.getTime()) ? fallbackDate : parsedDate;
 };
 
+function parseProductInfo(productString) {
+  // Check if the '-' symbol exists in the string
+  if (productString.includes("-")) {
+    // Split the string based on the '-' symbol
+    const [code, name] = productString.split("-", 2);
+    // Strip leading and trailing spaces from the name and code
+    return [name.trim(), code.trim()];
+  } else {
+    // If '-' is not found, return the entire string as the name and an empty code
+    return [productString.trim(), ""];
+  }
+}
+
+exports.createInvoiceQuote = async (req, res) => {
+  try {
+    // console.log(req.body);
+
+    let {
+      type,
+      orderNumber,
+      note,
+      dateOrdered,
+      dateDue,
+      orderTotal,
+      items,
+      billingFirstName,
+      billingLastName,
+      billingCity,
+      billingAddress,
+      billingState,
+      billingEmailAddress,
+      shippingFirstName,
+      shippingLastName,
+      shippingAddress,
+      shippingCity,
+      shippingMethod,
+      paymentMethod,
+      shippingState,
+      shippingPostcode,
+      payments,
+      paymentPaid,
+      paymentDue,
+      paymentTerms,
+      paymentDates,
+    } = req.body;
+
+    console.log(`this is type of item${typeof items}`);
+    console.log(` this is item ${items}`);
+
+
+
+    items.map((item) => {
+      const [productName, productCode] = parseProductInfo(item.productName);
+      console.log(`product name "${productName}" product code "${productCode}"`);
+      item["productName"] = productName,
+      item["productCode"] = productCode
+    });
+    console.log(`updated item ${items}`);
 
 
 
 
 
-(exports.createInvoiceQuote = async (req, res) => {
-    try {
-      console.log(req.body);
 
-      const {
-        type,
-        orderNumber,
-        note,
-        dateOrdered,
-        dateDue,
-        orderTotal,
-        items,
-        billingFirstName,
-        billingLastName,
-        billingCity,
-        billingAddress,
-        billingState,
-        billingEmailAddress,
-        shippingFirstName,
-        shippingLastName,
-        shippingAddress,
-        shippingCity,
-        shippingMethod,
-        paymentMethod,
-        shippingState,
-        shippingPostcode,
-        payments,
-        paymentPaid, 
-        paymentDue, 
-        paymentTerms,
-        paymentDates,
-    
-      } = req.body;
-
-      // if (!type || !["invoice", "quote"].includes(type)) {
-      //   return res
-      //     .status(400)
-      //     .send("Invalid type. Must be 'invoice' or 'quote'.");
-      // }
-
-      // Check if orderNumber already exists
-      const existingInvoiceOrQuote = await InvoiceOrQuote.findOne({
-        orderNumber,
-      });
-      if (existingInvoiceOrQuote) {
-        return res
-          .status(400)
-          .send(
-            "Invoice cannot be created because the order number already exists."
-          );
-      }
-
-      const newInvoiceOrQuote = new InvoiceOrQuote({
-        type,
-        orderNumber,
-        note,
-        dateOrdered,
-        dateDue,
-        orderTotal,
-        shippingMethod,
-        paymentMethod,
-        billingFirstName,
-        billingLastName,
-        billingCity,
-        billingAddress,
-        billingState,
-        billingEmailAddress,
-        shippingFirstName,
-        shippingLastName,      
-        shippingAddress,
-        shippingCity,
-        shippingState,
-        shippingPostcode,
-        items,
-        payments,
-        paymentPaid, 
-        paymentDue, 
-        paymentTerms,
-        paymentDates,
-
-      });
-
-      await newInvoiceOrQuote.save();
-
-      res.status(201).json({
-        message: "Invoice or quote created successfully",
-        uniqueKey: newInvoiceOrQuote.uniqueKey,
-        invoiceOrQuote: newInvoiceOrQuote,
-      });
-    } catch (error) {
-      console.error(error);
-      res
-        .status(500)
-        .send("An error occurred while creating the invoice or quote");
+    // Check if orderNumber already exists
+    const existingInvoiceOrQuote = await InvoiceOrQuote.findOne({
+      orderNumber,
+    });
+    if (existingInvoiceOrQuote) {
+      return res
+        .status(400)
+        .send(
+          "Invoice cannot be created because the order number already exists."
+        );
     }
-  });
 
+    const newInvoiceOrQuote = new InvoiceOrQuote({
+      type,
+      orderNumber,
+      note,
+      dateOrdered,
+      dateDue,
+      orderTotal,
+      shippingMethod,
+      paymentMethod,
+      billingFirstName,
+      billingLastName,
+      billingCity,
+      billingAddress,
+      billingState,
+      billingEmailAddress,
+      shippingFirstName,
+      shippingLastName,
+      shippingAddress,
+      shippingCity,
+      shippingState,
+      shippingPostcode,
+      items,
+      payments,
+      paymentPaid,
+      paymentDue,
+      paymentTerms,
+      paymentDates,
+    });
 
+    await newInvoiceOrQuote.save();
+    console.log(newInvoiceOrQuote);
 
-
-
-
-
-
-
-
+    res.status(201).json({
+      message: "Invoice or quote created successfully",
+      uniqueKey: newInvoiceOrQuote.uniqueKey,
+      invoiceOrQuote: newInvoiceOrQuote,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send("An error occurred while creating the invoice or quote");
+  }
+};
 
 
 
@@ -169,32 +178,30 @@ const parseDate = (dateString, fallbackDate = new Date()) => {
 
 
 
-
-
 exports.getAllInvoicesQuotes = async (req, res) => {
   try {
     // Construct the query object to filter based on request query parameters
     let query = {};
-    
+
     // Filtering by billing first name
     if (req.query.billingFirstName) {
       query.billingFirstName = {
         $regex: new RegExp(req.query.billingFirstName, "i"),
       };
     }
-    
+
     // Filtering by billing last name
     if (req.query.billingLastName) {
       query.billingLastName = {
         $regex: new RegExp(req.query.billingLastName, "i"),
       };
     }
-    
+
     // Filtering by order number
     if (req.query.orderNumber) {
       query.orderNumber = { $regex: new RegExp(req.query.orderNumber, "i") };
     }
-    
+
     // Filtering by date ordered range
     if (req.query.dateOrderedStart && req.query.dateOrderedEnd) {
       query.dateOrdered = {
@@ -206,7 +213,7 @@ exports.getAllInvoicesQuotes = async (req, res) => {
     } else if (req.query.dateOrderedEnd) {
       query.dateOrdered = { $lte: new Date(req.query.dateOrderedEnd) };
     }
-    
+
     // Filtering by date due range
     if (req.query.dateDueStart && req.query.dateDueEnd) {
       query.dateDue = {
@@ -233,25 +240,6 @@ exports.getAllInvoicesQuotes = async (req, res) => {
   }
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 exports.deleteInvoiceQuote = async (req, res) => {
   const { uniqueKey } = req.body;
 
@@ -273,8 +261,6 @@ exports.deleteInvoiceQuote = async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 };
-
-
 
 exports.getInvoiceQuoteById = async (req, res) => {
   const { id } = req.params; // id is the uniqueKey in this case
@@ -321,7 +307,7 @@ exports.getInvoiceQuoteById = async (req, res) => {
 
 // update/ edit quote base on id (uniquekey)
 exports.updateInvoiceQuote = async (req, res) => {
-  console.log("second function is running")
+  console.log("second function is running");
   const {
     type,
     orderNumber,
@@ -349,6 +335,17 @@ exports.updateInvoiceQuote = async (req, res) => {
     paymentTerms,
     paymentDates,
   } = req.body;
+
+  
+  items.map((item) => {
+    const [productName, productCode] = parseProductInfo(item.productName);
+    console.log(`product name "${productName}" product code "${productCode}"`);
+    item["productName"] = productName,
+    item["productCode"] = productCode
+  });
+  console.log(`updated item ${items}`);
+
+
 
   try {
     // Validate the request body (you can use a validation library like Joi for better validation)
@@ -483,11 +480,6 @@ exports.getByUniqueKeys = async (req, res) => {
   }
 };
 
-
-
-
-
-
 exports.updatePayments = async (req, res) => {
   const { orderNumber, payments } = req.body;
 
@@ -501,15 +493,17 @@ exports.updatePayments = async (req, res) => {
 
     if (!updatedInvoiceOrQuote) {
       // Order number not found
-      return res.status(404).json({ message: `Order Number ${orderNumber} not found` });
+      return res
+        .status(404)
+        .json({ message: `Order Number ${orderNumber} not found` });
     }
 
     // Successful update
     res.status(200).json(updatedInvoiceOrQuote);
   } catch (error) {
     // Server error
-    console.error('Error updating payments:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error("Error updating payments:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -520,19 +514,19 @@ exports.deletePayments = async (req, res) => {
   try {
     const updatedInvoiceOrQuote = await InvoiceOrQuote.findOneAndUpdate(
       { orderNumber },
-      { $set: { payments: [] } }, 
+      { $set: { payments: [] } },
       { new: true }
     );
 
     if (!updatedInvoiceOrQuote) {
-      return res.status(404).json({ message: `Order Number ${orderNumber} not found` });
+      return res
+        .status(404)
+        .json({ message: `Order Number ${orderNumber} not found` });
     }
 
     res.status(200).json(updatedInvoiceOrQuote);
   } catch (error) {
-    console.error('Error deleting payments:', error);
-    res.status(500).json({ message: 'Server error' });
+    console.error("Error deleting payments:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
-
-

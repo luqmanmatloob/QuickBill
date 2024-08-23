@@ -28,6 +28,8 @@ const Invoice = () => {
   const [taxRate, setTaxRate] = useState();
   const [uniqueKey, setUniqueKey] = useState();
 
+  const [codeName, setCodeName] = useState('');
+
   const [visiblePopupIndex, setVisiblePopupIndex] = useState(null);
   const [sizeQtyToggle, setSizeQtyToggle] = useState(false);
 
@@ -745,11 +747,69 @@ const Invoice = () => {
                 {/* items */}
                 {formData.items.map((item, index) => (
                   <div key={index} className="grid grid-cols-10 gap-4">
-                    {/* Product Name */}
+
                     <div className="col-span-2">
                       {/* <label className="block mb-2">Product Name:</label> */}
                       <input type="text" name={`items[${index}].productName`} value={item.productName} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="Name" required />
                     </div>
+
+                    {/* <div className="col-span-2 flex rounded-lg focus-within:border-black focus-within:border-2">
+
+                      <input
+                        type="text"
+                        name={`items[${index}].productCode`}
+                        value={item.productCode}
+                        onChange={(e) => handleItemChange(index, e)}
+                        placeholder="Code"
+                        className="w-full text-center rounded px-2 focus:outline-none l"
+
+                      />
+                      <span className='pt-2'>-</span>
+                      <input
+                        type="text"
+                        name={`items[${index}].productName`}
+                        value={item.productName}
+                        onChange={(e) => handleItemChange(index, e)}
+                        placeholder="Name"
+                        required
+                        className="w-full text-center rounded px-2 focus:outline-none"
+
+                      />
+
+                    </div> */}
+
+
+
+                    {/* <div className="col-span-2">
+                      <input
+                        type="text"
+                        name={`items[${index}].productInfo`}
+                        value={codeName} // User inputs both parts including the minus sign manually
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setCodeName(value)
+
+                          const [productCode, productName] = value.split(' - ');
+
+                          setFormData(prevState => {
+                            const updatedItems = [...prevState.items];
+                            updatedItems[index] = {
+                              ...updatedItems[index],
+                              productCode: productCode || '', // Handle cases where productCode might be undefined
+                              productName: productName || ''  // Handle cases where productName might be undefined
+                            };
+                            return { ...prevState, items: updatedItems };
+                          });
+                        }}
+                        className="w-full rounded px-2 py-1"
+                        placeholder="Product Code - Product Name" // This placeholder suggests the format to the user
+                        required
+                      />
+                    </div> */}
+
+
+
+
                     {/* Color */}
                     <div>
                       {/* <label className="block mb-2">Color:</label>  */}

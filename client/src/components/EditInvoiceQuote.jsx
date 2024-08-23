@@ -170,6 +170,13 @@ const EditInvoiceQuote = ({ id }) => {
         const data = await response.json();
         console.log(data);
 
+        data.items.map((item) =>
+        {
+
+          item["productName"] = item["productCode"] + ' - ' +  item["productName"]
+        }
+      )
+
         // Convert MongoDB dates to HTML input type date format
         const convertDateToInputFormat = (mongoDate) => {
           const dateObj = new Date(mongoDate);
@@ -178,6 +185,8 @@ const EditInvoiceQuote = ({ id }) => {
           let day = dateObj.getDate().toString().padStart(2, '0');
           return `${year}-${month}-${day}`;
         };
+
+
 
         // Update state with fetched data
         setFormData((prevFormData) => ({
