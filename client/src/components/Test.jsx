@@ -1,31 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { Children } from 'react';
 
 const Test = () => {
-
-
-  function parseProductInfo(productString) {
-    // Check if the '-' symbol exists in the string
-    if (productString.includes('-')) {
-        // Split the string based on the '-' symbol
-        const [code, name] = productString.split('-', 2);
-        // Strip leading and trailing spaces from the name and code
-        return [name.trim(), code.trim()];
-    } else {
-        // If '-' is not found, return the entire string as the name and an empty code
-        return [productString.trim(), ''];
-    }
-}
-  
-  useEffect(() => {
-    const [productName, productCode] = parseProductInfo('98789 - black shoes');
-    console.log(`product name "${productName}" product code "${productCode}"`)
-
-  }, []);
+  const handleDownload = () => {
+    const fileUrl = `${process.env.PUBLIC_URL}/sampleFiles/first_csv.csv`; // Update the file name accordingly
+    console.log(`file url ${fileUrl}`)
+    const link = document.createElement('a');
+    link.href = fileUrl;
+    link.setAttribute('download', 'first_csv.csv'); // Force the browser to download the CSV file
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
-    <div className="ml-56 mt-28 flex flex-col space-y-4">
+    <div
+      className={`fixed bottom-6 left-0 right-0 top-3 z-50 mx-40 my-10 overflow-auto rounded-lg border-2 border-solid border-b-slate-300 border-l-[#6539c0] border-r-[#6539c0] bg-white p-10 shadow-2xl transition-opacity duration-300 ease-in-out opacity-100 pointer-events-none`}
+      style={{
+        boxShadow: `0 25px 50px 600px rgba(0, 0, 0, 0.50)`
+      }}
+    >
+      {Children}
+      <button onClick={handleDownload}>Download CSV File</button>
     </div>
   );
 };
 
 export default Test;
+

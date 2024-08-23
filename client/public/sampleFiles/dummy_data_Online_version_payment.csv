@@ -1,0 +1,31 @@
+﻿Order Number,Date Paid,Order Payment Amount,Payment Method
+INV00001,1/7/2024,123.45,Debit / Credit Card
+INV00002,1/10/2024,678.90,Phone
+INV00003,1/15/2024,234.56,Debit / Credit Card
+INV00004,1/20/2024,789.01,Venmo: @dummyaccount
+INV00005,1/25/2024,345.67,Venmo: @dummyaccount
+INV00006,1/30/2024,890.12,Debit / Credit Card
+INV00007,2/5/2024,456.78,Venmo: @dummyaccount
+INV00008,2/10/2024,567.89,Debit / Credit Card
+INV00009,2/15/2024,123.45,Phone
+INV00010,2/20/2024,678.90,Debit / Credit Card
+INV00011,2/25/2024,234.56,Venmo: @dummyaccount
+INV00012,3/1/2024,789.01,Debit / Credit Card
+INV00013,3/5/2024,345.67,Venmo: @dummyaccount
+INV00014,3/10/2024,890.12,Debit / Credit Card
+INV00015,3/15/2024,456.78,Phone
+INV00016,3/20/2024,567.89,Debit / Credit Card
+INV00017,3/25/2024,123.45,Venmo: @dummyaccount
+INV00018,4/1/2024,678.90,Debit / Credit Card
+INV00019,4/5/2024,234.56,Phone
+INV00020,4/10/2024,789.01,Debit / Credit Card
+INV00021,4/15/2024,345.67,Venmo: @dummyaccount
+INV00022,4/20/2024,890.12,Debit / Credit Card
+INV00023,4/25/2024,456.78,Phone
+INV00024,5/1/2024,567.89,Debit / Credit Card
+INV00025,5/5/2024,123.45,Venmo: @dummyaccount
+INV00026,5/10/2024,678.90,Debit / Credit Card
+INV00027,5/15/2024,234.56,Phone
+INV00028,5/20/2024,789.01,Debit / Credit Card
+INV00029,5/25/2024,345.67,Venmo: @dummyaccount
+INV00030,5/30/2024,890.12,Debit / Credit Card

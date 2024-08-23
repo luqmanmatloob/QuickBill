@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Papa from 'papaparse';
 import { Link } from 'react-router-dom';
+import UploadOrdersInstructions from './UploadOrdersInstructions';
 
 const Upload = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -10,7 +11,15 @@ const Upload = () => {
   const [loading, setLoading] = useState(false);
   const [creatingInvoiceNumber, setCreatingInvoiceNumber] = useState(false);
   const [success, setSuccess] = useState('');
+  const [toggleUploadOrdersInstructions, setToggleUploadOrdersInstructions] = useState(false);
 
+  function handleToggle() {
+    if (toggleUploadOrdersInstructions) {
+      setToggleUploadOrdersInstructions(false);
+    } else {
+      setToggleUploadOrdersInstructions(true);
+    }
+  }
 
 
   const parseSizeString = (sizeString) => {
@@ -19,7 +28,7 @@ const Upload = () => {
       console.error('Invalid input: sizeString should be a non-empty string');
       return {}; // Return an empty object if the input is invalid
     }
-  
+
     // Initialize the size data object
     const sizeData = {
       sQty: 0, sPrice: 0, sTotal: 0,
@@ -31,16 +40,16 @@ const Upload = () => {
       '4xlQty': 0, '4xlPrice': 0, '4xlTotal': 0,
       '5xlQty': 0, '5xlPrice': 0, '5xlTotal': 0
     };
-  
+
     // Split the string into individual size entries
     const sizeEntries = sizeString.split(',').map(entry => entry.trim());
-    
+
     sizeEntries.forEach(entry => {
       // Split by 'x' and trim parts
       const [size, quantityPart] = entry.split('x').map(part => part.trim());
       // Ensure quantity is a valid number
       const quantity = parseInt(quantityPart, 10) || 0;
-      
+
       // Map size to the corresponding sizeData field
       switch (size) {
         case 'Small':
@@ -72,7 +81,7 @@ const Upload = () => {
           break;
       }
     });
-  
+
     return sizeData;
   };
 
@@ -158,8 +167,8 @@ const Upload = () => {
 
           function getPriceBasedOnQty(qty, unitPrice) {
             return qty > 0 ? parseFloat(unitPrice ? unitPrice.replace(/[$,]/g, '') : '0') || 0 : 0;
-        }
-        
+          }
+
 
           return {
 
@@ -187,9 +196,9 @@ const Upload = () => {
             '5xlQty': parsedSizeData['5xlQty'] || '',
             '5xlPrice': getPriceBasedOnQty(parsedSizeData['5xlQty'], row['Unit Price']),
             '5xlTotal': parsedSizeData['5xlTotal'] || '',
-        
 
-            
+
+
             productName: row['Product Name'] || '',
             productCode: row['Product Code'] || '',
             size: row['Size'] || '',
@@ -412,18 +421,50 @@ const Upload = () => {
   return (
     <div className="ml-56 mt-28">
       <div className="m-10 mb-[70vh]">
+
+
+
+
+
         <div className="mx-auto mt-8 flex max-w-3xl items-center justify-center rounded-md border-2 border-[#f1f1f1] border-b-[#c2d6e7] border-t-[#c2d6e7] bg-white p-4 py-8 shadow-xl">
           <input type="file" accept=".csv" onChange={handleFileChange} className="" />
-          <button onClick={handleParseAndSubmit} className="rounded-md border-2 border-blue-300 bg-gradient-to-r from-blue-300 to-blue-200 px-8 py-2 font-bold text-black hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black">
+          <button onClick={handleParseAndSubmit}
+            className="
+          rounded-md border-2 border-blue-300 bg-gradient-to-r from-blue-300 to-blue-200 px-8 py-2 font-bold text-black hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black
+          ">
             OK
           </button>
+
+
         </div>
 
         <div className="mt-20 rounded-md border-2 border-[#f1f1f1] border-l-[#c5d9eb] border-r-[#c5d9eb] p-5 shadow-2xl">
           <div className="mb-5 flex items-center justify-between">
             <h1 className="font-Josefin-Sans text-3xl font-bold text-[#3952ac]">Invoices/Quotes</h1>
-            <div>
-              <button onClick={cancel} className="hover:red m-1 rounded border-[1px] border-red-500 px-4 py-1 font-bold text-red-600 hover:bg-red-100 hover:text-red-500">
+
+
+
+            <div className='flex items-center justify-between gap-3'>
+
+              <div>
+                <button onClick={handleToggle} className='rounded-md  py-2  font-semibold text-blue-400 underline hover:text-blue-500'>
+                  File Format?
+                </button>
+
+                {/* Conditional rendering */}
+                {toggleUploadOrdersInstructions &&
+                  <div>
+                    <UploadOrdersInstructions>
+                      <button onClick={handleToggle} className='rounded-md border-2 border-blue-300 bg-gradient-to-r from-blue-300 to-blue-200 px-4 py-2 font-bold text-black hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black
+                '>
+                        X
+                      </button>
+                    </UploadOrdersInstructions>
+                  </div>}
+              </div>
+
+
+              <button onClick={cancel} className="hover:red rounded border-[1px] border-red-500 px-4 py-1 font-bold text-red-600 hover:bg-red-100 hover:text-red-500">
                 Cancel
               </button>
               <button onClick={handleSave} className="no-print my-3 rounded border-[1px] border-blue-500 bg-transparent px-[20px] py-[5px] font-bold text-blue-700 hover:bg-blue-100 hover:text-black">

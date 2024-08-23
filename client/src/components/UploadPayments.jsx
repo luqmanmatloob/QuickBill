@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Papa from 'papaparse';
+import UploadPaymentsInstructions from './UploadPaymentsInstructions';
 
 const UploadPayments = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
@@ -9,6 +10,23 @@ const UploadPayments = () => {
   const [loading, setLoading] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+
+  const [toggleUploadPaymentsInstructions, setToggleUploadPaymentsInstructions] = useState(false);
+
+  function handleToggle() {
+    if (toggleUploadPaymentsInstructions) {
+      setToggleUploadPaymentsInstructions(false);
+    } else {
+      setToggleUploadPaymentsInstructions(true);
+    }
+  }
+
+
+
+
+
+
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -133,9 +151,25 @@ const UploadPayments = () => {
         </div>
 
         <div className="mt-20 rounded-md border-2 border-[#f1f1f1] border-l-[#c5d9eb] border-r-[#c5d9eb] p-5 shadow-2xl">
-          <div className="mb-5 flex items-center justify-between">
+          <div className="mb-5 flex w-full items-center justify-between">
             <h1 className="font-Josefin-Sans text-3xl font-bold text-[#3952ac]">Payments</h1>
-            <div></div>
+            <div className='mr-5'>
+                <button onClick={handleToggle} className='rounded-md  py-2  font-semibold text-blue-400 underline hover:text-blue-500'>
+                  File Format?
+                </button>
+
+                {/* Conditional rendering */}
+                {toggleUploadPaymentsInstructions &&
+                  <div>
+                    <UploadPaymentsInstructions>
+                      <button onClick={handleToggle} className='rounded-md border-2 border-blue-300 bg-gradient-to-r from-blue-300 to-blue-200 px-4 py-2 font-bold text-black hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black
+                '>
+                        X
+                      </button>
+                    </UploadPaymentsInstructions>
+                  </div>}
+              </div>
+
           </div>
           {successMessage && <div className="my-4 rounded bg-green-200 px-4 py-2 text-green-800">{successMessage}</div>}
           {errorMessage && <div className="my-4 rounded bg-red-200 px-4 py-2 text-red-800">{errorMessage}</div>}
