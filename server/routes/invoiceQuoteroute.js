@@ -10,6 +10,7 @@ const {
     getByUniqueKeys,
     updatePayments,
     deletePayments,
+    uploadCreateInvoiceQuote,
     
 
 } = require('../controllers/invoiceQuoterouteController');
@@ -19,6 +20,8 @@ const router = express.Router();
 
 // Create a new invoice or quote (save 1/2)
 router.post('/createInvoiceQuote', createInvoiceQuote);
+
+router.post('/uploadCreateInvoiceQuote', uploadCreateInvoiceQuote);
 
 // get all invoices showing list
 router.get('/allInvoicesQuotes', getAllInvoicesQuotes);

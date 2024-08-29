@@ -138,6 +138,113 @@ exports.createInvoiceQuote = async (req, res) => {
 
 
 
+
+
+exports.uploadCreateInvoiceQuote = async (req, res) => {
+  try {
+    // console.log(req.body);
+
+    let {
+      type,
+      orderNumber,
+      note,
+      dateOrdered,
+      dateDue,
+      orderTotal,
+      items,
+      billingFirstName,
+      billingLastName,
+      billingCity,
+      billingAddress,
+      billingState,
+      billingEmailAddress,
+      shippingFirstName,
+      shippingLastName,
+      shippingAddress,
+      shippingCity,
+      shippingMethod,
+      paymentMethod,
+      shippingState,
+      shippingPostcode,
+      payments,
+      paymentPaid,
+      paymentDue,
+      paymentTerms,
+      paymentDates,
+    } = req.body;
+
+
+    
+    // Check if orderNumber already exists
+    const existingInvoiceOrQuote = await InvoiceOrQuote.findOne({
+      orderNumber,
+    });
+    if (existingInvoiceOrQuote) {
+      return res
+        .status(400)
+        .send(
+          "Invoice cannot be created because the order number already exists."
+        );
+    }
+
+    const newInvoiceOrQuote = new InvoiceOrQuote({
+      type,
+      orderNumber,
+      note,
+      dateOrdered,
+      dateDue,
+      orderTotal,
+      shippingMethod,
+      paymentMethod,
+      billingFirstName,
+      billingLastName,
+      billingCity,
+      billingAddress,
+      billingState,
+      billingEmailAddress,
+      shippingFirstName,
+      shippingLastName,
+      shippingAddress,
+      shippingCity,
+      shippingState,
+      shippingPostcode,
+      items,
+      payments,
+      paymentPaid,
+      paymentDue,
+      paymentTerms,
+      paymentDates,
+    });
+
+    await newInvoiceOrQuote.save();
+    console.log(newInvoiceOrQuote);
+
+    res.status(201).json({
+      message: "Invoice or quote created successfully",
+      uniqueKey: newInvoiceOrQuote.uniqueKey,
+      invoiceOrQuote: newInvoiceOrQuote,
+    });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .send("An error occurred while creating the invoice or quote");
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // exports.getAllInvoicesQuotes = async (req, res) => {
 //   try {
 //     // Construct the query object to filter based on request query parameters

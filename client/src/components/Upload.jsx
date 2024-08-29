@@ -296,7 +296,7 @@ const Upload = () => {
 
         console.log('Invoice Data:', invoiceData);
 
-        const response = await fetch(`${BASE_URL}/api/invoicequote/createInvoiceQuote`, {
+        const response = await fetch(`${BASE_URL}/api/invoicequote/uploadCreateInvoiceQuote`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
