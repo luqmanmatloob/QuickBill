@@ -293,7 +293,7 @@ const Print = ({ id }) => {
       doc.text(`$${totalTax.toFixed(2)}`, 165, totalsY + 10);
       doc.text(`$${GrandTotal.toFixed(2)}`, 165, totalsY + 20);
       doc.text(`$${invoice.paymentPaid || ''}`, 165, totalsY + 30);
-      doc.text(`$${invoice.Balance || 0}`, 165, totalsY + 40);
+      doc.text(`$${invoice.paymentDue  || 0}`, 165, totalsY + 40);
 
       doc.setFontSize(7);
       doc.setFont('Helvetica', 'normal');
