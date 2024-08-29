@@ -348,12 +348,12 @@ exports.updateInvoiceQuote = async (req, res) => {
 
 
   try {
-    // Validate the request body (you can use a validation library like Joi for better validation)
-    if (!type || !["invoice", "quote"].includes(type)) {
-      return res
-        .status(400)
-        .send("Invalid type. Must be 'invoice' or 'quote'.");
-    }
+    // Validation
+    // if (!type || !["invoice", "quote"].includes(type)) {
+    //   return res
+    //     .status(400)
+    //     .send("Invalid type. Must be 'invoice' or 'quote'.");
+    // }
 
     // Find the existing document by uniqueKey (assuming uniqueKey is used as the identifier)
     const existingInvoiceOrQuote = await InvoiceOrQuote.findOne({

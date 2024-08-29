@@ -205,9 +205,9 @@ const Print = ({ id }) => {
 
       doc.text('Product', 15, startY);
       doc.text('Color', 75, startY);
-      doc.text('Size/QTY', 90, startY);
-      doc.text('Unit Price', 125, startY);
-      doc.text('Tax', 145, startY);
+      doc.text('Size/QTY', 105, startY);
+      doc.text('Unit Price', 135, startY);
+      // doc.text('Tax', 145, startY);
       doc.text('Qty', 158, startY);
       doc.text('Total', 170, startY);
 
@@ -248,7 +248,6 @@ const Print = ({ id }) => {
         const lineQty = parseInt(item.lineQty) || 0;
         const lineTotal = unitPrice * lineQty;
         let tax = parseFloat(item.tax) || 0;
-        tax = lineQty * tax;
         const taxExempt = item.taxExempt;
         tax = taxExempt ? 0 : tax;
 
@@ -256,15 +255,15 @@ const Print = ({ id }) => {
         totalTax += tax;
 
         const yPosition = startY + itemIndex * 10;
-        doc.text(`${item.productName}`, 15, yPosition);
+        doc.text(`${item.productCode} - ${item.productName}`, 15, yPosition);
         doc.text(`${item.color}`, 75, yPosition);
-        doc.text(`${item.size}`, 90, yPosition, { maxWidth: 30 });
-        doc.text(`${generateSizeSummary(item)}`, 90, yPosition, {
-          maxWidth: 30
+        // doc.text(`${item.size}`, 95, yPosition, { maxWidth: 40 });
+        doc.text(`${generateSizeSummary(item)}`, 91, yPosition, {
+          maxWidth: 45
         });
 
-        doc.text(`$${item.unitPrice}`, 125, yPosition);
-        doc.text(`$${item.tax.toFixed(1)}`, 145, yPosition);
+        doc.text(`$${item.unitPrice}`, 135, yPosition);
+        // doc.text(`$${item.tax.toFixed(1)}`, 145, yPosition);
         doc.text(`${item.lineQty}`, 158, yPosition);
         doc.text(`$${item.lineTotal}`, 170, yPosition);
 
