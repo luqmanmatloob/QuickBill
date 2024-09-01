@@ -20,9 +20,9 @@ import { TiTick } from 'react-icons/ti';
 
 const EditInvoiceQuote = ({ id }) => {
   const componentRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current
-  });
+  // const handlePrint = useReactToPrint({
+  //   content: () => componentRef.current
+  // });
 
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -170,12 +170,11 @@ const EditInvoiceQuote = ({ id }) => {
         const data = await response.json();
         console.log(data);
 
-        data.items.map((item) =>
-        {
+        data.items.map((item) => {
 
-          item["productName"] = item["productCode"] + ' - ' +  item["productName"]
+          item["productName"] = item["productCode"] + ' - ' + item["productName"]
         }
-      )
+        )
 
         // Convert MongoDB dates to HTML input type date format
         const convertDateToInputFormat = (mongoDate) => {
@@ -611,6 +610,42 @@ const EditInvoiceQuote = ({ id }) => {
     setFormData({ ...formData, payments: updatedPayments });
   };
 
+  const handlePrint = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`${BASE_URL}/api/invoicequote/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      console.log('Invoice updated successfully:', data);
+      setResponseMessage('Invoice updated successfully.');
+      window.open(`/print/${id}`, '_blank');
+      window.location.reload();
+
+
+      setTimeout(() => {
+        setResponseMessage('');
+      }, 1000);
+    } catch (error) {
+      console.error('Error updating invoice:', error);
+      setResponseMessage('Error');
+
+      setTimeout(() => {
+        setResponseMessage('');
+      }, 1000);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -630,6 +665,9 @@ const EditInvoiceQuote = ({ id }) => {
       const data = await response.json();
       console.log('Invoice updated successfully:', data);
       setResponseMessage('Invoice updated successfully.');
+      window.location.reload();
+
+
 
       setTimeout(() => {
         setResponseMessage('');
@@ -1287,9 +1325,17 @@ const EditInvoiceQuote = ({ id }) => {
               </button> */}
 
               {/* new print using using pdf */}
-              <Link to={`/print/${id}`} target="_blank" className="my-3 mr-2 rounded border-[2px] border-blue-500 bg-transparent px-[20px] py-[5px] font-bold text-blue-700 hover:bg-blue-100 hover:text-black">
+              <button
+                className="my-3 mr-2 rounded border-[2px] border-blue-500 bg-transparent px-[20px] py-[5px] font-bold text-blue-700 hover:bg-blue-100 hover:text-black"
+                type="button"
+                onClick={handlePrint}
+              >
+                {/* <Link to={`/print/${id}`} target="_blank" 
+                className="my-3 mr-2 rounded border-[2px] border-blue-500 bg-transparent px-[20px] py-[5px] font-bold text-blue-700 hover:bg-blue-100 hover:text-black"
+                > */}
                 Print
-              </Link>
+                {/* </Link> */}
+              </button>
 
               {responseMessage && <span className={`mt-4 ${responseMessage.startsWith('Error') ? 'text-red-500' : 'text-green-500'}`}>{responseMessage}</span>}
             </div>

@@ -18,11 +18,11 @@ const UploadPaymentsInstructions = ({ children }) => {
             style={{ boxShadow: `0 25px 50px 600px rgba(0, 0, 0, 0.50)` }}
         >
             <div className='absolute right-3 top-2'> {children} </div>            
-            <p className='absolute bottom-5 right-[25%] text-red-400'> Component under development, More details about instructinos coming soon.</p>
+            {/* <p className='absolute bottom-5 right-[25%] text-red-400'> Component under development, More details about instructinos coming soon.</p> */}
 
             <h3 className="font-Josefin-Sans text-2xl text-center font-bold text-[#3952ac]">Payments CSV file Format Instructions</h3>
 
-            <p className='mt-7'> follow the file format of the following file</p>
+            <p className='mt-7'> Kindly follow the following file format only.</p>
 
             <button
                 onClick={handleDownload}

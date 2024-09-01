@@ -137,14 +137,14 @@ const Print = ({ id }) => {
 
       doc.setTextColor(112, 112, 112); //   dark grey
 
-      doc.text(`${invoice.type.toUpperCase()}`, 135, 15);
+      doc.text(`${invoice.type ? invoice.type.toUpperCase() : 'Invoice'}`, 135, 15);
 
       doc.setTextColor(0, 0, 0); //  black
       doc.setFont('Helvetica', 'normal');
 
       doc.setFontSize(11);
 
-      doc.text(`${invoice.type.toUpperCase()} # : ${invoice.orderNumber}`, 135, 26);
+      doc.text(`${invoice.type ? invoice.type.toUpperCase() : 'Invoice'} # : ${invoice.orderNumber}`, 135, 26);
 
       doc.setFontSize(8);
       doc.text(`Shipping:         ${invoice.shippingMethod}`, 135, 35);

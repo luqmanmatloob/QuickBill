@@ -587,34 +587,119 @@ exports.getByUniqueKeys = async (req, res) => {
   }
 };
 
+// exports.updatePayments = async (req, res) => {
+//   const { orderNumber, payments } = req.body;
+
+//   try {
+//     // Find the invoice or quote by orderNumber and update its payments
+//     const updatedInvoiceOrQuote = await InvoiceOrQuote.findOneAndUpdate(
+//       { orderNumber },
+//       { $push: { payments: { $each: payments } } },
+//       { new: true }
+//     );
+
+//     if (!updatedInvoiceOrQuote) {
+//       // Order number not found
+//       return res
+//         .status(404)
+//         .json({ message: `Order Number ${orderNumber} not found` });
+//     }
+
+//     // Successful update
+//     res.status(200).json(updatedInvoiceOrQuote);
+//   } catch (error) {
+//     // Server error
+//     console.error("Error updating payments:", error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+// Controller function to delete payments
+
+function test(){
+
+}
+// ##############################################################
+
+// exports.updatePayments = async (req, res) => {
+//   const { orderNumber, payments } = req.body;
+
+//   try {
+//     // Calculate the total amount to add to paymentPaid
+//     const totalPaymentAmount = payments.reduce((sum, payment) => {
+//       return sum + (payment.orderPaymentAmount || 0); // Add each payment's orderPaymentAmount
+//     }, 0);
+
+//     // Find the invoice or quote by orderNumber and update its payments and paymentPaid
+//     const updatedInvoiceOrQuote = await InvoiceOrQuote.findOneAndUpdate(
+//       { orderNumber },
+//       {
+//         $push: { payments: { $each: payments } },
+//         $inc: { paymentPaid: totalPaymentAmount }, // Increment paymentPaid by the totalPaymentAmount
+//       },
+//       { new: true }
+//     );
+
+//     if (!updatedInvoiceOrQuote) {
+//       // Order number not found
+//       return res
+//         .status(404)
+//         .json({ message: `Order Number ${orderNumber} not found` });
+//     }
+
+//     // Successful update
+//     res.status(200).json(updatedInvoiceOrQuote);
+//   } catch (error) {
+//     // Server error
+//     console.error("Error updating payments:", error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+
 exports.updatePayments = async (req, res) => {
   const { orderNumber, payments } = req.body;
 
   try {
-    // Find the invoice or quote by orderNumber and update its payments
+    // Calculate the total payment amount
+    const totalPaymentAmount = payments.reduce((sum, payment) => {
+      return sum + (payment.orderPaymentAmount || 0);
+    }, 0);
+
+    // Find the invoice or quote by orderNumber and update its payments and paymentPaid
     const updatedInvoiceOrQuote = await InvoiceOrQuote.findOneAndUpdate(
       { orderNumber },
-      { $push: { payments: { $each: payments } } },
+      {
+        $push: { payments: { $each: payments } },
+        $inc: { paymentPaid: totalPaymentAmount },
+      },
       { new: true }
     );
 
     if (!updatedInvoiceOrQuote) {
-      // Order number not found
       return res
         .status(404)
         .json({ message: `Order Number ${orderNumber} not found` });
     }
 
+    // Calculate the new paymentDue
+    const paymentDue = parseFloat((updatedInvoiceOrQuote.orderTotal - updatedInvoiceOrQuote.paymentPaid).toFixed(2));
+
+    // Update the paymentDue field
+    updatedInvoiceOrQuote.paymentDue = paymentDue;
+    await updatedInvoiceOrQuote.save();
+
     // Successful update
     res.status(200).json(updatedInvoiceOrQuote);
   } catch (error) {
-    // Server error
     console.error("Error updating payments:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-// Controller function to delete payments
+
+
+
 exports.deletePayments = async (req, res) => {
   const { orderNumber } = req.body;
 
