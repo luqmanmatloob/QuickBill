@@ -214,7 +214,7 @@ const CustomerManagement = () => {
             </li> */}
 
             <ul className="divide-y divide-gray-200">
-              <div className="py- sticky top-20 flex rounded-md border-2 border-blue-100 bg-[#F5FAFF] px-7">
+              <div className="sticky top-20 flex gap-3 rounded-md border-2 border-blue-100 bg-[#F5FAFF] px-7">
                 <div className={showCustomerDetails ? 'hidden' : 'visible'}>
                   <button onClick={toggleCustomerDetails} className="no-print py- my-2 rounded border-[1px] border-blue-500 bg-transparent px-4 font-semibold text-blue-700 hover:bg-blue-200 hover:text-black">
                     Detailed View
@@ -223,6 +223,21 @@ const CustomerManagement = () => {
                 <div className={showCustomerDetails ? 'visible' : 'hidden'}>
                   <button type="button" className="no-print py- my-2 rounded border-[1px] border-blue-500 bg-transparent px-4 font-semibold text-blue-700 hover:bg-blue-200 hover:text-black" onClick={toggleCustomerDetails}>
                     List View
+                  </button>
+                </div>
+                <div >
+                  <button type="button" className="no-print py- my-2 rounded border-[1px] border-blue-500 bg-transparent px-4 font-semibold text-blue-700 hover:bg-blue-200 hover:text-black"
+                    onClick={() => {
+                      const offsetFromBottom = 2100;
+                      const scrollPosition = document.documentElement.scrollHeight - window.innerHeight - offsetFromBottom;
+                      window.scrollTo({
+                        top: scrollPosition,
+                        behavior: 'smooth'
+                      });
+                    }}
+                  >
+
+                    Add New
                   </button>
                 </div>
               </div>
@@ -470,8 +485,8 @@ const CustomerManagement = () => {
             {editMode ? 'Update' : 'Add'} Customer
           </button>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 };
 

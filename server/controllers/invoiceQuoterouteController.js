@@ -664,7 +664,7 @@ exports.updatePayments = async (req, res) => {
     // Calculate the total payment amount
     const totalPaymentAmount = payments.reduce((sum, payment) => {
       return sum + (payment.orderPaymentAmount || 0);
-    }, 0);
+    }, 0).toFixed(2);
 
     // Find the invoice or quote by orderNumber and update its payments and paymentPaid
     const updatedInvoiceOrQuote = await InvoiceOrQuote.findOneAndUpdate(
