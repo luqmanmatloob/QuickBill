@@ -129,8 +129,8 @@ const Print = ({ id }) => {
       doc.text(`${settings.companyName} ${settings.phoneNumber}`, 15, 45);
       doc.text(`${settings.address}`, 15, 50);
       doc.text(`${settings.city} ${settings.state}`, 15, 55);
-      doc.text(`${settings.country} `, 15, 60);
-      doc.text(` ${settings.url}`, 15, 65);
+      doc.text(`${settings.country}`, 15, 60);
+      doc.text(`${settings.url}`, 15, 65);
 
       doc.setFontSize(16);
       doc.setFont('Helvetica', 'bold');
@@ -322,7 +322,7 @@ const Print = ({ id }) => {
         doc.setTextColor(105, 105, 105); //   grey
         doc.setFont('Helvetica', 'normal');
         doc.text(`${invoice.paymentDates || ''}`, 15, totalsY + 15, {
-          maxWidth: 90
+          maxWidth: 100
         });
       }
 
@@ -330,12 +330,12 @@ const Print = ({ id }) => {
         doc.setTextColor(0, 0, 0); //  black
         doc.setFontSize(8);
         doc.setFont('Helvetica', 'bold');
-        doc.text(`Payment Method:`, 15, totalsY + 20, { maxWidth: 90 });
+        doc.text(`Payment Method:`, 15, totalsY + 25, { maxWidth: 90 });
         doc.setFont('Helvetica', 'normal');
 
         doc.setTextColor(105, 105, 105); //   grey
-        doc.text(`${invoice.paymentMethod || ''}`, 15, totalsY + 25, {
-          maxWidth: 90
+        doc.text(`${invoice.paymentMethod || ''}`, 15, totalsY + 30, {
+          maxWidth: 100
         });
       }
 
@@ -344,11 +344,11 @@ const Print = ({ id }) => {
         doc.setFontSize(8);
         doc.setTextColor(0, 0, 0); //  black
 
-        doc.text(`Note:`, 15, totalsY + 30, { maxWidth: 75 });
+        doc.text(`Note:`, 15, totalsY + 40, { maxWidth: 75 });
 
         doc.setTextColor(105, 105, 105); //   grey
         doc.setFont('Helvetica', 'normal');
-        doc.text(`${invoice.note}`, 15, totalsY + 35, { maxWidth: 95 });
+        doc.text(`${invoice.note}`, 15, totalsY + 45, { maxWidth: 100 });
       }
 
       doc.setTextColor(0, 0, 0); //  black
@@ -358,13 +358,13 @@ const Print = ({ id }) => {
 
       doc.setTextColor(200, 204, 203); //   border grey
       doc.setFontSize(17);
-      doc.text(`____________________________`, 15, totalsY + 46);
+      doc.text(`____________________________`, 15, totalsY + 51);
       doc.setTextColor(0, 0, 0); //  black
       doc.setFont('Helvetica', 'normal');
       doc.setFontSize(7);
       doc.setTextColor(80, 80, 80); //   Items grey
 
-      doc.text(`You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.`, 15, totalsY + 50, { maxWidth: 95 });
+      doc.text(`You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.`, 15, totalsY + 55, { maxWidth: 100 });
     });
 
     // Open the PDF in a new tab

@@ -14,18 +14,44 @@ const parseDate = (dateString, fallbackDate = new Date()) => {
   return isNaN(parsedDate.getTime()) ? fallbackDate : parsedDate;
 };
 
+
+
+// considering all - symbols to split the string
+// function parseProductInfo(productString) {
+//   // Check if the '-' symbol exists in the string
+//   if (productString.includes("-")) {
+//     // Split the string based on the '-' symbol
+//     const [code, name] = productString.split("-", 2);
+//     // Strip leading and trailing spaces from the name and code
+//     return [name.trim(), code.trim()];
+//   } else {
+//     // If '-' is not found, return the entire string as the name and an empty code
+//     return [productString.trim(), ""];
+//   }
+// }
+
+
+
+// considering only first - symbol to split the string
 function parseProductInfo(productString) {
   // Check if the '-' symbol exists in the string
-  if (productString.includes("-")) {
-    // Split the string based on the '-' symbol
-    const [code, name] = productString.split("-", 2);
-    // Strip leading and trailing spaces from the name and code
-    return [name.trim(), code.trim()];
+  const firstMinusIndex = productString.indexOf("-");
+  
+  if (firstMinusIndex !== -1) {
+    // Split the string at the first '-' symbol
+    const code = productString.slice(0, firstMinusIndex).trim();
+    const name = productString.slice(firstMinusIndex + 1).trim();
+    return [name, code];
   } else {
     // If '-' is not found, return the entire string as the name and an empty code
     return [productString.trim(), ""];
   }
 }
+
+
+
+
+
 
 exports.createInvoiceQuote = async (req, res) => {
   try {
@@ -172,6 +198,9 @@ exports.uploadCreateInvoiceQuote = async (req, res) => {
       paymentTerms,
       paymentDates,
     } = req.body;
+
+    
+    type = (type || '').toLowerCase();
 
 
     
@@ -413,6 +442,9 @@ exports.getInvoiceQuoteById = async (req, res) => {
 // };
 
 // update/ edit quote base on id (uniquekey)
+
+
+
 exports.updateInvoiceQuote = async (req, res) => {
   console.log("second function is running");
   const {
