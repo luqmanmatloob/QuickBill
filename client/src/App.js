@@ -13,27 +13,30 @@ import TestPage from './pages/TestPage';
 import CustomerPage from './pages/CustomerPage';
 import PaymentsListPage from './pages/PaymentsListPage';
 import UploadPaymentsPage from './pages/UploadPaymentsPage';
+import AccountSettings from './pages/AccountSettings';
+import Login from './pages/Login'; // Import your login page
+import ProtectedRoute from './components/PrivateRoute'; // Adjust the import path as needed
 
 const App = () => {
   return (
     <Router>
-      <div>
-        <Header />
-        <Sidebar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/uploadPage" element={<UploadPage />} />
-          <Route path="/edit/:id" element={<Edit />} />
-          <Route path="/print/:id" element={<PrintPage />} />
-          <Route path="/setting" element={<Setting />} />
-          <Route path="/InvoiceQuotesListPage" element={<InvoiceQuotesListPage />} />
-          <Route path="/test" element={<TestPage />} />
-          <Route path="/customer" element={<CustomerPage />} />
-          <Route path="/paymentslistpage" element={<PaymentsListPage />} />
-          <Route path="/uploadpaymentspage" element={<UploadPaymentsPage />} />
-        </Routes>
-        <Footer />
-      </div>
+      <Header />
+      <Sidebar />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<ProtectedRoute element={<Home />} />} />
+        <Route path="/uploadPage" element={<ProtectedRoute element={<UploadPage />} />} />
+        <Route path="/edit/:id" element={<ProtectedRoute element={<Edit />} />} />
+        <Route path="/print/:id" element={<ProtectedRoute element={<PrintPage />} />} />
+        <Route path="/setting" element={<ProtectedRoute element={<Setting />} />} />
+        <Route path="/InvoiceQuotesListPage" element={<ProtectedRoute element={<InvoiceQuotesListPage />} />} />
+        <Route path="/test" element={<ProtectedRoute element={<TestPage />} />} />
+        <Route path="/customer" element={<ProtectedRoute element={<CustomerPage />} />} />
+        <Route path="/paymentslistpage" element={<ProtectedRoute element={<PaymentsListPage />} />} />
+        <Route path="/uploadpaymentspage" element={<ProtectedRoute element={<UploadPaymentsPage />} />} />
+        <Route path="/accountsettings" element={<ProtectedRoute element={<AccountSettings />} />} />
+      </Routes>
+      <Footer />
     </Router>
   );
 };

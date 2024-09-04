@@ -4,6 +4,9 @@ import { useLocation } from 'react-router-dom';
 const BASE_URL = process.env.REACT_APP_BASE_URL || 'http://localhost:5000';
 
 const CustomerManagement = () => {
+  
+  const token = localStorage.getItem('token');
+
   const [customers, setCustomers] = useState([]);
   const [newCustomer, setNewCustomer] = useState({
     name: '',
@@ -83,7 +86,13 @@ const CustomerManagement = () => {
   // Fetch all customers
   const fetchCustomers = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/customer`);
+      const response = await fetch(`${BASE_URL}/api/customer`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}` // Include token in header
+          }
+        }
+      );
       if (!response.ok) {
         throw new Error('Failed to fetch customers');
       }
@@ -121,7 +130,10 @@ const CustomerManagement = () => {
         response = await fetch(`${BASE_URL}/api/customer/${selectedCustomerId}`, {
           method: 'PUT',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Include token in header
+
+
           },
           body: JSON.stringify(newCustomer)
         });
@@ -129,7 +141,9 @@ const CustomerManagement = () => {
         response = await fetch(`${BASE_URL}/api/customer`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Include token in header
+
           },
           body: JSON.stringify(newCustomer)
         });
@@ -156,7 +170,13 @@ const CustomerManagement = () => {
     try {
       const response = await fetch(`${BASE_URL}/api/customer/${customerId}`, {
         method: 'DELETE'
-      });
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${token}` // Include token in header
+        }
+      }
+    );
       if (!response.ok) {
         throw new Error('Failed to delete customer');
       }

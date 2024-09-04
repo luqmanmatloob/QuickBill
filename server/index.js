@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
+const authMiddleware = require('./middlewares/authMiddleware');
+
 
 
 // Load environment variables from .env file
@@ -12,6 +14,7 @@ require('dotenv').config();
 const settingRoute = require('./routes/settingRoute');
 const invoiceQuoteRoute = require('./routes/invoiceQuoteroute');
 const customerRoute = require('./routes/customerRoute');
+const userRoute = require('./routes/userRoute');
 
 
 // Initialize Express app
@@ -35,9 +38,10 @@ mongoose.connect(process.env.MONGODB_URI, {
   .catch(err => console.error(err));
 
 // Routes
-app.use('/api/settings', settingRoute);
-app.use('/api/invoicequote', invoiceQuoteRoute);
-app.use('/api/customer', customerRoute);
+app.use('/api/settings', authMiddleware, settingRoute);
+app.use('/api/invoicequote', authMiddleware, invoiceQuoteRoute);
+app.use('/api/customer', authMiddleware, customerRoute);
+app.use('/api/user', userRoute);
 
 // Start server
 app.listen(PORT, () => {

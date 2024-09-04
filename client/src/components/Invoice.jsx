@@ -16,6 +16,10 @@ const Invoice = () => {
 
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
+  const token = localStorage.getItem('token');
+
+
+
   const [subtotal, setSubtotal] = useState(0);
   const [totalTax, setTotalTax] = useState(0);
   const [grandTotal, setGrandTotal] = useState(0);
@@ -163,7 +167,13 @@ const Invoice = () => {
 
   // Fetch customer names on component mount
   useEffect(() => {
-    fetch(`${BASE_URL}/api/customer/names`)
+    fetch(`${BASE_URL}/api/customer/names`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}` // Include token in header
+        }
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -184,7 +194,14 @@ const Invoice = () => {
   // function to fetch settings for taxrate
   const fetchSettings = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/settings`);
+
+      const response = await fetch(`${BASE_URL}/api/settings`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}` // Include token in header
+          }
+        }
+      );
       if (!response.ok) {
         throw new Error('Failed to fetch settings');
       }
@@ -197,7 +214,13 @@ const Invoice = () => {
 
   // function to fetch and populate billing and shipping when user clicks on customer name
   const populateCustomer = (uniqueKey) => {
-    fetch(`${BASE_URL}/api/customer/details/${uniqueKey}`)
+    fetch(`${BASE_URL}/api/customer/details/${uniqueKey}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}` // Include token in header
+        }
+      }
+    )
       .then((response) => response.json())
       .then((data) => {
         // Extract relevant shipping and billing details from the customer data
@@ -485,7 +508,8 @@ const Invoice = () => {
         const response = await fetch(`${BASE_URL}/api/invoicequote/createInvoiceQuote`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
           },
           body: JSON.stringify(formData)
         });
@@ -531,7 +555,8 @@ const Invoice = () => {
       const response = await fetch(`${BASE_URL}/api/invoicequote/createInvoiceQuote`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
       });

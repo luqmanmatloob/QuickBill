@@ -3,7 +3,10 @@ import Papa from 'papaparse';
 import UploadPaymentsInstructions from './UploadPaymentsInstructions';
 
 const UploadPayments = () => {
+  
   const BASE_URL = process.env.REACT_APP_BASE_URL;
+  const token = localStorage.getItem('token');
+
   const [file, setFile] = useState(null);
   const [successfulUploads, setSuccessfulUploads] = useState([]);
   const [failedUploads, setFailedUploads] = useState([]);
@@ -82,7 +85,9 @@ const UploadPayments = () => {
           const response = await fetch(`${BASE_URL}/api/invoicequote/updatePayments`, {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}` // Include token in header
+
             },
             body: JSON.stringify(paymentData)
           });
@@ -124,7 +129,9 @@ const UploadPayments = () => {
       const response = await fetch(`${BASE_URL}/api/invoicequote/deletePayments`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Include token in header
+
         },
         body: JSON.stringify({ orderNumber })
       });

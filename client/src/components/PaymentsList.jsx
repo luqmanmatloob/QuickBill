@@ -5,6 +5,9 @@ import { Link } from 'react-router-dom';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
+const token = localStorage.getItem('token');
+
+
 const PaymentsList = () => {
   const [invoicesQuotes, setInvoicesQuotes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,7 +35,14 @@ const PaymentsList = () => {
   const fetchInvoicesQuotes = async () => {
     try {
       const queryParams = new URLSearchParams(filters).toString();
-      const response = await fetch(`${BASE_URL}/api/invoicequote/allInvoicesQuotes?${queryParams}`);
+      const response = await fetch(`${BASE_URL}/api/invoicequote/allInvoicesQuotes?${queryParams}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}` // Include token in header
+          }
+        },
+
+      );
 
       if (!response.ok) {
         throw new Error('Failed to fetch data');
@@ -60,7 +70,9 @@ const PaymentsList = () => {
       const response = await fetch(`${BASE_URL}/api/invoicequote/deleteInvoiceQuote`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Include token in header
+
         },
         body: JSON.stringify({ uniqueKey })
       });

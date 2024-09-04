@@ -5,6 +5,8 @@ import UploadOrdersInstructions from './UploadOrdersInstructions';
 
 const Upload = () => {
   const BASE_URL = process.env.REACT_APP_BASE_URL;
+  const token = localStorage.getItem('token');
+
   const [file, setFile] = useState(null);
   const [uploadedInvoices, setUploadedInvoices] = useState([]);
   const [invoicesQuotes, setInvoicesQuotes] = useState([]);
@@ -299,7 +301,9 @@ const Upload = () => {
         const response = await fetch(`${BASE_URL}/api/invoicequote/uploadCreateInvoiceQuote`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Include token in header
+
           },
           body: JSON.stringify(invoiceData)
         });
@@ -315,7 +319,9 @@ const Upload = () => {
         const customerResponse = await fetch(`${BASE_URL}/api/customer/uploadCustomer`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Include token in header
+
           },
           body: JSON.stringify(customerData)
         });
@@ -335,7 +341,9 @@ const Upload = () => {
       const response = await fetch(`${BASE_URL}/api/invoicequote/getInvoicesByUniqueKeys`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Include token in header
+
         },
         body: JSON.stringify({ uniqueKeys })
       });
@@ -361,7 +369,9 @@ const Upload = () => {
       const response = await fetch(`${BASE_URL}/api/invoicequote/deleteInvoiceQuote`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Include token in header
+
         },
         body: JSON.stringify({ uniqueKey })
       });
@@ -404,7 +414,9 @@ const Upload = () => {
       const response = await fetch(`${BASE_URL}/api/invoicequote/deleteMultipleInvoices`, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}` // Include token in header
+
         },
         body: JSON.stringify({ uniqueKeys })
       });

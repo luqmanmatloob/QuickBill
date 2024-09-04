@@ -26,6 +26,9 @@ const EditInvoiceQuote = ({ id }) => {
 
   const BASE_URL = process.env.REACT_APP_BASE_URL;
 
+  const token = localStorage.getItem('token');
+
+
   const [invoiceNoLbl, setinvoiceNoLbl] = useState('Invoice No');
 
   const [customers, setCustomers] = useState([]);
@@ -161,7 +164,12 @@ const EditInvoiceQuote = ({ id }) => {
     const fetchInvoiceQuote = async () => {
       try {
         const BASE_URL = process.env.REACT_APP_BASE_URL;
-        const response = await fetch(`${BASE_URL}/api/invoicequote/${id}`);
+        const response = await fetch(`${BASE_URL}/api/invoicequote/${id}`,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}` // Include token in header
+            }
+          });
 
         if (!response.ok) {
           throw new Error('Failed to fetch data');
@@ -300,7 +308,12 @@ const EditInvoiceQuote = ({ id }) => {
 
   // Fetch customer names on component mount
   useEffect(() => {
-    fetch(`${BASE_URL}/api/customer/names`)
+    fetch(`${BASE_URL}/api/customer/names`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}` // Include token in header
+        }
+      })
       .then((response) => response.json())
       .then((data) => {
         if (Array.isArray(data)) {
@@ -321,7 +334,12 @@ const EditInvoiceQuote = ({ id }) => {
   // function to fetch settings for taxrate
   const fetchSettings = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/settings`);
+      const response = await fetch(`${BASE_URL}/api/settings`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}` // Include token in header
+          }
+        });
       if (!response.ok) {
         throw new Error('Failed to fetch settings');
       }
@@ -334,7 +352,12 @@ const EditInvoiceQuote = ({ id }) => {
 
   // function to fetch and populate billing and shipping when user clicks on customer name
   const populateCustomer = (uniqueKey) => {
-    fetch(`${BASE_URL}/api/customer/details/${uniqueKey}`)
+    fetch(`${BASE_URL}/api/customer/details/${uniqueKey}`,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}` // Include token in header
+        }
+      })
       .then((response) => response.json())
       .then((data) => {
         // Extract relevant shipping and billing details from the customer data
@@ -617,7 +640,8 @@ const EditInvoiceQuote = ({ id }) => {
       const response = await fetch(`${BASE_URL}/api/invoicequote/${id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
       });
@@ -653,7 +677,8 @@ const EditInvoiceQuote = ({ id }) => {
       const response = await fetch(`${BASE_URL}/api/invoicequote/${id}`, {
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
       });

@@ -1,109 +1,94 @@
+// src/pages/LoginPage.js
+
 import React, { useState } from 'react';
 
-const AuthComponent = () => {
+const BASE_URL = process.env.REACT_APP_BASE_URL;
+
+const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  const BASE_URL = process.env.REACT_APP_BASE_URL;
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-  const register = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/auth/register`, {
+      const response = await fetch(`${BASE_URL}/api/user/login`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({ username, password }),
       });
-
-      if (!response.ok) {
-        throw new Error('Error registering user');
-      }
-
-      alert('User registered');
-    } catch (error) {
-      console.error(error);
-      alert('Error registering user');
-    }
-  };
-
-  const login = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/api/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password })
-      });
-
-      if (!response.ok) {
-        throw new Error('Error logging in');
-      }
 
       const data = await response.json();
-      setToken(data.token);
-      localStorage.setItem('token', data.token);
-      alert('User logged in');
-    } catch (error) {
-      console.error(error);
-      alert('Error logging in');
-    }
-  };
 
-  const changePassword = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/api/auth/change-password`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, oldPassword: password, newPassword })
-      });
+      if (response.ok) {
+        // Handle success (e.g., store token, redirect user)
+        setSuccess('Login successful!');
+        setError('');
+        // Save token to localStorage or context
+        localStorage.setItem('token', data.token);
 
-      if (!response.ok) {
-        throw new Error('Error changing password');
+        window.location.href = '/';
+
+
+
+        // Redirect to a different page or perform further actions
+      } else {
+        setError(data.message || 'Login failed');
+        setSuccess('');
       }
-
-      alert('Password changed');
     } catch (error) {
-      console.error(error);
-      alert('Error changing password');
+      setError('An error occurred');
+      setSuccess('');
     }
-  };
-
-  const logout = () => {
-    setToken(null);
-    localStorage.removeItem('token');
-    alert('User logged out');
   };
 
   return (
-    <div className="mx-auto mt-10 max-w-md rounded-lg bg-white p-6 shadow-md">
-      <h2 className="mb-6 text-center text-2xl font-bold">Auth Component</h2>
-      <div className="space-y-4">
-        <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} className="w-full rounded border border-gray-300 p-2" />
-        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full rounded border border-gray-300 p-2" />
-        <input type="password" placeholder="New Password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} className="w-full rounded border border-gray-300 p-2" />
-        <div className="flex flex-col space-y-2">
-          <button onClick={register} className="w-full rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">
-            Register
-          </button>
-          <button onClick={login} className="w-full rounded bg-green-500 px-4 py-2 text-white hover:bg-green-600">
+    <div className="ml-52 mt-28 flex justify-center items-center min-h-[80vh]">
+      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-xl border-gray-100 border-2">
+        <h1 className="text-2xl font-bold mb-4">Login</h1>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+        {success && <p className="text-green-500 mb-4">{success}</p>}
+        <form onSubmit={handleLogin}>
+          <div className="mb-4">
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              // className=" w-full p-2 border-2  border-gray-300 rounded-md shadow-sm"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              // className=" w-full p-2 border-2  border-gray-300 rounded-md shadow-sm"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-blue-500 text-white font-bold rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
             Login
           </button>
-          <button onClick={changePassword} className="w-full rounded bg-yellow-500 px-4 py-2 text-white hover:bg-yellow-600">
-            Change Password
-          </button>
-          <button onClick={logout} className="w-full rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600">
-            Logout
-          </button>
-        </div>
+        </form>
       </div>
     </div>
   );
 };
 
-export default AuthComponent;
+export default Login;

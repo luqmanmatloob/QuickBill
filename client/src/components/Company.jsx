@@ -28,7 +28,12 @@ const Company = () => {
 
   const fetchSettings = async () => {
     try {
-      const response = await fetch(`${BASE_URL}/api/settings`);
+      const token = localStorage.getItem('token'); 
+      const response = await fetch(`${BASE_URL}/api/settings`,{
+        headers: {
+          'Authorization': `Bearer ${token}` // Include token in header
+        }
+      });
       if (!response.ok) {
         throw new Error('Failed to fetch settings');
       }
