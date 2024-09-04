@@ -47,7 +47,7 @@ const Login = () => {
   };
 
   return (
-    <div className="ml-52 mt-28 flex justify-center items-center min-h-[80vh]">
+    <div className="ml-48 mt-28 flex justify-center items-center min-h-[80vh]">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-xl border-gray-100 border-2">
         <h1 className="text-2xl font-bold mb-4">Login</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}

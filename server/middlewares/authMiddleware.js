@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
-const secretKey = '234234234'; // Replace with your secret key
+require('dotenv').config();
+
+const secretKey = 'process.env.SECRET_KEY'; 
 
 module.exports = (req, res, next) => {
   // Use `req.headers` instead of `req.header` for consistent behavior
