@@ -62,7 +62,7 @@ const Login = () => {
               id="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              // className=" w-full p-2 border-2  border-gray-300 rounded-md shadow-sm"
+              className=" w-full p-2 border-2 border-gray-300 rounded-md shadow-sm"
               required
             />
           </div>
@@ -75,13 +75,13 @@ const Login = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              // className=" w-full p-2 border-2  border-gray-300 rounded-md shadow-sm"
+              className=" w-full p-2 border-2 border-gray-300 rounded-md shadow-sm"
               required
             />
           </div>
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-blue-500 text-white font-bold rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="mt-7 min-w-full rounded-md border-2 border-blue-300 bg-gradient-to-l from-blue-300 to-blue-200 px-4 py-2 font-bold text-gray-800 hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black"
           >
             Login
           </button>
