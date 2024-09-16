@@ -3,13 +3,82 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 const User = require('../models/userModel');
 
-const secretKey = 'process.env.SECRET_KEY'; 
+let secretKey = 'process.env.SECRET_KEY'; 
 
-// Controller function to handle login
+
+
+async function getJwtSecretKeyAppend() {
+  try {
+    const user = await User.findOne().exec();
+    if (user) {
+      return user.jwtSecretKeyAppend;
+    } else {
+      return null; // Return null if no user is found
+    }
+  } catch (error) {
+    console.error('Error fetching jwtSecretKeyAppend:', error);
+    throw error; // Rethrow error to be handled by the caller
+  }
+}
+
+
+
+
+// Controller function to handle login /old
+// exports.login = async (req, res) => {
+
+//   (async () => {
+//     let jwtSecretKeyAppend = await getJwtSecretKeyAppend();
+//     if (jwtSecretKeyAppend) {
+//       secretKey = `${process.env.SECRET_KEY}${jwtSecretKeyAppend}`;
+//     }
+//   })();
+  
+//   const { username, password } = req.body;
+
+//   try {
+//     // Check if any user document exists in the database
+//     const existingUser = await User.findOne({});
+
+//     if (!existingUser) {
+//       // No user exists, create a new default user
+//       const newUser = new User({ username: 'admin', password: '123' });
+//       await newUser.save();
+//       return res.status(201).json({ message: 'Default user created. Please login again.' });
+//     }
+
+//     // Find the user by the provided username
+//     const user = await User.findOne({ username });
+
+//     if (!user) {
+//       return res.status(401).json({ message: 'Invalid credentials' });
+//     }
+
+//     // Verify the password
+//     if (user.password !== password) {
+//       return res.status(401).json({ message: 'Invalid credentials' });
+//     }
+
+//     // Generate JWT token
+//     const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: '28d' });
+//     console.log(`secret key login controller ${secretKey}`)
+
+//     res.json({ token });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// };
+
+
+
 exports.login = async (req, res) => {
   const { username, password } = req.body;
 
   try {
+    // Fetch secret key append before the rest of the logic
+    const jwtSecretKeyAppend = await getJwtSecretKeyAppend();
+    const secretKey = `${process.env.SECRET_KEY}${jwtSecretKeyAppend || ''}`;
+
     // Check if any user document exists in the database
     const existingUser = await User.findOne({});
 
@@ -23,24 +92,19 @@ exports.login = async (req, res) => {
     // Find the user by the provided username
     const user = await User.findOne({ username });
 
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
-    }
-
-    // Verify the password
-    if (user.password !== password) {
+    if (!user || user.password !== password) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
     // Generate JWT token
-    const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: '7d' });
+    const token = jwt.sign({ id: user._id }, secretKey, { expiresIn: '28d' });
+    console.log(`Secret key in login controller: ${secretKey}`);
 
     res.json({ token });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
 };
-
 
 
 
@@ -132,3 +196,26 @@ exports.checkvalidity = async (req, res) => {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+
+// Controller finction for loggoing out from all devices by incrementing "jwtSecretKeyAppend" field in user collection which is appended with the secret key
+
+exports.logoutalldevices = async (req, res) => {
+  try {
+    // Find a user to get the current jwtSecretKeyAppend value
+    const user = await User.findOne().exec();
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Increment jwtSecretKeyAppend value
+    user.jwtSecretKeyAppend += 1;
+    await user.save();
+
+    res.json({ message: 'Logged out from all devices' });
+  } catch (error) {
+    console.error('Error logging out from all devices:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+

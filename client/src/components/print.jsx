@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { jsPDF } from 'jspdf';
 
 const Print = ({ id }) => {
+
+  const token = localStorage.getItem('token'); 
+
+
   const BASE_URL = process.env.REACT_APP_BASE_URL;
   const [gettingsetting, setgettingsetting] = useState(false);
   const [gettinginvoices, setgettinginvoices] = useState(false);
@@ -41,7 +45,13 @@ const Print = ({ id }) => {
   const fetchSettings = async () => {
     try {
       setgettingsetting(true);
-      const response = await fetch(`${BASE_URL}/api/settings`);
+      const response = await fetch(`${BASE_URL}/api/settings`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}` 
+          }
+        }
+      );
       if (!response.ok) {
         throw new Error('Failed to fetch settings');
       }
@@ -72,7 +82,10 @@ const Print = ({ id }) => {
       const response = await fetch(`${BASE_URL}/api/invoicequote/getByUniqueKeys`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+
+
         },
         body: JSON.stringify({ uniqueKeys: id })
       });
@@ -358,13 +371,13 @@ const Print = ({ id }) => {
 
       doc.setTextColor(200, 204, 203); //   border grey
       doc.setFontSize(17);
-      doc.text(`____________________________`, 15, totalsY + 51);
+      doc.text(`____________________________`, 15, totalsY + 53);
       doc.setTextColor(0, 0, 0); //  black
       doc.setFont('Helvetica', 'normal');
       doc.setFontSize(7);
       doc.setTextColor(80, 80, 80); //   Items grey
 
-      doc.text(`You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.`, 15, totalsY + 55, { maxWidth: 100 });
+      doc.text(`You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.`, 15, totalsY + 57, { maxWidth: 100 });
     });
 
     // Open the PDF in a new tab

@@ -18,4 +18,7 @@ router.put('/change-secretkey', authMiddleware, userController.changeSecretKey);
 // Protected route for checking token validity for front end so route them on login page
 router.put('/checkvalidity', authMiddleware, userController.checkvalidity);
 
+// Protected route for loggoing out from all devices by incrementing "jwtSecretKeyAppend" field in user collection which is appended with the secret key
+router.put('/logoutalldevices', authMiddleware, userController.logoutalldevices);
+
 module.exports = router;

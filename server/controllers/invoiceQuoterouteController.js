@@ -754,3 +754,81 @@ exports.deletePayments = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
+
+
+// exports.getNextOrderNumber = async (req, res) => {
+//   try {
+//       // Retrieve all documents and extract orderNumber values
+//       const invoices = await InvoiceOrQuote.find({}, 'orderNumber');
+      
+//       // Filter and extract numeric parts
+//       const numericOrderNumbers = invoices
+//           .map(invoice => invoice.orderNumber)
+//           .filter(orderNumber => {
+//               // Check if the orderNumber is purely numeric
+//               return !isNaN(parseInt(orderNumber, 10));
+//           })
+//           .map(orderNumber => parseInt(orderNumber, 10));
+
+//           console.log(`numericOrderNumbers ${numericOrderNumbers}`)
+      
+//       // Determine the next orderNumber
+//       let nextOrderNumber;
+//       if (numericOrderNumbers.length > 0) {
+//           // Find the highest numeric orderNumber
+//           const maxNumber = Math.max(...numericOrderNumbers);
+//           // Increment and format it with leading zeros
+//           const maxLength = Math.max(...numericOrderNumbers.map(num => num.toString().length));
+//           nextOrderNumber = (maxNumber + 1).toString().padStart(maxLength, '0');
+//       } else {
+//           // If no numeric orderNumbers exist, start from "001"
+//           nextOrderNumber = '001';
+//       }
+
+//       // Send the next orderNumber as a response
+//       res.status(200).json({ nextOrderNumber });
+//   } catch (error) {
+//       console.error('Error fetching the next order number:', error);
+//       res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
+
+
+
+
+
+// Controller function to get the next orderNumber
+exports.getNextOrderNumber = async (req, res) => {
+    try {
+        // Retrieve all documents and extract orderNumber values
+        const invoices = await InvoiceOrQuote.find({}, 'orderNumber');
+
+        // Filter and extract numeric parts
+        const numericOrderNumbers = invoices
+            .map(invoice => invoice.orderNumber)
+            .filter(orderNumber => /^[0-9]+$/.test(orderNumber)) // Regex to ensure it's purely numeric
+            .map(orderNumber => parseInt(orderNumber, 10));
+
+        // Determine the next orderNumber
+        let nextOrderNumber;
+        if (numericOrderNumbers.length > 0) {
+            // Find the highest numeric orderNumber
+            const maxNumber = Math.max(...numericOrderNumbers);
+            // Increment and format it with leading zeros
+            const maxLength = Math.max(...numericOrderNumbers.map(num => num.toString().length));
+            nextOrderNumber = (maxNumber + 1).toString().padStart(maxLength, '0');
+        } else {
+            // If no numeric orderNumbers exist, start from "001"
+            nextOrderNumber = '001';
+        }
+
+        // Send the next orderNumber as a response
+        res.status(200).json({ nextOrderNumber });
+    } catch (error) {
+        console.error('Error fetching the next order number:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+

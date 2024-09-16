@@ -16,6 +16,12 @@ const userSchema = new mongoose.Schema({
     required: true,
     default: '123', // Default security answer 1
   },
+  
+  jwtSecretKeyAppend: {
+    type: Number,
+    required: true,
+    default: '1', // Default security answer 1
+  },
 
 });
 

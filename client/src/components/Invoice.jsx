@@ -4,6 +4,8 @@ import Company from './Company';
 import { useState, useEffect, useRef } from 'react';
 import { useReactToPrint } from 'react-to-print';
 
+import {getNextOrderNumber} from './helpers/helperFunctions'
+
 import { RiArrowDropDownLine } from 'react-icons/ri';
 import { FaPlus } from 'react-icons/fa6';
 import { TiTick } from 'react-icons/ti';
@@ -150,6 +152,34 @@ const Invoice = () => {
   });
 
   // ##############################################
+
+
+
+// to populate invoiceNumber/orderNumber with next order number after highest existing highest number
+  useEffect(() => {
+    const fetchOrderNumber = async () => {
+      console.log('fetching next invoice number is running ')
+      try {
+        const nextOrderNumber = await getNextOrderNumber(BASE_URL, token);
+        // console.log( ` nextorder number ${nextOrderNumber}`)
+
+        const updatedFormData = {
+          ...formData,
+          orderNumber: nextOrderNumber,
+        };
+        setFormData(updatedFormData);
+      
+    
+      } catch (error) {
+        console.error('Error fetching the next order number:', error);
+      }
+    };
+
+    fetchOrderNumber();
+  }, []);
+
+
+
 
   // to toggle invoice and quote in dropdown
   useEffect(() => {

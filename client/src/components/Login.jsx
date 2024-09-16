@@ -1,6 +1,7 @@
 // src/pages/LoginPage.js
 
 import React, { useState } from 'react';
+import InfoPopup from './shared/InfoPopup'
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -31,7 +32,13 @@ const Login = () => {
         // Save token to localStorage or context
         localStorage.setItem('token', data.token);
 
-        window.location.href = '/';
+        alert('loggedin successfully')
+
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+
+
 
 
 
@@ -49,7 +56,10 @@ const Login = () => {
   return (
     <div className="ml-48 mt-28 flex justify-center items-center min-h-[80vh]">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-xl border-gray-100 border-2">
-        <h1 className="text-2xl font-bold mb-4">Login</h1>
+        <div className='flex items-center justify-between mr-1'>
+          <h1 className="text-2xl font-bold mb-4">Login</h1>
+          <InfoPopup text="User name is case sensitive and Username must not contain any spaces." />
+        </div>
         {error && <p className="text-red-500 mb-4">{error}</p>}
         {success && <p className="text-green-500 mb-4">{success}</p>}
         <form onSubmit={handleLogin}>

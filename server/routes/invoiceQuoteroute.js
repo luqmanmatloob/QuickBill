@@ -11,6 +11,7 @@ const {
     updatePayments,
     deletePayments,
     uploadCreateInvoiceQuote,
+    getNextOrderNumber,
     
 
 } = require('../controllers/invoiceQuoterouteController');
@@ -48,6 +49,9 @@ router.post('/updatePayments', updatePayments);
 
 // Route to delete payments
 router.delete('/deletePayments', deletePayments);
+
+// Get next order number 
+router.post('/getNextOrderNumber', getNextOrderNumber);
 
 
 

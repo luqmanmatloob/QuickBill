@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import InfoPopup from './shared/InfoPopup ';
+import InfoPopup from './shared/InfoPopup';
+import LogoutAllButton from './LogoutAllButton';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -25,7 +26,7 @@ const AccountSettings = () => {
     e.preventDefault();
 
     try {
-      const secretKey =userSecretKey
+      const secretKey = userSecretKey
       const response = await fetch(`${BASE_URL}/api/user/change-username`, {
         method: 'PUT',
         headers: {
@@ -125,6 +126,9 @@ const AccountSettings = () => {
   return (
     <div className="ml-48 mt-28 flex flex-col items-center space-y-8">
 
+      <div className='mx-auto flex items-center justify-center'>
+                  <LogoutAllButton />
+      </div>
       {/* Change Username Form */}
       <div className="w-full max-w-md p-6 bg-white shadow-md rounded-lg">
         <h2 className="text-2xl font-semibold mb-4">Change Username</h2>

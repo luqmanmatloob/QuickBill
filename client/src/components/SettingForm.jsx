@@ -3,6 +3,8 @@ import LoadingSkeleton2 from './LoadingSkeletons/LoadingSkeleton2';
 
 const SettingForm = () => {
   const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem('token'); 
+
   const [settings, setSettings] = useState({
     companyName: '',
     phoneNumber: '',
@@ -29,7 +31,7 @@ const SettingForm = () => {
 
   const fetchSettings = async () => {
     try {
-      const token = localStorage.getItem('token'); 
+
       const response = await fetch(`${BASE_URL}/api/settings`, {
         headers: {
           'Authorization': `Bearer ${token}` // Include token in header
@@ -92,6 +94,10 @@ const SettingForm = () => {
       await fetch(`${BASE_URL}/api/settings/upload`, {
         // Update URL to match image upload endpoint
         method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        
         body: formData
       });
       alert('Settings updated successfully!');
