@@ -25,6 +25,8 @@ const LogoutAllButton = () => {
       console.error('Error logging out from all devices:', error);
       alert('An unexpected error occurred.');
     }
+    window.location.href = '/login';
+
   };
 
   return (
@@ -35,7 +37,7 @@ const LogoutAllButton = () => {
       >
         Logout All
       </button>
-      <InfoPopup text="This will log you out from all the devices where you are currently logged in" />
+      <InfoPopup text="This will log you out from all the devices where you are currently logged in." />
     </div>
   );
 };
