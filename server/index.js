@@ -4,7 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const authMiddleware = require('./middlewares/authMiddleware');
-
+const createAdminUser = require('./seeding/seedadmin');
 
 
 // Load environment variables from .env file
@@ -36,6 +36,14 @@ mongoose.connect(process.env.MONGODB_URI, {
     useUnifiedTopology: true,
 }).then(() => console.log('MongoDB connected'))
   .catch(err => console.error(err));
+
+
+
+// seeding admin
+createAdminUser();
+
+
+
 
 // Routes
 app.use('/api/settings', authMiddleware, settingRoute);
