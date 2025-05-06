@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const authMiddleware = require('./middlewares/authMiddleware');
 const createAdminUser = require('./seeding/seedadmin');
+const createSettingSeed = require('./seeding/createSettingSeed');
 
 
 // Load environment variables from .env file
@@ -40,6 +41,8 @@ mongoose.connect(process.env.MONGODB_URI, {
 // seeding
   createAdminUser();
 }).catch(err => console.error('❌ MongoDB connection error:', err));
+
+createSettingSeed();
 
 
 
