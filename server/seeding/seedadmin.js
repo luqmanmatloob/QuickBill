@@ -12,10 +12,10 @@ const createAdminUser = async () => {
             const adminUser = new User({
                 username: 'admin',
                 password: 123, // FIX: Use hashed password
-                secretKey: '123',
+                secretKey: '123', 
                 jwtSecretKeyAppend: 1
             });
-
+// this is suhayb's comment
             await adminUser.save();
             console.log('✅ Admin user created successfully.');
         } else {
