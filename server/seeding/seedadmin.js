@@ -15,7 +15,7 @@ const createAdminUser = async () => {
                 secretKey: '123', 
                 jwtSecretKeyAppend: 1
             });
-// this is suhayb's comment
+// this is suhayb's comment updated
             await adminUser.save();
             console.log('✅ Admin user created successfully.');
         } else {
