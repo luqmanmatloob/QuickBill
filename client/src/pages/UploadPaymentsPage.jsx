@@ -3,9 +3,7 @@ import UploadPayments from '../components/UploadPayments';
 
 const UploadPaymentsPage = () => {
   return (
-    <div>
-      <UploadPayments />
-    </div>
+    <UploadPayments />
   );
 };
 

@@ -3,9 +3,7 @@ import SettingForm from '../components/SettingForm';
 
 const Settings = () => {
   return (
-    <div>
-      <SettingForm />
-    </div>
+    <SettingForm />
   );
 };
 

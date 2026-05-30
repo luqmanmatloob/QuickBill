@@ -108,79 +108,88 @@ const SettingForm = () => {
   };
 
   return (
-    <div className="ml-56 mt-28">
-      <div className="mx-auto my-5 max-w-lg rounded-lg border-2 border-solid border-[#f1f1f1] border-b-slate-300 border-l-[#d1e4f5] border-r-[#d1e4f5] bg-white p-8 shadow-2xl">
-        <h2 className="mb-6 text-2xl font-semibold">Settings</h2>
+    <div className="mx-auto max-w-7xl space-y-6 p-6">
+      <div className="mx-auto max-w-3xl rounded-2xl border-2 border-[#6D8196] bg-[#F8FAFC] p-6 lg:p-8 shadow-lg">
+        <h2 className="mb-6 text-3xl font-bold text-[#384959]">Settings</h2>
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-wrap gap-10">
-            {loading && (
-              <div className="min-w-[500px]">
-                <LoadingSkeleton2 />
-                <LoadingSkeleton2 />
+          {loading && (
+            <div className="space-y-4">
+              <LoadingSkeleton2 />
+              <LoadingSkeleton2 />
+            </div>
+          )}
+          {!loading && (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+              <div>
+                <label className="block text-sm font-semibold text-[#384959] mb-2">
+                  Company Name:
+                </label>
+                <input type="text" name="companyName" value={settings.companyName} onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
               </div>
-            )}
-            {!loading && (
-              <div className="flex gap-14">
-                <div className="flex flex-col gap-6">
-                  <label>
-                    <span className="text-gray-700">Company Name:</span>
-                    <input type="text" name="companyName" value={settings.companyName} onChange={handleChange} className="mt-1 block w-full rounded-md border p-2 shadow-sm focus:border-blue-500 focus:outline-none" />
-                  </label>
-                  <label>
-                    <span className="text-gray-700">Phone Number:</span>
-                    <input type="text" name="phoneNumber" value={settings.phoneNumber} onChange={handleChange} className="mt-1 block w-full rounded-md border p-2 shadow-sm focus:border-blue-500 focus:outline-none" />
-                  </label>
-                  <label>
-                    <span className="text-gray-700">Address:</span>
-                    <input type="text" name="address" value={settings.address} onChange={handleChange} className="mt-1 block w-full rounded-md border p-2 shadow-sm focus:border-blue-500 focus:outline-none" />
-                  </label>
-                  <label>
-                    <span className="text-gray-700">City:</span>
-                    <input type="text" name="city" value={settings.city} onChange={handleChange} className="mt-1 block w-full rounded-md border p-2 shadow-sm focus:border-blue-500 focus:outline-none" />
-                  </label>
-                </div>
-                <div className="flex flex-col gap-6">
-                  <label>
-                    <span className="text-gray-700">State:</span>
-                    <input type="text" name="state" value={settings.state} onChange={handleChange} className="mt-1 block w-full rounded-md border p-2 shadow-sm focus:border-blue-500 focus:outline-none" />
-                  </label>
-                  <label>
-                    <span className="text-gray-700">Country:</span>
-                    <input type="text" name="country" value={settings.country} onChange={handleChange} className="mt-1 block w-full rounded-md border p-2 shadow-sm focus:border-blue-500 focus:outline-none" />
-                  </label>
-                  <label>
-                    <span className="text-gray-700">URL:</span>
-                    <input type="text" name="url" value={settings.url} onChange={handleChange} className="mt-1 block w-full rounded-md border p-2 shadow-sm focus:border-blue-500 focus:outline-none" />
-                  </label>
-                  <label>
-                    <span className="text-gray-700">Tax Rate:</span>
-                    <input type="number" name="taxRate" value={settings.taxRate} onChange={handleChange} className="mt-1 block w-full rounded-md border p-2 shadow-sm focus:border-blue-500 focus:outline-none" />
-                  </label>
-                </div>
+              <div>
+                <label className="block text-sm font-semibold text-[#384959] mb-2">
+                  Phone Number:
+                </label>
+                <input type="text" name="phoneNumber" value={settings.phoneNumber} onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
               </div>
-            )}
-          </div>
+              <div>
+                <label className="block text-sm font-semibold text-[#384959] mb-2">
+                  Address:
+                </label>
+                <input type="text" name="address" value={settings.address} onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-[#384959] mb-2">
+                  City:
+                </label>
+                <input type="text" name="city" value={settings.city} onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-[#384959] mb-2">
+                  State:
+                </label>
+                <input type="text" name="state" value={settings.state} onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-[#384959] mb-2">
+                  Country:
+                </label>
+                <input type="text" name="country" value={settings.country} onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-[#384959] mb-2">
+                  URL:
+                </label>
+                <input type="text" name="url" value={settings.url} onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-[#384959] mb-2">
+                  Tax Rate:
+                </label>
+                <input type="number" name="taxRate" value={settings.taxRate} onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+              </div>
+            </div>
+          )}
 
           {/* New field for image upload */}
           <div className="mt-6">
-            <label>
-              <span className="text-gray-700">Upload Logo:</span> <span className="text-sm text-red-400">{`(jpeg format, 55x25)`}</span>
-              <input type="file" onChange={handleFileChange} className="mt-1 block w-full rounded-md border p-2 shadow-sm focus:border-blue-500 focus:outline-none" />
+            <label className="block text-sm font-semibold text-[#384959] mb-2">
+              Upload Logo: <span className="text-sm font-normal text-red-400">(jpeg format, 55x25)</span>
             </label>
+            <input type="file" onChange={handleFileChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
             {settings.imageUrl && (
               <div className="mt-4">
-                <img src={`${BASE_URL}/${settings.imageUrl}`} alt="Setting Image" className="h-auto w-full rounded-md border" />
+                <img src={`${BASE_URL}/${settings.imageUrl}`} alt="Company Logo" className="h-auto w-full rounded-xl border-2 border-[#6D8196]" />
               </div>
             )}
           </div>
-          <div className="mt- w-full">
-            <button type="submit" className="mt-7 min-w-full rounded-md border-2 border-blue-300 bg-gradient-to-l from-blue-300 to-blue-200 px-4 py-2 font-bold text-gray-800 hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black">
+          <div className="mt-6">
+            <button type="submit" className="w-full rounded-lg bg-gradient-to-r from-[#6A89A7] to-[#88BDF2] px-6 py-2.5 font-semibold text-white hover:from-[#88BDF2] hover:to-[#6A89A7] transition-colors duration-200">
               Update
             </button>
           </div>
         </form>
       </div>
-      <div className="h-[50vh]"></div>
     </div>
   );
 };

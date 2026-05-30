@@ -30,14 +30,20 @@ const customerSchema = new mongoose.Schema({
 
 customerSchema.pre('save', async function(next) {
   try {
-    if (!this.uniqueKey) {
-      const Customer = mongoose.model('Customer', customerSchema); // Ensure correct model name
-      const maxCustomer = await Customer.findOne({}, {}, { sort: { 'uniqueKey': -1 } });
-      const newUniqueKey = maxCustomer ? maxCustomer.uniqueKey + 1 : 1;
-      this.uniqueKey = newUniqueKey;
+    if (!this.uniqueKey || this.uniqueKey === 0) {
+      const Customer = mongoose.model('Customer', customerSchema);
+      try {
+        const maxCustomer = await Customer.findOne({}, {}, { sort: { 'uniqueKey': -1 } });
+        const newUniqueKey = maxCustomer ? maxCustomer.uniqueKey + 1 : 1;
+        this.uniqueKey = newUniqueKey;
+      } catch (dbError) {
+        console.error('Error finding max uniqueKey:', dbError);
+        this.uniqueKey = Date.now(); // Fallback to timestamp if query fails
+      }
     }
     next();
   } catch (err) {
+    console.error('Error in pre-save hook:', err);
     next(err);
   }
 });

@@ -3,9 +3,7 @@ import PaymentsList from '../components/PaymentsList';
 
 const PaymentsListPage = () => {
   return (
-    <div>
-      <PaymentsList />
-    </div>
+    <PaymentsList />
   );
 };
 
