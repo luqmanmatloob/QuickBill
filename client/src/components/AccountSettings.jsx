@@ -124,17 +124,17 @@ const AccountSettings = () => {
 
 
   return (
-    <div className="ml-48 mt-28 flex flex-col items-center space-y-8">
-
-      <div className='mx-auto flex items-center justify-center'>
-                  <LogoutAllButton />
+    <div className="mx-auto max-w-7xl space-y-6 p-6">
+      <div className="flex justify-center">
+        <LogoutAllButton />
       </div>
+      
       {/* Change Username Form */}
-      <div className="w-full max-w-md p-6 bg-white shadow-md rounded-lg">
-        <h2 className="text-2xl font-semibold mb-4">Change Username</h2>
-        <form onSubmit={handleChangeUsername} className="space-y-4">
+      <div className="rounded-2xl border-2 border-[#6D8196] bg-[#F8FAFC] p-6 lg:p-8 shadow-lg">
+        <h2 className="mb-6 text-2xl font-bold text-[#384959]">Change Username</h2>
+        <form onSubmit={handleChangeUsername} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-[#384959] mb-2">
               Secret Key
             </label>
             <input
@@ -142,11 +142,11 @@ const AccountSettings = () => {
               value={userSecretKey}
               onChange={(e) => setUserSecretKey(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-[#384959] mb-2">
               New Username
             </label>
             <input
@@ -154,12 +154,12 @@ const AccountSettings = () => {
               value={newUsername}
               onChange={(e) => setNewUsername(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none"
             />
           </div>
           <button
             type="submit"
-            className="mt-7 min-w-full rounded-md border-2 border-blue-300 bg-gradient-to-l from-blue-300 to-blue-200 px-4 py-2 font-bold text-gray-800 hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black"
+            className="w-full rounded-lg bg-gradient-to-r from-[#6A89A7] to-[#88BDF2] px-6 py-2.5 font-semibold text-white hover:from-[#88BDF2] hover:to-[#6A89A7] transition-colors duration-200"
           >
             Change Username
           </button>
@@ -172,11 +172,11 @@ const AccountSettings = () => {
 
 
       {/* Change Password Form */}
-      <div className="w-full max-w-md p-6 bg-white shadow-md rounded-lg">
-        <h2 className="text-2xl font-semibold mb-4">Change Password</h2>
-        <form onSubmit={handleChangePassword} className="space-y-4">
+      <div className="rounded-2xl border-2 border-[#6D8196] bg-[#F8FAFC] p-6 lg:p-8 shadow-lg">
+        <h2 className="mb-6 text-2xl font-bold text-[#384959]">Change Password</h2>
+        <form onSubmit={handleChangePassword} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-[#384959] mb-2">
               Secret Key
             </label>
             <input
@@ -184,11 +184,11 @@ const AccountSettings = () => {
               value={secretKey}
               onChange={(e) => setSecretKey(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-[#384959] mb-2">
               New Password
             </label>
             <input
@@ -196,11 +196,11 @@ const AccountSettings = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-[#384959] mb-2">
               Confirm New Password
             </label>
             <input
@@ -208,12 +208,12 @@ const AccountSettings = () => {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none"
             />
           </div>
           <button
             type="submit"
-            className="mt-7 min-w-full rounded-md border-2 border-blue-300 bg-gradient-to-l from-blue-300 to-blue-200 px-4 py-2 font-bold text-gray-800 hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black"
+            className="w-full rounded-lg bg-gradient-to-r from-[#6A89A7] to-[#88BDF2] px-6 py-2.5 font-semibold text-white hover:from-[#88BDF2] hover:to-[#6A89A7] transition-colors duration-200"
           >
             Change Password
           </button>
@@ -224,17 +224,16 @@ const AccountSettings = () => {
 
 
       {/* Change Secret Key Form */}
-      <div className="w-full max-w-md p-6 bg-white shadow-md rounded-lg">
-        <div className='flex items-center justify-between mr-2 gap-2 mb-4'>
-          <h2 className="text-2xl font-semibold mb-">Change Secret Key</h2>
-          <div className='mt-2'>
+      <div className="rounded-2xl border-2 border-[#6D8196] bg-[#F8FAFC] p-6 lg:p-8 shadow-lg">
+        <div className="mb-6 flex items-center justify-between gap-4">
+          <h2 className="text-2xl font-bold text-[#384959]">Change Secret Key</h2>
+          <div>
             <InfoPopup text="The secret key which you set up is crucial for resetting your username and password. Please make sure to remember it, as it cannot be recovered if forgotten." />
           </div>
-
         </div>
-        <form onSubmit={handleChangeSecretKey} className="space-y-4">
+        <form onSubmit={handleChangeSecretKey} className="space-y-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-[#384959] mb-2">
               Old Secret Key
             </label>
             <input
@@ -242,11 +241,11 @@ const AccountSettings = () => {
               value={oldSecretKey}
               onChange={(e) => setOldSecretKey(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-semibold text-[#384959] mb-2">
               New Secret Key
             </label>
             <input
@@ -254,12 +253,12 @@ const AccountSettings = () => {
               value={newSecretKey}
               onChange={(e) => setNewSecretKey(e.target.value)}
               required
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none"
             />
           </div>
           <button
             type="submit"
-            className="mt-7 min-w-full rounded-md border-2 border-blue-300 bg-gradient-to-l from-blue-300 to-blue-200 px-4 py-2 font-bold text-gray-800 hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black"
+            className="w-full rounded-lg bg-gradient-to-r from-[#6A89A7] to-[#88BDF2] px-6 py-2.5 font-semibold text-white hover:from-[#88BDF2] hover:to-[#6A89A7] transition-colors duration-200"
           >
             Change Secret Key
           </button>
@@ -273,9 +272,9 @@ const AccountSettings = () => {
 
 
       {(message || error) && (
-        <div className='sticky bottom-10 right-auto left-auto bg-blue-200 rounded-xl min-w-[400px] pb-3 flex flex-col items-center justify-center shadow-xl border-2 border-blue-300'>
-          {message && <p className="text-green-500 mt-4">{message}</p>}
-          {error && <p className="text-red-500 mt-4">{error}</p>}
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 rounded-xl border-2 border-[#6D8196] bg-[#BDDDFC] p-4 shadow-xl">
+          {message && <p className="text-sm font-medium text-[#88BDF2]">{message}</p>}
+          {error && <p className="text-sm font-medium text-red-500">{error}</p>}
         </div>
       )}
 

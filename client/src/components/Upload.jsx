@@ -431,99 +431,78 @@ const Upload = () => {
   };
 
   return (
-    <div className="ml-56 mt-28">
-      <div className="m-10 mb-[70vh]">
-
-
-
-
-
-        <div className="mx-auto mt-8 flex max-w-3xl items-center justify-center rounded-md border-2 border-[#f1f1f1] border-b-[#c2d6e7] border-t-[#c2d6e7] bg-white p-4 py-8 shadow-xl">
-          <input type="file" accept=".csv" onChange={handleFileChange} className="" />
+    <div className="mx-auto max-w-7xl space-y-6 p-6">
+      <div className="rounded-2xl border-2 border-[#6D8196] bg-[#F8FAFC] p-6 lg:p-8 shadow-lg">
+        <div className="mx-auto flex max-w-3xl items-center justify-center gap-4">
+          <input type="file" accept=".csv" onChange={handleFileChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
           <button onClick={handleParseAndSubmit}
-            className="
-          rounded-md border-2 border-blue-300 bg-gradient-to-r from-blue-300 to-blue-200 px-8 py-2 font-bold text-black hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black
-          ">
-            OK
+            className="rounded-lg bg-gradient-to-r from-[#6A89A7] to-[#88BDF2] px-6 py-2.5 font-semibold text-white hover:from-[#88BDF2] hover:to-[#6A89A7] transition-colors duration-200"
+          >
+            Upload
           </button>
-
-
         </div>
+      </div>
 
-        <div className="mt-20 rounded-md border-2 border-[#f1f1f1] border-l-[#c5d9eb] border-r-[#c5d9eb] p-5 shadow-2xl">
-          <div className="mb-5 flex items-center justify-between">
-            <h1 className="font-Josefin-Sans text-3xl font-bold text-[#3952ac]">Invoices/Quotes</h1>
-
-
-
-            <div className='flex items-center justify-between gap-3'>
-
+        <div className="rounded-2xl border-2 border-[#6D8196] bg-[#F8FAFC] p-6 lg:p-8 shadow-lg">
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h1 className="text-3xl font-bold text-[#384959]">Invoices/Quotes</h1>
+            <div className="flex flex-wrap items-center gap-3">
               <div>
-                <button onClick={handleToggle} className='rounded-md  py-2  font-semibold text-blue-400 underline hover:text-blue-500'>
+                <button onClick={handleToggle} className="rounded-lg px-4 py-2 font-semibold text-[#6A89A7] hover:text-[#384959] transition-colors duration-200">
                   File Format?
                 </button>
-
-                {/* Conditional rendering */}
                 {toggleUploadOrdersInstructions &&
-                  <div>
+                  <div className="mt-4">
                     <UploadOrdersInstructions>
-                      <button onClick={handleToggle} className='rounded-md border-2 border-blue-300 bg-gradient-to-r from-blue-300 to-blue-200 px-4 py-2 font-bold text-black hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black
-                '>
+                      <button onClick={handleToggle} className="rounded-lg border-2 border-[#6A89A7] px-4 py-2 font-semibold text-[#6A89A7] hover:bg-[#6A89A7] hover:text-white transition-colors duration-200">
                         X
                       </button>
                     </UploadOrdersInstructions>
                   </div>}
               </div>
-
-
-              <button onClick={cancel} className="hover:red rounded border-[1px] border-red-500 px-4 py-1 font-bold text-red-600 hover:bg-red-100 hover:text-red-500">
+              <button onClick={cancel} className="rounded-lg border-2 border-red-400 px-4 py-2 font-semibold text-red-400 hover:bg-red-400 hover:text-white transition-colors duration-200">
                 Cancel
               </button>
-              <button onClick={handleSave} className="no-print my-3 rounded border-[1px] border-blue-500 bg-transparent px-[20px] py-[5px] font-bold text-blue-700 hover:bg-blue-100 hover:text-black">
+              <button onClick={handleSave} className="rounded-lg border-2 border-[#6A89A7] px-6 py-2.5 font-semibold text-[#6A89A7] hover:bg-[#6A89A7] hover:text-white transition-colors duration-200">
                 Save All
               </button>
             </div>
           </div>
-          {success && <div className="my-4 rounded bg-green-200 px-4 py-2 text-green-800">{success}</div>}
+          {success && <div className="mb-4 rounded-xl bg-[#BDDDFC] px-6 py-4 text-center text-[#88BDF2]">{success}</div>}
+          {loading && <div className="mb-4 rounded-xl bg-[#BDDDFC] px-6 py-4 text-center text-[#384959]">Processing invoice number {creatingInvoiceNumber}...</div>}
 
-          {loading && <div className="my-4 rounded bg-green-200 px-4 py-2 text-green-800">{` Processing invoice number ${creatingInvoiceNumber} ... `}</div>}
-
-          <div className="overflow-x-auto">
-            <table className="min-w-full border border-blue-200">
-              <thead className="rounded-lg">
-                <tr className="rounded-md bg-blue-50 py-20">
-                  {/* <th className="py-2 px-4 border-b">Unique Key</th> */}
-                  <th className="border-b px-4 py-2">Order Number</th>
-                  <th className="border-b px-4 py-2">Date Ordered</th>
-                  <th className="border-b px-4 py-2">Date Due</th>
-                  <th className="border-b px-4 py-2">Billing</th>
-                  <th className="border-b px-4 py-2">Shipping</th>
-                  <th className="border-b px-4 py-2">Order Total</th>
-                  <th className="border-b px-4 py-2">Actions</th>
+          <div className="overflow-x-auto rounded-xl border-2 border-[#6D8196]">
+            <table className="min-w-full bg-white">
+              <thead>
+                <tr className="bg-[#BDDDFC]">
+                  <th className="border-b border-[#6D8196] px-4 py-3 text-left text-sm font-semibold text-[#384959]">Order Number</th>
+                  <th className="border-b border-[#6D8196] px-4 py-3 text-left text-sm font-semibold text-[#384959]">Date Ordered</th>
+                  <th className="border-b border-[#6D8196] px-4 py-3 text-left text-sm font-semibold text-[#384959]">Date Due</th>
+                  <th className="border-b border-[#6D8196] px-4 py-3 text-left text-sm font-semibold text-[#384959]">Billing</th>
+                  <th className="border-b border-[#6D8196] px-4 py-3 text-left text-sm font-semibold text-[#384959]">Shipping</th>
+                  <th className="border-b border-[#6D8196] px-4 py-3 text-left text-sm font-semibold text-[#384959]">Order Total</th>
+                  <th className="border-b border-[#6D8196] px-4 py-3 text-left text-sm font-semibold text-[#384959]">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {invoicesQuotes.map((invoice, index) => (
-                  <tr key={invoice.uniqueKey} className={`bg-white text-center ${index % 2 === 0 ? '' : 'bg-[#f1f1f1]'}`}>
-                    {/* <td className="py-2 px-4 border-b">{invoice.uniqueKey}</td> */}
-                    <td className="border-b px-4 py-2">{invoice.orderNumber}</td>
-                    <td className="border-b px-4 py-2">{formatDate(invoice.dateOrdered)}</td>
-                    <td className="border-b px-4 py-2">{formatDate(invoice.dateDue)}</td>
-                    <td className="border-b px-4 py-2">
+                  <tr key={invoice.uniqueKey} className={`border-t border-[#6D8196] hover:bg-[#BDDDFC] transition-colors duration-200 ${index % 2 === 0 ? '' : 'bg-[#BDDDFC]'}`}>
+                    <td className="px-4 py-3 text-sm text-[#384959]">{invoice.orderNumber}</td>
+                    <td className="px-4 py-3 text-sm text-[#384959]">{formatDate(invoice.dateOrdered)}</td>
+                    <td className="px-4 py-3 text-sm text-[#384959]">{formatDate(invoice.dateDue)}</td>
+                    <td className="px-4 py-3 text-sm text-[#384959]">
                       {invoice.billingAddress}, {invoice.billingCity}
                     </td>
-                    <td className="border-b px-4 py-2">
+                    <td className="px-4 py-3 text-sm text-[#384959]">
                       {invoice.shippingAddress}, {invoice.shippingCity}
                     </td>
-                    <td className="border-b px-4 py-2">${invoice.orderTotal.toFixed(2)}</td>
-                    <td className="border-b px-4 py-2">
-                      <div className="flex flex-wrap items-center justify-center">
-                        <button onClick={() => handleDelete(invoice.uniqueKey)} className="hover:red m-1 rounded border-[1px] border-red-500 px-4 py-1 font-bold text-red-600 hover:bg-red-100 hover:text-red-500">
+                    <td className="px-4 py-3 text-sm font-semibold text-[#384959]">${invoice.orderTotal.toFixed(2)}</td>
+                    <td className="px-4 py-3">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <button onClick={() => handleDelete(invoice.uniqueKey)} className="rounded-lg border-2 border-red-400 px-4 py-2 text-sm font-semibold text-red-400 hover:bg-red-400 hover:text-white transition-colors duration-200">
                           Delete
                         </button>
-
-                        <Link to={`/Edit/${invoice.uniqueKey}`} target="_blank" className="no-print my-3 rounded border-[1px] border-blue-500 bg-transparent px-[20px] py-[5px] font-bold text-blue-700 hover:bg-blue-100 hover:text-black">
-                          {' '}
+                        <Link to={`/Edit/${invoice.uniqueKey}`} target="_blank" className="rounded-lg border-2 border-[#6A89A7] px-4 py-2 text-sm font-semibold text-[#6A89A7] hover:bg-[#6A89A7] hover:text-white transition-colors duration-200">
                           Edit
                         </Link>
                       </div>
@@ -535,7 +514,6 @@ const Upload = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

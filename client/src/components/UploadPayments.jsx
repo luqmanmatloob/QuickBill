@@ -148,56 +148,53 @@ const UploadPayments = () => {
   };
 
   return (
-    <div className="ml-56 mt-28">
-      <div className="m-10 mb-[70vh]">
-        <div className="mx-auto mt-8 flex max-w-3xl items-center justify-center rounded-md border-2 border-[#f1f1f1] border-b-[#c2d6e7] border-t-[#c2d6e7] bg-white p-4 py-8 shadow-xl">
-          <input type="file" accept=".csv" onChange={handleFileChange} />
-          <button onClick={handleParseAndSubmit} className="rounded-md border-2 border-blue-300 bg-gradient-to-r from-blue-300 to-blue-200 px-8 py-2 font-bold text-black hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black">
+    <div className="mx-auto max-w-7xl space-y-6 p-6">
+      <div className="rounded-2xl border border-[#E4E7EB] bg-white p-6 lg:p-8 shadow-lg">
+        <div className="mx-auto flex max-w-3xl items-center justify-center gap-4">
+          <input type="file" accept=".csv" onChange={handleFileChange} className="w-full rounded-lg border-2 border-[#E4E7EB] px-4 py-2.5 text-[#0F172A] focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 transition-all duration-200 outline-none" />
+          <button onClick={handleParseAndSubmit} className="rounded-lg bg-[#059669] px-6 py-2.5 font-semibold text-white hover:bg-[#047857] transition-colors duration-200">
             Upload
           </button>
         </div>
+      </div>
 
-        <div className="mt-20 rounded-md border-2 border-[#f1f1f1] border-l-[#c5d9eb] border-r-[#c5d9eb] p-5 shadow-2xl">
-          <div className="mb-5 flex w-full items-center justify-between">
-            <h1 className="font-Josefin-Sans text-3xl font-bold text-[#3952ac]">Payments</h1>
-            <div className='mr-5'>
-                <button onClick={handleToggle} className='rounded-md  py-2  font-semibold text-blue-400 underline hover:text-blue-500'>
-                  File Format?
-                </button>
-
-                {/* Conditional rendering */}
-                {toggleUploadPaymentsInstructions &&
-                  <div>
-                    <UploadPaymentsInstructions>
-                      <button onClick={handleToggle} className='rounded-md border-2 border-blue-300 bg-gradient-to-r from-blue-300 to-blue-200 px-4 py-2 font-bold text-black hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black
-                '>
-                        X
-                      </button>
-                    </UploadPaymentsInstructions>
-                  </div>}
-              </div>
-
+        <div className="rounded-2xl border border-[#E4E7EB] bg-white p-6 lg:p-8 shadow-lg">
+          <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <h1 className="text-3xl font-bold text-[#0F172A]">Payments</h1>
+            <div>
+              <button onClick={handleToggle} className="rounded-lg px-4 py-2 font-semibold text-[#2563EB] hover:text-[#1E3A5F] transition-colors duration-200">
+                File Format?
+              </button>
+              {toggleUploadPaymentsInstructions &&
+                <div className="mt-4">
+                  <UploadPaymentsInstructions>
+                    <button onClick={handleToggle} className="rounded-lg border-2 border-[#2563EB] px-4 py-2 font-semibold text-[#2563EB] hover:bg-[#2563EB] hover:text-white transition-colors duration-200">
+                      X
+                    </button>
+                  </UploadPaymentsInstructions>
+                </div>}
+            </div>
           </div>
-          {successMessage && <div className="my-4 rounded bg-green-200 px-4 py-2 text-green-800">{successMessage}</div>}
-          {errorMessage && <div className="my-4 rounded bg-red-200 px-4 py-2 text-red-800">{errorMessage}</div>}
-          {loading && <div className="my-4 rounded bg-green-200 px-4 py-2 text-yellow-800">Processing payments...</div>}
+          {successMessage && <div className="mb-4 rounded-xl bg-[#F8FAFC] px-6 py-4 text-center text-[#059669]">{successMessage}</div>}
+          {errorMessage && <div className="mb-4 rounded-xl bg-[#F8FAFC] px-6 py-4 text-center text-red-500">{errorMessage}</div>}
+          {loading && <div className="mb-4 rounded-xl bg-[#F8FAFC] px-6 py-4 text-center text-[#64748B]">Processing payments...</div>}
 
           {/* Successful uploads table */}
-          <div className="mb-10">
-            <h2 className="mb-4 text-xl font-semibold">Successful Uploads</h2>
-            <div className="overflow-x-auto">
-              <table className="min-w-full border border-blue-200">
-                <thead className="rounded-lg">
-                  <tr className="rounded-md bg-blue-100 py-20">
-                    <th className="border-b px-4 py-2">Order Number</th>
-                    <th className="border-b px-4 py-2">Status</th>
+          <div className="mb-8">
+            <h2 className="mb-4 text-xl font-bold text-[#0F172A]">Successful Uploads</h2>
+            <div className="overflow-x-auto rounded-xl border-2 border-[#E4E7EB]">
+              <table className="min-w-full bg-white">
+                <thead>
+                  <tr className="bg-[#F8FAFC]">
+                    <th className="border-b border-[#E4E7EB] px-4 py-3 text-left text-sm font-semibold text-[#0F172A]">Order Number</th>
+                    <th className="border-b border-[#E4E7EB] px-4 py-3 text-left text-sm font-semibold text-[#0F172A]">Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {successfulUploads.map((payment, index) => (
-                    <tr key={index} className={`bg-white text-center ${index % 2 === 0 ? '' : 'bg-[#f1f1f1]'}`}>
-                      <td className="border-b px-4 py-2">{payment.orderNumber}</td>
-                      <td className="border-b px-4 py-2 text-green-600">Uploaded successfully</td>
+                    <tr key={index} className={`border-t border-[#E4E7EB] hover:bg-[#F8FAFC] transition-colors duration-200 ${index % 2 === 0 ? '' : 'bg-[#F8FAFC]'}`}>
+                      <td className="px-4 py-3 text-sm text-[#0F172A]">{payment.orderNumber}</td>
+                      <td className="px-4 py-3 text-sm font-semibold text-[#059669]">Uploaded successfully</td>
                     </tr>
                   ))}
                 </tbody>
@@ -207,20 +204,20 @@ const UploadPayments = () => {
 
           {/* Failed uploads table */}
           <div>
-            <h2 className="mb-4 text-xl font-semibold">Unsuccessful Uploads</h2>
-            <div className="overflow-x-auto">
-              <table className="min-w-full border border-red-200">
-                <thead className="rounded-lg">
-                  <tr className="rounded-md bg-red-100 py-20">
-                    <th className="border-b px-4 py-2">Order Number</th>
-                    <th className="border-b px-4 py-2">Error Message</th>
+            <h2 className="mb-4 text-xl font-bold text-[#0F172A]">Unsuccessful Uploads</h2>
+            <div className="overflow-x-auto rounded-xl border-2 border-[#E4E7EB]">
+              <table className="min-w-full bg-white">
+                <thead>
+                  <tr className="bg-[#F8FAFC]">
+                    <th className="border-b border-[#E4E7EB] px-4 py-3 text-left text-sm font-semibold text-[#0F172A]">Order Number</th>
+                    <th className="border-b border-[#E4E7EB] px-4 py-3 text-left text-sm font-semibold text-[#0F172A]">Error Message</th>
                   </tr>
                 </thead>
                 <tbody>
                   {failedUploads.map((failed, index) => (
-                    <tr key={index} className={`bg-white text-center ${index % 2 === 0 ? '' : 'bg-[#f1f1f1]'}`}>
-                      <td className="border-b px-4 py-2">{failed.orderNumber}</td>
-                      <td className="border-b px-4 py-2 text-red-600">{failed.error}</td>
+                    <tr key={index} className={`border-t border-[#E4E7EB] hover:bg-[#F8FAFC] transition-colors duration-200 ${index % 2 === 0 ? '' : 'bg-[#F8FAFC]'}`}>
+                      <td className="px-4 py-3 text-sm text-[#0F172A]">{failed.orderNumber}</td>
+                      <td className="px-4 py-3 text-sm font-semibold text-red-500">{failed.error}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -229,7 +226,6 @@ const UploadPayments = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 

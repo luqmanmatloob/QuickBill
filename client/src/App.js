@@ -14,29 +14,45 @@ import CustomerPage from './pages/CustomerPage';
 import PaymentsListPage from './pages/PaymentsListPage';
 import UploadPaymentsPage from './pages/UploadPaymentsPage';
 import AccountSettings from './pages/AccountSettings';
-import Login from './pages/Login'; // Import your login page
-import ProtectedRoute from './components/PrivateRoute'; // Adjust the import path as needed
+import AuthPage from './pages/AuthPage';
+import Dashboard from './pages/Dashboard';
+import ProtectedRoute from './components/PrivateRoute';
 
 const App = () => {
   return (
     <Router>
-      <Header />
-      <Sidebar />
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<ProtectedRoute element={<Home />} />} />
-        <Route path="/uploadPage" element={<ProtectedRoute element={<UploadPage />} />} />
-        <Route path="/edit/:id" element={<ProtectedRoute element={<Edit />} />} />
-        <Route path="/print/:id" element={<ProtectedRoute element={<PrintPage />} />} />
-        <Route path="/setting" element={<ProtectedRoute element={<Setting />} />} />
-        <Route path="/InvoiceQuotesListPage" element={<ProtectedRoute element={<InvoiceQuotesListPage />} />} />
-        <Route path="/test" element={<ProtectedRoute element={<TestPage />} />} />
-        <Route path="/customer" element={<ProtectedRoute element={<CustomerPage />} />} />
-        <Route path="/paymentslistpage" element={<ProtectedRoute element={<PaymentsListPage />} />} />
-        <Route path="/uploadpaymentspage" element={<ProtectedRoute element={<UploadPaymentsPage />} />} />
-        <Route path="/accountsettings" element={<ProtectedRoute element={<AccountSettings />} />} />
+        {/* Auth page - standalone without layout */}
+        <Route path="/login" element={<AuthPage />} />
+        
+        {/* All other routes - with layout */}
+        <Route
+          path="/*"
+          element={
+            <>
+              <Header />
+              <Sidebar />
+              <main className="ml-56 mt-16 min-h-screen">
+                <Routes>
+                  <Route path="/" element={<ProtectedRoute element={<Home />} />} />
+                  <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+                  <Route path="/uploadPage" element={<ProtectedRoute element={<UploadPage />} />} />
+                  <Route path="/edit/:id" element={<ProtectedRoute element={<Edit />} />} />
+                  <Route path="/print/:id" element={<ProtectedRoute element={<PrintPage />} />} />
+                  <Route path="/setting" element={<ProtectedRoute element={<Setting />} />} />
+                  <Route path="/InvoiceQuotesListPage" element={<ProtectedRoute element={<InvoiceQuotesListPage />} />} />
+                  <Route path="/test" element={<ProtectedRoute element={<TestPage />} />} />
+                  <Route path="/customer" element={<ProtectedRoute element={<CustomerPage />} />} />
+                  <Route path="/paymentslistpage" element={<ProtectedRoute element={<PaymentsListPage />} />} />
+                  <Route path="/uploadpaymentspage" element={<ProtectedRoute element={<UploadPaymentsPage />} />} />
+                  <Route path="/accountsettings" element={<ProtectedRoute element={<AccountSettings />} />} />
+                </Routes>
+              </main>
+              <Footer />
+            </>
+          }
+        />
       </Routes>
-      <Footer />
     </Router>
   );
 };

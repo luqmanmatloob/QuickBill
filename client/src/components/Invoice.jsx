@@ -615,39 +615,41 @@ const Invoice = () => {
   };
 
   return (
-    <div className="ml-28 mt-16">
-      <div ref={componentRef} className="print-border-none print-no-shadow print-no-py .print-no-my mx-auto min-w-[1010px] rounded-lg border-2 border-solid border-[#f1f1f1] border-l-[#d1e4f5] border-r-[#d1e4f5] bg-white p-8 py-6 shadow-xl">
-        <form className="print-border-none relative flex flex-col px-2 md:flex-row" onSubmit={handleSubmit}>
-          <div className="print-shadow-none print-border-none print-no-py .print-no-my my-6 flex-1 space-y-2 rounded-md bg-white py-4 shadow-sm sm:space-y-4 md:p-6">
+    <div ref={componentRef} className="print-border-none print-no-shadow print-no-py .print-no-my mx-auto max-w-7xl rounded-2xl border-2 border-[#6D8196] bg-[#F8FAFC] p-6 lg:p-8 shadow-lg">
+      <form className="print-border-none relative flex flex-col px-2 md:flex-row" onSubmit={handleSubmit}>
+        <div className="print-shadow-none print-border-none print-no-py .print-no-my flex-1 space-y-6 rounded-xl bg-white py-4 md:p-6">
             {/* row 1 compnay info and invoice infor */}
-            <div className="print-border-none print-border-none flex w-full justify-between border-b">
+            <div className="print-border-none print-border-none flex w-full flex-col gap-6 border-b border-[#6D8196] pb-6 lg:flex-row lg:justify-between">
               <div>
                 <Company />
               </div>
-              <div className="mb-1 mt-3">
-                <div className="">
-                  <select name="type" value={formData.type} onChange={handleChange} className="borde w-[97%] rounded py-1 text-xl font-semibold">
-                    {/* <option value="">Select</option> */}
+              <div className="space-y-4">
+                <div>
+                  <select name="type" value={formData.type} onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-base font-semibold text-[#384959] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none">
                     <option value="invoice">Invoice</option>
                     <option value="quote">Quote</option>
                   </select>
                 </div>
 
-                <div className="flex min-w-[100px] items-center">
-                  <label className="min-w-24">Order Date: </label>
-                  <input type="date" name="dateOrdered" placeholder="Order Date" value={formData.dateOrdered} onChange={handleChange} className="my-1 w-full px-2 py-1" />
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm font-medium text-[#384959]">Order Date</label>
+                    <input type="date" name="dateOrdered" value={formData.dateOrdered} onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm font-medium text-[#384959]">Due Date</label>
+                    <input type="date" name="dateDue" value={formData.dateDue} onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                  </div>
                 </div>
-                <div className="flex min-w-[100px] items-center">
-                  <label className="min-w-24">Due Date: </label>
-                  <input type="date" name="dateDue" placeholder="Due Date" value={formData.dateDue} onChange={handleChange} className="my-1 w-full px-2 py-1" />
-                </div>
-                <div className="flex min-w-[100px] items-center">
-                  <label className="min-w-24">Shipping: </label>
-                  <input type="text" name="shippingMethod" value={formData.shippingMethod} placeholder="Shipping Method" onChange={handleChange} className="my-1 w-full px-2 py-1" />
-                </div>
-                <div className="flex min-w-[100px] items-center">
-                  <label className="min-w-24">{invoiceNoLbl}: </label> {/*Order Number*/}
-                  <input type="text" name="orderNumber" value={formData.orderNumber} placeholder={invoiceNoLbl} onChange={handleChange} className="w-full px-2 py-1" required />
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm font-medium text-[#384959]">Shipping Method</label>
+                    <input type="text" name="shippingMethod" value={formData.shippingMethod} placeholder="Shipping Method" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm font-medium text-[#384959]">{invoiceNoLbl}</label>
+                    <input type="text" name="orderNumber" value={formData.orderNumber} placeholder={invoiceNoLbl} onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" required />
+                  </div>
                 </div>
                 {/* <div className="flex min-w-[100px] items-center ">
                   <label className="min-w-24 ">Payment:</label>{" "}
@@ -678,134 +680,141 @@ const Invoice = () => {
             </div>
 
             {/* show customer name list pop up button */}
-            <button onClick={() => setIsPopupOpen(true)} type="button" className="ml-8 flex items-center font-bold text-blue-500 hover:underline">
-              Customers
-              <RiArrowDropDownLine style={{ fontSize: '24px', marginTop: '4px' }} />
+            <button onClick={() => setIsPopupOpen(true)} type="button" className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-[#6A89A7] to-[#88BDF2] px-4 py-2.5 font-semibold text-white hover:from-[#88BDF2] hover:to-[#6A89A7] transition-colors duration-200">
+              Select Customer
+              <RiArrowDropDownLine className="text-xl" />
             </button>
+            
             {/* customers name dropdown list pop up */}
-            <div className="ml-60 mt-24">
-              {isPopupOpen && (
-                <div className="fixed bottom-5 top-16 z-30 my-4 flex w-1/3 justify-center overflow-auto rounded-xl border-2 border-blue-300 bg-white shadow-2xl shadow-black" style={{ boxShadow: `0 25px 50px 600px rgba(0, 0, 0, 0.25)` }}>
-                  <div className="w-full rounded-lg bg-white px-6 py-12 pb-20 text-center">
-                    <button className="absolute right-3 top-3 mb-4 rounded border-2 border-red-600 px-3 py-1 font-semibold text-red-600 hover:bg-red-50" onClick={() => setIsPopupOpen(false)} type="button">
-                      X
+            {isPopupOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                <div className="mx-4 w-full max-w-lg rounded-2xl border-2 border-[#6D8196] bg-[#F8FAFC] p-6 shadow-2xl">
+                  <div className="mb-6 flex items-center justify-between">
+                    <h2 className="text-2xl font-bold text-[#384959]">Select Customer</h2>
+                    <button onClick={() => setIsPopupOpen(false)} type="button" className="rounded-lg border-2 border-[#6D8196] p-2 text-[#6D8196] hover:border-red-400 hover:text-red-400 transition-colors duration-200">
+                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
                     </button>
-                    <h2 className="mb-4 text-2xl">Customers</h2>
-                    <ul className="text-left">
-                      {Array.isArray(customers) && customers.length > 0 ? (
-                        customers.map((customer) => (
-                          <li key={customer.uniqueKey} className="mb-2 flex items-center justify-between gap-5 border-b-2 border-blue-200 pb-3">
-                            {customer.primaryContactFirstName} {customer.primaryContactLastName}
-                            <button onClick={() => populateCustomer(customer.uniqueKey)} type="button" className="rounded border-2 border-blue-400 px-3 py-1 text-lg font-semibold text-blue-500 hover:bg-green-50">
-                              <FaPlus />
-                            </button>
-                          </li>
-                        ))
-                      ) : (
-                        <li>No customers found</li>
-                      )}
-                      <div className="min-h-12"></div>
-                    </ul>
                   </div>
+                  <ul className="max-h-96 space-y-3 overflow-y-auto">
+                    {Array.isArray(customers) && customers.length > 0 ? (
+                      customers.map((customer) => (
+                        <li key={customer.uniqueKey} className="flex items-center justify-between rounded-lg border-2 border-[#6D8196] p-4 hover:border-[#6A89A7] hover:bg-[#BDDDFC] transition-all duration-200">
+                          <div>
+                            <p className="font-semibold text-[#384959]">{customer.primaryContactFirstName} {customer.primaryContactLastName}</p>
+                            <p className="text-sm text-[#6D8196]">{customer.primaryContactEmail}</p>
+                          </div>
+                          <button onClick={() => populateCustomer(customer.uniqueKey)} type="button" className="rounded-lg bg-gradient-to-r from-[#6A89A7] to-[#88BDF2] p-2 text-white hover:from-[#88BDF2] hover:to-[#6A89A7] transition-colors duration-200">
+                            <FaPlus />
+                          </button>
+                        </li>
+                      ))
+                    ) : (
+                      <li className="text-center py-8 text-[#6D8196]">No customers found</li>
+                    )}
+                  </ul>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
 
             {/* row 2, billing adress and shipping adress  city statecounty email adress */}
-            <div className="print-border-none flex justify-between border-b px-5">
+            <div className="print-border-none grid grid-cols-1 gap-8 border-b border-[#6D8196] pb-8 lg:grid-cols-2">
               <div>
-                <p className="print-text-12px p-2 pt-0 text-lg font-semibold">Billing Address</p>
-
-                <div className="flex min-w-[100px] items-center">
-                  <input type="text" name="billingFirstName" value={formData.billingFirstName} placeholder="Billing" onChange={handleChange} className="w-1/3 px-2 py-1" />
-                  <input type="text" name="billingLastName" value={formData.billingLastName} placeholder="Name" onChange={handleChange} className="w-full px-2 py-1" />
-                </div>
-
-                <div className="flex min-w-[100px] items-center">
-                  <input type="text" name="billingAddress" value={formData.billingAddress} placeholder="Address" onChange={handleChange} className="w-full px-2 py-1" />
-                </div>
-                <div className="flex min-w-[100px] items-center">
-                  <input type="text" name="billingCity" value={formData.billingCity} placeholder="City" onChange={handleChange} className="my-1 w-full px-2 py-1" />
-                </div>
-                <div className="flex min-w-[100px] items-center">
-                  <input type="text" name="billingState" value={formData.billingState} placeholder="State" onChange={handleChange} className="my-1 w-full px-2 py-1" />
-                </div>
-                {/* <div className="flex min-w-[100px] items-center "> country
-                                <input
-                                    type="text"
-                                    name="shippingMethod"
-                                    value={formData.billing}
-                                    placeholder='Shipping Method'
-                                    onChange={handleChange}
-                                    className="px-2 py-1 w-full"
-                                      
-                                />
-                            </div> */}
-                <div className="flex min-w-[100px] items-center">
-                  <input type="text" name="billingEmailAddress" value={formData.billingEmailAddress} placeholder="Email " onChange={handleChange} className="w-full px-2 py-1" />
+                <h3 className="mb-4 text-lg font-semibold text-[#384959]">Billing Address</h3>
+                <div className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1">
+                      <label className="text-sm font-medium text-[#384959]">First Name</label>
+                      <input type="text" name="billingFirstName" value={formData.billingFirstName} placeholder="First Name" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-sm font-medium text-[#384959]">Last Name</label>
+                      <input type="text" name="billingLastName" value={formData.billingLastName} placeholder="Last Name" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm font-medium text-[#384959]">Address</label>
+                    <input type="text" name="billingAddress" value={formData.billingAddress} placeholder="Street Address" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1">
+                      <label className="text-sm font-medium text-[#384959]">City</label>
+                      <input type="text" name="billingCity" value={formData.billingCity} placeholder="City" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-sm font-medium text-[#384959]">State</label>
+                      <input type="text" name="billingState" value={formData.billingState} placeholder="State" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm font-medium text-[#384959]">Email</label>
+                    <input type="email" name="billingEmailAddress" value={formData.billingEmailAddress} placeholder="Email Address" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                  </div>
                 </div>
               </div>
 
               <div>
-                <p className="print-text-12px p-2 text-lg font-semibold">Shipping Address</p>
-
-                <div className="flex min-w-[100px] items-center">
-                  <input type="text" name="shippingFirstName" value={formData.shippingFirstName} placeholder="Shipping Name" onChange={handleChange} className="w-full px-2 py-1" />
-                </div>
-
-                <div className="flex min-w-[100px] items-center">
-                  <input type="text" name="shippingAddress" value={formData.shippingAddress} placeholder="Address" onChange={handleChange} className="w-full px-2 py-1" />
-                </div>
-                <div className="flex min-w-[100px] items-center">
-                  <input type="text" name="shippingCity" value={formData.shippingCity} placeholder="City" onChange={handleChange} className="my-1 w-full px-2 py-1" />
-                </div>
-                <div className="flex min-w-[100px] items-center">
-                  <input type="text" name="shippingState" value={formData.shippingState} placeholder="State" onChange={handleChange} className="my-1 w-full px-2 py-1" />
-                </div>
-                {/* <div className="flex min-w-[100px] items-center "> country
-                                <input
-                                    type="text"
-                                    name="shippingMethod"
-                                    value={formData.billing}
-                                    placeholder='Shipping Method'
-                                    onChange={handleChange}
-                                    className="px-2 py-1 w-full"
-                                      
-                                />
-                            </div> */}
-                <div className="flex min-w-[100px] items-center">
-                  <input type="text" name="shippingPostcode" value={formData.shippingPostcode} placeholder="Postcode " onChange={handleChange} className="w-full px-2 py-1" />
+                <h3 className="mb-4 text-lg font-semibold text-[#384959]">Shipping Address</h3>
+                <div className="space-y-3">
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm font-medium text-[#384959]">Name</label>
+                    <input type="text" name="shippingFirstName" value={formData.shippingFirstName} placeholder="Shipping Name" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm font-medium text-[#384959]">Address</label>
+                    <input type="text" name="shippingAddress" value={formData.shippingAddress} placeholder="Street Address" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="flex flex-col gap-1">
+                      <label className="text-sm font-medium text-[#384959]">City</label>
+                      <input type="text" name="shippingCity" value={formData.shippingCity} placeholder="City" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <label className="text-sm font-medium text-[#384959]">State</label>
+                      <input type="text" name="shippingState" value={formData.shippingState} placeholder="State" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm font-medium text-[#384959]">Postcode</label>
+                    <input type="text" name="shippingPostcode" value={formData.shippingPostcode} placeholder="Postal Code" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* row 3 items  product, color, size/qty, unit price, tax, qty, total, tax exempt  */}
-            <div className="print-no-py pt-12">
-              <h3 className="print-no-py text-Black font-Josefin-Sans m-[-10 mb-2 block rounded-md bg-gradient-to-r from-blue-200 to-blue-400 px-5 py-2 text-xl font-semibold uppercase">Items</h3>
+            <div className="print-no-py pt-8">
+              <div className="mb-6 flex items-center justify-between">
+                <h3 className="text-xl font-bold text-[#384959]">Items</h3>
+                <button type="button" onClick={addItem} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-[#6A89A7] to-[#88BDF2] px-4 py-2.5 font-semibold text-white hover:from-[#88BDF2] hover:to-[#6A89A7] transition-colors duration-200">
+                  <FaPlus />
+                  Add Item
+                </button>
+              </div>
             </div>
 
             {/* items */}
-            <div className="print-border-none px- flex justify-between border-b text-sm">
-              <div className="print-no-my mt-4">
+            <div className="print-border-none overflow-x-auto">
+              <div className="print-no-my min-w-[800px]">
                 {/* item table header */}
-                <div className="print-no-my print-text-12px mb-4 grid grid-cols-10 gap-4 text-sm font-semibold">
-                  <p className="col-span-2">Product </p>
+                <div className="print-no-my print-text-12px mb-4 grid grid-cols-9 gap-3 rounded-lg bg-[#BDDDFC] p-4 text-sm font-semibold text-[#384959]">
+                  <p className="col-span-2">Product</p>
                   <p>Color</p>
-                  <p className="pl-2">Size/Qty</p>
+                  <p>Size/Qty</p>
                   <p>Unit Price</p>
-                  <p className="pl-4">Tax</p>
-                  <p>Qty:</p>
-                  <p>Total:</p>
+                  <p>Tax</p>
+                  <p>Qty</p>
+                  <p>Total</p>
                   <p>Tax Exempt</p>
                 </div>
 
                 {/* items */}
                 {formData.items.map((item, index) => (
-                  <div key={index} className="grid grid-cols-10 gap-4">
+                  <div key={index} className="mb-3 grid grid-cols-9 gap-3 rounded-lg border-2 border-[#6D8196] p-4 hover:border-[#6A89A7] transition-colors duration-200">
 
                     <div className="col-span-2">
-                      {/* <label className="block mb-2">Product Name:</label> */}
-                      <input type="text" name={`items[${index}].productName`} value={item.productName} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="Name" required />
+                      <input type="text" name={`items[${index}].productName`} value={item.productName} onChange={(e) => handleItemChange(index, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Product Name" required />
                     </div>
 
                     {/* <div className="col-span-2 flex rounded-lg focus-within:border-black focus-within:border-2">
@@ -867,12 +876,10 @@ const Invoice = () => {
 
                     {/* Color */}
                     <div>
-                      {/* <label className="block mb-2">Color:</label>  */}
-                      <input type="text" name={`items[${index}].color`} value={item.color} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="Color" />
+                      <input type="text" name={`items[${index}].color`} value={item.color} onChange={(e) => handleItemChange(index, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Color" />
                     </div>
                     {/* Size */}
                     <div>
-                      {/* <label className="block mb-2">Size:</label> */}
                       <input
                         type="text"
                         name={`items[${index}].size`}
@@ -881,292 +888,214 @@ const Invoice = () => {
                           setVisiblePopupIndex(index);
                           setSizeQtyToggle(true);
                         }}
-                        className="w-full cursor-pointer rounded px-2 py-1"
+                        className="w-full cursor-pointer rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none"
                         placeholder="Size/Qty"
                       />
                     </div>
 
                     {/* Unit Price */}
                     <div>
-                      {/* <label className="block mb-2">Unit Price:</label> */}
-                      <input type="number" name={`items[${index}].unitPrice`} value={item.unitPrice} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" />
+                      <input type="number" name={`items[${index}].unitPrice`} value={item.unitPrice} onChange={(e) => handleItemChange(index, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
                     </div>
                     {/* Tax */}
-                    <div className="pl-4">
-                      {/* <label className="block mb-2">Tax (%):</label> */}
+                    <div>
                       <input
                         type="number"
                         name={`items[${index}].tax`}
                         value={item.tax}
                         onChange={(e) => handleItemChange(index, e)}
-                        // readOnly
-                        className="w-full rounded px-2 py-1"
+                        className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none"
                       />
                     </div>
 
                     {/* Quantity */}
                     <div>
-                      {/* <label className="block mb-2">Quantity:</label> */}
-                      <input type="number" name={`items[${index}].lineQty`} value={item.lineQty} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" />
+                      <input type="number" name={`items[${index}].lineQty`} value={item.lineQty} onChange={(e) => handleItemChange(index, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
                     </div>
 
                     {/* Total (Auto Calculated) */}
                     <div>
-                      {/* <label className="block mb-2">Total:</label> */}
-                      <input type="number" name={`items[${index}].lineTotal`} value={item.lineTotal.toFixed(1)} readOnly className="w-full rounded px-2 py-1" />
+                      <input type="number" name={`items[${index}].lineTotal`} value={item.lineTotal.toFixed(1)} readOnly className="w-full rounded-lg border-2 border-[#6D8196] bg-[#BDDDFC] px-3 py-2 text-[#384959] outline-none" />
                     </div>
                     {/* Tax Exempt */}
-                    <div className="pl-3">
-                      {/* <label className="block mb-2">Tax Exempt:</label> */}
-                      <input type="checkbox" name={`items[${index}].taxExempt`} checked={item.taxExempt} onChange={(e) => handleItemChange(index, e)} className="rounded px-2 py-1" />
+                    <div className="flex items-center justify-center">
+                      <input type="checkbox" name={`items[${index}].taxExempt`} checked={item.taxExempt} onChange={(e) => handleItemChange(index, e)} className="h-5 w-5 rounded border-2 border-[#6D8196] text-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20" />
                     </div>
 
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-2">
                       <button
                         type="button"
                         onClick={() => {
                           const checkbox = document.querySelector(`input[name="items[${index}].taxExempt"]`);
                           if (checkbox) {
-                            checkbox.click(); // Check
-                            setTimeout(() => checkbox.click(), 0); // Uncheck right after
+                            checkbox.click();
+                            setTimeout(() => checkbox.click(), 0);
                           }
                         }}
-                        className="no-print hover:bg-red-6 m-1 rounded border-[1px] border-blue-400 px-3 py-[6px] text-base font-semibold text-blue-400 hover:font-extrabold"
+                        className="no-print rounded-lg border-2 border-[#6A89A7] p-2 text-[#6A89A7] hover:bg-[#6A89A7] hover:text-white transition-colors duration-200"
                       >
                         <TiTick />
                       </button>
 
-                      <button type="button" onClick={() => removeItem(index)} className="no-print hover:bg-red-6 m-1 rounded border-[1px] border-red-400 px-4 py-1 font-semibold text-red-400 hover:font-extrabold">
-                        X
+                      <button type="button" onClick={() => removeItem(index)} className="no-print rounded-lg border-2 border-red-400 p-2 text-red-400 hover:bg-red-400 hover:text-white transition-colors duration-200">
+                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
                       </button>
                     </div>
-
-                    {/* {sizeQtyToggle && visiblePopupIndex === index && ( */}
-
-                    <div
-                      // className="fixed z-50 top-3 right-0 left-0 bottom-6 bg-white rounded-lg shadow-2xl p-10  border-b-slate-300 border-solid border-2 border-r-[#6539c0] border-l-[#6539c0] overflow-auto mx-40 my-10"
-                      className={`fixed bottom-6 left-0 right-0 top-3 z-50 mx-40 my-10 overflow-auto rounded-lg border-2 border-solid border-b-slate-300 border-l-[#6539c0] border-r-[#6539c0] bg-white p-10 shadow-2xl transition-opacity duration-300 ease-in-out ${sizeQtyToggle && visiblePopupIndex === index ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
-                      style={{
-                        boxShadow: `0 25px 50px 600px rgba(0, 0, 0, 0.50)`
-                      }}
-                    >
-                      <button
-                        type="button"
-                        className="absolute right-7 top-5 rounded-md bg-red-500 px-5 py-1 text-lg font-semibold text-white hover:bg-red-600"
-                        onClick={() => {
-                          setSizeQtyToggle(false);
-                        }}
-                      >
-                        X
-                      </button>
-
-                      <button
-                        type="button"
-                        className="absolute bottom-3 right-7 rounded-md bg-blue-500 px-5 py-1 text-lg font-semibold text-white hover:bg-blue-600"
-                        onClick={() => {
-                          setSizeQtyToggle(false);
-                        }}
-                      >
-                        OK
-                      </button>
-
-                      <div className="min-w-full rounded-lg bg-white shadow">
-                        <div className="grid grid-cols-4 gap-4 border-b border-gray-200 p-4">
-                          {/* Table Header */}
-                          <div className="font-bold">Size</div>
-                          <div className="font-bold">Qty</div>
-                          <div className="font-bold">Price</div>
-                          <div className="font-bold">Total</div>
-                        </div>
-                        {/* Table Body */}
-                        <div className="grid grid-cols-4 gap-4 p-4">
-                          {/* Size S */}
-                          <div>Size S</div>
-                          <input type="number" name="sQty" value={item.sQty} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="sQty" />
-                          <input type="number" name="sPrice" value={item.sPrice} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="sPrice" />
-                          <input
-                            type="number"
-                            name="sTotal"
-                            value={item.sQty * item.sPrice} // Automatically calculated
-                            readOnly
-                            className="w-full rounded bg-gray-200 px-2 py-1"
-                            placeholder="sTotal"
-                          />
-
-                          {/* Size M */}
-                          <div>Size M</div>
-                          <input type="number" name="mQty" value={item.mQty} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="mQty" />
-                          <input type="number" name="mPrice" value={item.mPrice} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="mPrice" />
-                          <input
-                            type="number"
-                            name="mTotal"
-                            value={item.mQty * item.mPrice} // Automatically calculated
-                            readOnly
-                            className="w-full rounded bg-gray-200 px-2 py-1"
-                            placeholder="mTotal"
-                          />
-
-                          {/* Size L */}
-                          <div>Size L</div>
-                          <input type="number" name="lQty" value={item.lQty} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="lQty" />
-                          <input type="number" name="lPrice" value={item.lPrice} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="lPrice" />
-                          <input
-                            type="number"
-                            name="lTotal"
-                            value={item.lQty * item.lPrice} // Automatically calculated
-                            readOnly
-                            className="w-full rounded bg-gray-200 px-2 py-1"
-                            placeholder="lTotal"
-                          />
-
-                          {/* Size XL */}
-                          <div>Size XL</div>
-                          <input type="number" name="xlQty" value={item.xlQty} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="xlQty" />
-                          <input type="number" name="xlPrice" value={item.xlPrice} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="xlPrice" />
-                          <input
-                            type="number"
-                            name="xlTotal"
-                            value={item.xlQty * item.xlPrice} // Automatically calculated
-                            readOnly
-                            className="w-full rounded bg-gray-200 px-2 py-1"
-                            placeholder="xlTotal"
-                          />
-
-                          {/* Size 2XL */}
-                          <div>Size 2XL</div>
-                          <input type="number" name="2xlQty" value={item['2xlQty']} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="2xlQty" />
-                          <input type="number" name="2xlPrice" value={item['2xlPrice']} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="2xlPrice" />
-                          <input
-                            type="number"
-                            name="2xlTotal"
-                            value={item['2xlQty'] * item['2xlPrice']} // Automatically calculated
-                            readOnly
-                            className="w-full rounded bg-gray-200 px-2 py-1"
-                            placeholder="2xlTotal"
-                          />
-
-                          {/* Size 3XL */}
-                          <div>Size 3XL</div>
-                          <input type="number" name="3xlQty" value={item['3xlQty']} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="3xlQty" />
-                          <input type="number" name="3xlPrice" value={item['3xlPrice']} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="3xlPrice" />
-                          <input
-                            type="number"
-                            name="3xlTotal"
-                            value={item['3xlQty'] * item['3xlPrice']} // Automatically calculated
-                            readOnly
-                            className="w-full rounded bg-gray-200 px-2 py-1"
-                            placeholder="3xlTotal"
-                          />
-
-                          {/* Size 4XL */}
-                          <div>Size 4XL</div>
-                          <input type="number" name="4xlQty" value={item['4xlQty']} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="4xlQty" />
-                          <input type="number" name="4xlPrice" value={item['4xlPrice']} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="4xlPrice" />
-                          <input
-                            type="number"
-                            name="4xlTotal"
-                            value={item['4xlQty'] * item['4xlPrice']} // Automatically calculated
-                            readOnly
-                            className="w-full rounded bg-gray-200 px-2 py-1"
-                            placeholder="4xlTotal"
-                          />
-
-                          {/* Size 5XL */}
-                          <div>Size 5XL</div>
-                          <input type="number" name="5xlQty" value={item['5xlQty']} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="5xlQty" />
-                          <input type="number" name="5xlPrice" value={item['5xlPrice']} onChange={(e) => handleItemChange(index, e)} className="w-full rounded px-2 py-1" placeholder="5xlPrice" />
-                          <input
-                            type="number"
-                            name="5xlTotal"
-                            value={item['5xlQty'] * item['5xlPrice']} // Automatically calculated
-                            readOnly
-                            className="w-full rounded bg-gray-200 px-2 py-1"
-                            placeholder="5xlTotal"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* )} */}
                   </div>
                 ))}
-                <button type="button" onClick={addItem} className="no-print my-3 rounded border-[1px] border-blue-500 bg-transparent px-4 py-1 font-semibold text-blue-700 hover:bg-blue-200 hover:text-black">
-                  Add Item
-                </button>
               </div>
             </div>
 
-            {/* row 4 note,  sub total,  tax, grand total  */}
-            <div className="print-border-none flex justify-between border-b px-5">
-              <div className="print-text-12px mt-4 flex w-[80%] flex-col">
-                <label className="mt-3 px-2 font-semibold text-black">Notes</label>
-                <textarea name="note" value={formData.note} onChange={handleChange} className="h-8 w-[100%] rounded border-2 px-2 py-1"></textarea>
-
-                <label className="mt-3 px-2 font-semibold text-black">Terms</label>
-                <input type="text" name="paymentTerms" value={formData.paymentTerms} placeholder="" onChange={handleChange} className="w-full border-2 px-2 py-1" />
-                <div className=" ">
-                  <label className="mt-3 px-2 font-semibold text-black">Payment Date</label>
-                  <input type="text" name="billingAddress" value={formData.paymentDates} placeholder="" onChange={handleChange} className="w-full px-2 py-1" />
-                </div>
-                <label className="mt-3 px-2 font-semibold text-black">Payment Method</label>
-
-                <input type="text" name="payment Method" value={formData.paymentMethod} placeholder="" onChange={handleChange} className="mb-4 w-full px-2 py-1" />
-              </div>
-
-              <div className="w-full">
-                <div className="flex w-full justify-end gap-5">
-                  <div className="text mt-1 flex flex-col gap-6 font-semibold">
-                    <label className="mb-2 block">Subtotal:</label>
-                    <label className="mb-2 block">Total Tax:</label>
-                    <label className="mb-2 block">Grand Total:</label>
-                    <label className="mb-2 block">Payment Paid:</label>
-                    <label className="mb-2 block">Balance Due:</label>
-                    <label className="mb-2 block text-[12px]">{`(All Prices are shown in USD)`}</label>
+            {/* Size/Qty Popup Modal - Rendered outside items loop */}
+            {sizeQtyToggle && visiblePopupIndex !== null && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                <div className="mx-4 w-full max-w-4xl rounded-2xl border-2 border-[#6D8196] bg-[#F8FAFC] p-6 shadow-2xl">
+                  <div className="mb-6 flex items-center justify-between">
+                    <h2 className="text-2xl font-bold text-[#384959]">Size & Quantity Details</h2>
+                    <button
+                      type="button"
+                      className="rounded-lg border-2 border-[#6D8196] p-2 text-[#6D8196] hover:border-red-400 hover:text-red-400 transition-colors duration-200"
+                      onClick={() => {
+                        setSizeQtyToggle(false);
+                      }}
+                    >
+                      <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
                   </div>
 
-                  <div className="text flex flex-col gap-6 font-semibold">
-                    <div className=" ">
-                      {/* <label className="block mb-2 ">Subtotal:</label> */}
-                      <input type="number" value={subtotal.toFixed(1)} name="subtotal" onChange={handleChange} readOnly className="rounded px-2 py-1" />
-                    </div>
+                  <div className="overflow-x-auto">
+                    <div className="min-w-[600px]">
+                      <div className="mb-4 grid grid-cols-4 gap-4 rounded-lg bg-[#BDDDFC] p-4 text-sm font-semibold text-[#384959]">
+                        <div>Size</div>
+                        <div>Qty</div>
+                        <div>Price</div>
+                        <div>Total</div>
+                      </div>
+                      <div className="grid grid-cols-4 gap-4 p-4">
+                        {visiblePopupIndex !== null && formData.items[visiblePopupIndex] && (
+                          <>
+                            {/* Size S */}
+                            <div className="flex items-center font-medium text-[#384959]">Size S</div>
+                            <input type="number" name="sQty" value={formData.items[visiblePopupIndex].sQty} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Qty" />
+                            <input type="number" name="sPrice" value={formData.items[visiblePopupIndex].sPrice} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Price" />
+                            <input type="number" name="sTotal" value={formData.items[visiblePopupIndex].sQty * formData.items[visiblePopupIndex].sPrice} readOnly className="w-full rounded-lg border-2 border-[#6D8196] bg-[#BDDDFC] px-3 py-2 text-[#384959] outline-none" placeholder="Total" />
 
-                    <div className=" ">
-                      {/* <label className="block mb-2 ">{`Total Tax:`}</label> */}
-                      <div className="">
-                        <input type="number" value={totalTax.toFixed(1)} name="totalTax" readOnly onChange={handleChange} className="rounded px-2 py-1" />
+                            {/* Size M */}
+                            <div className="flex items-center font-medium text-[#384959]">Size M</div>
+                            <input type="number" name="mQty" value={formData.items[visiblePopupIndex].mQty} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Qty" />
+                            <input type="number" name="mPrice" value={formData.items[visiblePopupIndex].mPrice} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Price" />
+                            <input type="number" name="mTotal" value={formData.items[visiblePopupIndex].mQty * formData.items[visiblePopupIndex].mPrice} readOnly className="w-full rounded-lg border-2 border-[#6D8196] bg-[#BDDDFC] px-3 py-2 text-[#384959] outline-none" placeholder="Total" />
+
+                            {/* Size L */}
+                            <div className="flex items-center font-medium text-[#384959]">Size L</div>
+                            <input type="number" name="lQty" value={formData.items[visiblePopupIndex].lQty} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Qty" />
+                            <input type="number" name="lPrice" value={formData.items[visiblePopupIndex].lPrice} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Price" />
+                            <input type="number" name="lTotal" value={formData.items[visiblePopupIndex].lQty * formData.items[visiblePopupIndex].lPrice} readOnly className="w-full rounded-lg border-2 border-[#6D8196] bg-[#BDDDFC] px-3 py-2 text-[#384959] outline-none" placeholder="Total" />
+
+                            {/* Size XL */}
+                            <div className="flex items-center font-medium text-[#384959]">Size XL</div>
+                            <input type="number" name="xlQty" value={formData.items[visiblePopupIndex].xlQty} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Qty" />
+                            <input type="number" name="xlPrice" value={formData.items[visiblePopupIndex].xlPrice} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Price" />
+                            <input type="number" name="xlTotal" value={formData.items[visiblePopupIndex].xlQty * formData.items[visiblePopupIndex].xlPrice} readOnly className="w-full rounded-lg border-2 border-[#6D8196] bg-[#BDDDFC] px-3 py-2 text-[#384959] outline-none" placeholder="Total" />
+
+                            {/* Size 2XL */}
+                            <div className="flex items-center font-medium text-[#384959]">Size 2XL</div>
+                            <input type="number" name="2xlQty" value={formData.items[visiblePopupIndex]['2xlQty']} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Qty" />
+                            <input type="number" name="2xlPrice" value={formData.items[visiblePopupIndex]['2xlPrice']} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Price" />
+                            <input type="number" name="2xlTotal" value={formData.items[visiblePopupIndex]['2xlQty'] * formData.items[visiblePopupIndex]['2xlPrice']} readOnly className="w-full rounded-lg border-2 border-[#6D8196] bg-[#BDDDFC] px-3 py-2 text-[#384959] outline-none" placeholder="Total" />
+
+                            {/* Size 3XL */}
+                            <div className="flex items-center font-medium text-[#384959]">Size 3XL</div>
+                            <input type="number" name="3xlQty" value={formData.items[visiblePopupIndex]['3xlQty']} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Qty" />
+                            <input type="number" name="3xlPrice" value={formData.items[visiblePopupIndex]['3xlPrice']} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Price" />
+                            <input type="number" name="3xlTotal" value={formData.items[visiblePopupIndex]['3xlQty'] * formData.items[visiblePopupIndex]['3xlPrice']} readOnly className="w-full rounded-lg border-2 border-[#6D8196] bg-[#BDDDFC] px-3 py-2 text-[#384959] outline-none" placeholder="Total" />
+
+                            {/* Size 4XL */}
+                            <div className="flex items-center font-medium text-[#384959]">Size 4XL</div>
+                            <input type="number" name="4xlQty" value={formData.items[visiblePopupIndex]['4xlQty']} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Qty" />
+                            <input type="number" name="4xlPrice" value={formData.items[visiblePopupIndex]['4xlPrice']} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Price" />
+                            <input type="number" name="4xlTotal" value={formData.items[visiblePopupIndex]['4xlQty'] * formData.items[visiblePopupIndex]['4xlPrice']} readOnly className="w-full rounded-lg border-2 border-[#6D8196] bg-[#BDDDFC] px-3 py-2 text-[#384959] outline-none" placeholder="Total" />
+
+                            {/* Size 5XL */}
+                            <div className="flex items-center font-medium text-[#384959]">Size 5XL</div>
+                            <input type="number" name="5xlQty" value={formData.items[visiblePopupIndex]['5xlQty']} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Qty" />
+                            <input type="number" name="5xlPrice" value={formData.items[visiblePopupIndex]['5xlPrice']} onChange={(e) => handleItemChange(visiblePopupIndex, e)} className="w-full rounded-lg border-2 border-[#6D8196] px-3 py-2 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" placeholder="Price" />
+                            <input type="number" name="5xlTotal" value={formData.items[visiblePopupIndex]['5xlQty'] * formData.items[visiblePopupIndex]['5xlPrice']} readOnly className="w-full rounded-lg border-2 border-[#6D8196] bg-[#BDDDFC] px-3 py-2 text-[#384959] outline-none" placeholder="Total" />
+                          </>
+                        )}
                       </div>
                     </div>
-                    <div className=" ">
-                      {/* <label className="block mb-2 ">Grand Total:</label> */}
-                      <input type="number" name="grandTotal" value={grandTotal.toFixed(1)} onChange={handleChange} readOnly className="rounded px-2 py-1" />
-                    </div>
-
-                    <div className=" ">
-                      {/* <label className="block mb-2 ">Payment Paid:</label> */}
-                      <input type="number" name="paymentPaid" value={formData.paymentPaid} onChange={handleChange} className="rounded px-2 py-1" />
-                    </div>
-                    <div className=" ">
-                      {/* <label className="block mb-2 ">Balance Due:</label> */}
-                      <input
-                        type="number"
-                        name="paymentDue"
-                        value={(grandTotal - formData.paymentPaid).toFixed(1)}
-                        // onChange={paymentDueHandleChange}
-                        readOnly
-                        className="rounded px-2 py-1"
-                      />
-                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="flex items-start justify-between">
-              <p className="w-1/2">You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.</p>
+            )}
 
-              <div className="flex justify-end pr-32">
+            {/* row 4 note,  sub total,  tax, grand total  */}
+            <div className="print-border-none grid grid-cols-1 gap-8 border-b border-[#6D8196] pb-8 lg:grid-cols-3">
+              <div className="lg:col-span-2 space-y-4">
+                <div>
+                  <label className="block text-sm font-semibold text-[#384959] mb-2">Notes</label>
+                  <textarea name="note" value={formData.note} onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-3 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none resize-none" rows="3" placeholder="Add any notes here..."></textarea>
+                </div>
+
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div>
+                    <label className="block text-sm font-semibold text-[#384959] mb-2">Terms</label>
+                    <input type="text" name="paymentTerms" value={formData.paymentTerms} placeholder="Payment terms" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-[#384959] mb-2">Payment Date</label>
+                    <input type="text" name="paymentDates" value={formData.paymentDates} placeholder="Payment date" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-[#384959] mb-2">Payment Method</label>
+                  <input type="text" name="paymentMethod" value={formData.paymentMethod} placeholder="Payment method" onChange={handleChange} className="w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none" />
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="rounded-xl bg-[#BDDDFC] p-6">
+                  <h4 className="mb-4 text-lg font-bold text-[#384959]">Summary</h4>
+                  <div className="space-y-3">
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium text-[#6D8196]">Subtotal:</span>
+                      <span className="text-sm font-semibold text-[#384959]">${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium text-[#6D8196]">Total Tax:</span>
+                      <span className="text-sm font-semibold text-[#384959]">${totalTax.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between border-t border-[#6D8196] pt-3">
+                      <span className="text-base font-bold text-[#384959]">Grand Total:</span>
+                      <span className="text-base font-bold text-[#6A89A7]">${grandTotal.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium text-[#6D8196]">Payment Paid:</span>
+                      <span className="text-sm font-semibold text-[#88BDF2]">${typeof formData.paymentPaid === 'number' ? formData.paymentPaid.toFixed(2) : '0.00'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm font-medium text-[#6D8196]">Balance Due:</span>
+                      <span className="text-sm font-semibold text-[#384959]">${typeof formData.paymentDue === 'number' ? formData.paymentDue.toFixed(2) : '0.00'}</span>
+                    </div>
+                  </div>
+                  <p className="mt-4 text-xs text-[#6D8196]">(All Prices are shown in USD)</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-start justify-between border-b border-[#6D8196] pb-6">
+              <p className="w-1/2 text-sm text-[#6D8196]">You are important to us. Your complete satisfaction is our intent. If you are happy with our service, tell all your friends. If you are disappointed, please tell us and we will do all in our power to make you happy.</p>
+
+              <div className="flex justify-end">
                 <button
                   type="button"
-                  className="text-blue-500 underline"
+                  className="text-[#6A89A7] font-semibold hover:text-[#384959] hover:underline transition-colors duration-200"
                   onClick={() => {
                     setEditPayments(true);
                   }}
@@ -1178,10 +1107,10 @@ const Invoice = () => {
             {/* add payments plan/installments popup */}
 
             {editPayments && (
-              <div className="fixed bottom-6 left-0 right-0 top-3 z-50 m-52 overflow-auto rounded-lg border-2 border-solid border-b-slate-300 border-l-[#6539c0] border-r-[#6539c0] bg-white p-10 shadow-2xl" style={{ boxShadow: `0 25px 50px 600px rgba(0, 0, 0, 0.50)` }}>
+              <div className="fixed bottom-6 left-0 right-0 top-3 z-50 m-52 overflow-auto rounded-lg border-2 border-solid border-b-slate-300 border-l-[#6A89A7] border-r-[#6A89A7] bg-[#F8FAFC] p-10 shadow-2xl" style={{ boxShadow: `0 25px 50px 600px rgba(0, 0, 0, 0.50)` }}>
                 <button
                   type="button"
-                  className="fixed right-60 top-10 rounded-md bg-blue-500 px-3 py-1 text-lg font-semibold text-white hover:bg-blue-600"
+                  className="fixed right-60 top-10 rounded-md bg-gradient-to-r from-[#6A89A7] to-[#88BDF2] px-3 py-1 text-lg font-semibold text-white hover:from-[#88BDF2] hover:to-[#6A89A7]"
                   onClick={() => {
                     setEditPayments(false);
                   }}
@@ -1206,7 +1135,7 @@ const Invoice = () => {
 
                       <div>
                         <div className="">
-                          <input type="date" name={`payments[${index}].datePaid`} value={payment.datePaid} onChange={(e) => handlePaymentChange(index, e)} className="my-1 w-full rounded border-2 px-2 py-1" placeholder="Date Paid" />
+                          <input type="date" name={`payments[${index}].datePaid`} value={payment.datePaid} onChange={(e) => handlePaymentChange(index, e)} className="my-1 w-full rounded border-2 border-[#6D8196] px-2 py-1 text-[#384959]" placeholder="Date Paid" />
                         </div>
 
                         {/* <div className='flex items-center justify-center'>
@@ -1221,7 +1150,7 @@ const Invoice = () => {
                           </div> */}
 
                         <div className="flex items-center justify-center">
-                          <input type="number" name={`payments[${index}].orderPaymentAmount`} value={payment.orderPaymentAmount} onChange={(e) => handlePaymentChange(index, e)} className="my-1 w-full rounded border-2 px-2 py-1" placeholder="orderPaymentAmount" />
+                          <input type="number" name={`payments[${index}].orderPaymentAmount`} value={payment.orderPaymentAmount} onChange={(e) => handlePaymentChange(index, e)} className="my-1 w-full rounded border-2 border-[#6D8196] px-2 py-1 text-[#384959]" placeholder="orderPaymentAmount" />
                         </div>
                       </div>
                     </div>
@@ -1258,7 +1187,7 @@ const Invoice = () => {
                           </div> */}
 
                         <div className="flex items-center justify-center">
-                          <input type="text" name={`payments[${index}].paymentMethod`} value={payment.paymentMethod} onChange={(e) => handlePaymentChange(index, e)} className="my-1 w-full rounded border-2 px-2 py-1" placeholder="Payment Method" />
+                          <input type="text" name={`payments[${index}].paymentMethod`} value={payment.paymentMethod} onChange={(e) => handlePaymentChange(index, e)} className="my-1 w-full rounded border-2 border-[#6D8196] px-2 py-1 text-[#384959]" placeholder="Payment Method" />
                         </div>
 
                         {/* <div className='flex items-center justify-center'>
@@ -1273,7 +1202,7 @@ const Invoice = () => {
                           </div> */}
 
                         <div className="flex justify-center">
-                          <button type="button" onClick={() => removePayment(index)} className="no-print m-1 rounded bg-red-500 px-4 py-1 text-white hover:bg-red-600">
+                          <button type="button" onClick={() => removePayment(index)} className="no-print m-1 rounded bg-red-400 px-4 py-1 text-white hover:bg-red-500">
                             X
                           </button>
                         </div>
@@ -1284,41 +1213,29 @@ const Invoice = () => {
 
                 <div className="flex items-center justify-center gap-5">
                   <label>{`Payment Terms:`}</label>
-                  <input type="text" name="paymentTerms" value={formData.paymentTerms} placeholder="Payment Terms" onChange={handleChange} className="my-1 w-1/2 rounded border-2 px-2 py-1" />
+                  <input type="text" name="paymentTerms" value={formData.paymentTerms} placeholder="Payment Terms" onChange={handleChange} className="my-1 w-1/2 rounded border-2 border-[#6D8196] px-2 py-1 text-[#384959]" />
                 </div>
 
-                <button type="button" onClick={addPayment} className="no-print my-3 rounded bg-blue-500 px-4 py-1 text-white hover:bg-blue-600">
+                <button type="button" onClick={addPayment} className="no-print my-3 rounded bg-gradient-to-r from-[#6A89A7] to-[#88BDF2] px-4 py-1 text-white hover:from-[#88BDF2] hover:to-[#6A89A7]">
                   Add Payment
                 </button>
               </div>
             )}
 
-            <div className="no-print print-no-py print-no-my px-5 pt-10">
-              <button type="submit" className="mx-3 rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600">
+            <div className="no-print print-no-py print-no-my flex items-center justify-center gap-4 px-5 pt-10">
+              <button type="submit" className="rounded-lg bg-gradient-to-r from-[#6A89A7] to-[#88BDF2] px-8 py-3 font-semibold text-white hover:from-[#88BDF2] hover:to-[#6A89A7] transition-colors duration-200">
                 Save
               </button>
 
-              {/* old print using react-to-print */}
-              {/* <button
-                onClick={handlePrint}
-                type="button"
-                className=" bg-[#6539c0] hover:bg-purple-500 text-white px-6 py-2  rounded"
-
-              >
-                Print
-              </button> */}
-
-              {/* new print using using pdf */}
-              <button type="button" onClick={handlePrintClick} className="my-3 mr-2 rounded border-[2px] border-blue-500 bg-transparent px-[20px] py-[5px] font-bold text-blue-700 hover:bg-blue-100 hover:text-black">
+              <button type="button" onClick={handlePrintClick} className="rounded-lg border-2 border-[#6A89A7] px-8 py-3 font-semibold text-[#6A89A7] hover:bg-[#6A89A7] hover:text-white transition-colors duration-200">
                 Print
               </button>
 
-              {responseMessage && <span className={`mt-4 ${responseMessage.startsWith('Error') ? 'text-red-500' : 'text-green-500'}`}>{responseMessage}</span>}
+              {responseMessage && <span className={`text-sm font-medium ${responseMessage.startsWith('Error') ? 'text-red-500' : 'text-green-500'}`}>{responseMessage}</span>}
             </div>
           </div>
         </form>
       </div>
-    </div>
   );
 };
 

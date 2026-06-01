@@ -13,6 +13,9 @@ router.post("/uploadCustomer", customerController.uploadCustomer);
 router.get("/names", customerController.getCustomerNames);
 
 // Get all customers
+router.get("/allCustomers", customerController.getAllCustomers);
+
+// Get all customers (root route)
 router.get("/", customerController.getAllCustomers);
 
 // Get a customer by ID

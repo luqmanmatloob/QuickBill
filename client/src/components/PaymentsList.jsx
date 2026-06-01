@@ -99,105 +99,59 @@ const PaymentsList = () => {
   };
 
   return (
-    <div className="ml-60 mr-5 mt-32">
-      <div className="container mx-auto my-5 rounded-lg border-2 border-solid border-[#f1f1f1] border-b-slate-300 border-l-[#d1e4f5] border-r-[#d1e4f5] bg-white p-6 shadow-xl">
-        <div className="mb-5 flex items-center justify-between">
-          <h1 className="mb-4 text-3xl font-bold">All Payments</h1>
-          <div className="flex items-center justify-between">
-            <NavLink exact to="/uploadpaymentspage" className="rounded-md border-2 border-blue-300 bg-gradient-to-r from-blue-200 to-blue-300 px-8 py-2 font-semibold text-black hover:scale-105 hover:bg-blue-600 focus:bg-blue-600 focus:outline-none active:text-black">
-              Upload
-            </NavLink>
-          </div>
+    <div className="mx-auto max-w-7xl space-y-6 p-6">
+      <div className="rounded-2xl border-2 border-[#6D8196] bg-[#F8FAFC] p-6 lg:p-8 shadow-lg">
+        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <h1 className="text-3xl font-bold text-[#384959]">All Payments</h1>
+          <NavLink exact to="/uploadpaymentspage" className="rounded-lg bg-gradient-to-r from-[#6A89A7] to-[#88BDF2] px-6 py-2.5 font-semibold text-white hover:from-[#88BDF2] hover:to-[#6A89A7] transition-colors duration-200">
+            Upload
+          </NavLink>
         </div>
 
-        <div className="mb-4">
-          {/* <input
-            type="text"
-            name="billingFirstName"
-            placeholder="Filter by Billing First Name"
-            value={filters.billingFirstName}
-            onChange={handleFilterChange}
-            className="border border-gray-300 px-4 py-2 rounded mr-2"
-          /> */}
-          {/* <input
-            type="text"
-            name="billingLastName"
-            placeholder="Filter by Billing Last Name"
-            value={filters.billingLastName}
-            onChange={handleFilterChange}
-            className="border border-gray-300 px-4 py-2 rounded mr-2"
-          /> */}
-          <label className="text-lg">Search: </label>
+        <div className="mb-6">
+          <label className="text-sm font-medium text-[#384959]">Search:</label>
           <input
             type="text"
             name="orderNumber"
-            // placeholder="Filter by Order Number"
             placeholder="Search By Invoice/Quote Number"
             value={filters.orderNumber}
             onChange={handleFilterChange}
-            className="mr-2 w-1/3 rounded border border-gray-300 px-4 py-2"
+            className="mt-2 w-full rounded-lg border-2 border-[#6D8196] px-4 py-2.5 text-[#384959] placeholder-[#88BDF2] focus:border-[#6A89A7] focus:ring-2 focus:ring-[#6A89A7]/20 transition-all duration-200 outline-none"
           />
-          {/* <input
-                        type="date"
-                        name="dateOrdered"
-                        value={filters.dateOrdered}
-                        onChange={handleFilterChange}
-                        className="border border-gray-300 px-4 py-2 rounded"
-                    /> */}
         </div>
 
-        {loading && <div className="my-4 rounded bg-blue-200 px-4 py-2 text-green-800">Loading Invoices ...</div>}
+        {loading && <div className="rounded-xl bg-[#BDDDFC] px-6 py-4 text-center text-[#384959]">Loading Invoices...</div>}
 
-        <table className="w-full table-auto border-collapse border border-gray-300">
-          <thead>
-            <tr className="rounded-md bg-blue-100 py-20">
-              {/* <th className="border border-gray-300 px-4 py-2">
-                                <input
-                                    type="checkbox"
-                                    onChange={(e) => {
-                                        if (e.target.checked) {
-                                            setSelectedInvoices(invoicesQuotes.map(invoice => invoice.uniqueKey));
-                                        } else {
-                                            setSelectedInvoices([]);
-                                        }
-                                    }}
-                                    checked={selectedInvoices.length === invoicesQuotes.length}
-                                />
-                            </th> */}
-              <th className="border border-gray-300 px-4 py-2">Order Number</th>
-              <th className="border border-gray-300 px-4 py-2">Payment Date</th>
-              <th className="border border-gray-300 px-4 py-2">Payment Amount</th>
-              <th className="border border-gray-300 px-4 py-2">Payment Method</th>
-              <th className="border border-gray-300 px-4 py-2">Edit</th>
-              {/* <th className="border border-gray-300 px-4 py-2">Delete</th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {invoicesQuotes.flatMap((invoiceQuote) =>
-              invoiceQuote.payments.map((payment, index) => (
-                <tr key={`${invoiceQuote._id}-${index}`} className={`bg-white text-center ${index % 2 === 0 ? '' : 'bg-[#f1f1f1]'}`}>
-                  {/* <td className="border border-gray-300 px-4 py-2">
-                                        <input
-                                            type="checkbox"
-                                            onChange={() => handleSelectInvoice(invoiceQuote.uniqueKey)}
-                                            checked={selectedInvoices.includes(invoiceQuote.uniqueKey)}
-                                        />
-                                    </td> */}
-                  <td className="border border-gray-300 px-4 py-2">{invoiceQuote.orderNumber}</td>
-                  <td className="border border-gray-300 px-4 py-2">{formatDate(payment.datePaid)}</td>
-                  <td className="border border-gray-300 px-4 py-2">${payment.orderPaymentAmount}</td>
-                  <td className="border border-gray-300 px-4 py-2">{payment.paymentMethod}</td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    <Link to={`/Edit/${invoiceQuote.uniqueKey}`} className="mr-4 text-blue-500 hover:underline">
-                      Edit
-                    </Link>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-        <div className="mb-[60vh]"></div>
+        <div className="overflow-x-auto rounded-xl border-2 border-[#6D8196]">
+          <table className="w-full table-auto bg-white">
+            <thead>
+              <tr className="bg-[#BDDDFC]">
+                <th className="border-b border-[#6D8196] px-4 py-3 text-left text-sm font-semibold text-[#384959]">Order Number</th>
+                <th className="border-b border-[#6D8196] px-4 py-3 text-left text-sm font-semibold text-[#384959]">Payment Date</th>
+                <th className="border-b border-[#6D8196] px-4 py-3 text-left text-sm font-semibold text-[#384959]">Payment Amount</th>
+                <th className="border-b border-[#6D8196] px-4 py-3 text-left text-sm font-semibold text-[#384959]">Payment Method</th>
+                <th className="border-b border-[#6D8196] px-4 py-3 text-left text-sm font-semibold text-[#384959]">Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {invoicesQuotes.flatMap((invoiceQuote) =>
+                invoiceQuote.payments.map((payment, index) => (
+                  <tr key={`${invoiceQuote._id}-${index}`} className={`border-t border-[#6D8196] hover:bg-[#BDDDFC] transition-colors duration-200 ${index % 2 === 0 ? '' : 'bg-[#BDDDFC]'}`}>
+                    <td className="px-4 py-3 text-sm text-[#384959]">{invoiceQuote.orderNumber}</td>
+                    <td className="px-4 py-3 text-sm text-[#384959]">{formatDate(payment.datePaid)}</td>
+                    <td className="px-4 py-3 text-sm font-semibold text-[#384959]">${payment.orderPaymentAmount}</td>
+                    <td className="px-4 py-3 text-sm text-[#384959]">{payment.paymentMethod}</td>
+                    <td className="px-4 py-3">
+                      <Link to={`/Edit/${invoiceQuote.uniqueKey}`} className="text-sm font-semibold text-[#6A89A7] hover:underline">
+                        Edit
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
