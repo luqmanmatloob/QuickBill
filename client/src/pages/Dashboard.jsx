@@ -218,7 +218,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-
+ 
           {/* Charts Section */}
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             {/* Bar Chart - Monthly Revenue */}
